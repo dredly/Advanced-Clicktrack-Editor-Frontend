@@ -1,23 +1,44 @@
 import { useSelector, useDispatch } from 'react-redux'
-import { addSection } from './reducers/sectionReducer'
+import { displayForm } from './reducers/sectionReducer'
+import NewSection from './components/NewSection'
+
 
 const App = () => {
   const dispatch = useDispatch()
-  const sections = useSelector(state => state.sections)
+  const sections = useSelector(state => state.sections.sectionList)
+  const formLocation = useSelector(state => state.sections.formLocation)
 
-  const addDefault = () => {
-    dispatch(addSection({bpm: 120, numMeasures: 4}))
+  const showFormHere = location => {
+    dispatch(displayForm(location))
+  }
+
+  const hideForm = () => {
+    dispatch(displayForm(NaN))
   }
 
   return (
     <>
+      <button onClick={() => showFormHere(0)}>Add to start</button>
+      {formLocation === 0
+        ? <>
+            <NewSection />
+            <button onClick={hideForm}>cancel</button>
+          </>
+        : null
+      }
       {sections.map(section => 
-        <p key={section.sectionInd}>
-          {section.sectionInd} ...
+        <div key={section.sectionInd}>
           {section.bpm}bpm for {section.numMeasures} measures
-        </p>
+          <button onClick={() => showFormHere(section.sectionInd)}>Add after this section</button>
+          {formLocation === section.sectionInd 
+            ? <>
+                <NewSection />
+                <button onClick={hideForm}>cancel</button>
+              </>
+            : null
+          }
+        </div>
       )}
-      <button onClick={addDefault}>Add section with default values</button>
     </>
   );
 }

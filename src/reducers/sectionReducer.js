@@ -1,9 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-const initialState = [
-	{bpm: 120, numMeasures: 4, sectionInd: 0},
-	{bpm: 140, numMeasures: 8, sectionInd: 1}
-]
+const initialState = {
+	sectionList: [
+		{bpm: 120, numMeasures: 4, sectionInd: 1},
+		{bpm: 140, numMeasures: 8, sectionInd: 2}
+	],
+	formLocation: NaN
+}
 
 const sectionSlice = createSlice({
 	name: 'sections',
@@ -11,10 +14,14 @@ const sectionSlice = createSlice({
 	reducers: {
 		addSection(state, action) {
 			const { bpm, numMeasures } = action.payload
-			state.push({bpm, numMeasures, sectionInd: state.length})
+			state.sectionList.push({bpm, numMeasures, sectionInd: state.length + 1})
+		},
+		displayForm(state, action) {
+			const newLocation = action.payload
+			state.formLocation = newLocation
 		}
 	}
 })
 
-export const { addSection } = sectionSlice.actions
+export const { addSection, displayForm } = sectionSlice.actions
 export default sectionSlice.reducer

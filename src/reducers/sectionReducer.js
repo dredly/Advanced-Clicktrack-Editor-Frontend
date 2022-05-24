@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
 
@@ -15,7 +15,7 @@ const sectionSlice = createSlice({
 			const { bpm, numMeasures } = action.payload
 			const idx = state.formLocation
 			//Insert the new section at the location specified by where the form was rendered
-			state.sectionList.splice(idx, 0, {bpm, numMeasures, id: uuidv4()})
+			state.sectionList.splice(idx, 0, { bpm, numMeasures, id: uuidv4() })
 		},
 		displayForm(state, action) {
 			const newLocation = action.payload

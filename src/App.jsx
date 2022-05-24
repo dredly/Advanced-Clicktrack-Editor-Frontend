@@ -21,7 +21,7 @@ const App = () => {
       <button onClick={() => showFormHere(0)}>Add to start</button>
       {formLocation === 0
         ? <>
-            <NewSection />
+            <NewSection hideSelf={hideForm}/>
             <button onClick={hideForm}>cancel</button>
           </>
         : null
@@ -32,7 +32,7 @@ const App = () => {
           <button onClick={() => showFormHere(section.sectionInd)}>Add after this section</button>
           {formLocation === section.sectionInd 
             ? <>
-                <NewSection />
+                <NewSection hideSelf={hideForm}/>
                 <button onClick={hideForm}>cancel</button>
               </>
             : null

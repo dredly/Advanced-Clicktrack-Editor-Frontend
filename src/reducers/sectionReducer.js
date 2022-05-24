@@ -14,7 +14,7 @@ const sectionSlice = createSlice({
 	reducers: {
 		addSection(state, action) {
 			const { bpm, numMeasures } = action.payload
-			state.sectionList.push({bpm, numMeasures, sectionInd: state.length + 1})
+			state.sectionList.push({bpm, numMeasures, sectionInd: state.sectionList.length + 1})
 		},
 		displayForm(state, action) {
 			const newLocation = action.payload

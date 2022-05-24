@@ -26,11 +26,11 @@ const App = () => {
           </>
         : null
       }
-      {sections.map(section => 
-        <div key={section.sectionInd}>
+      {sections.map((section, idx) => 
+        <div key={section.id}>
           {section.bpm}bpm for {section.numMeasures} measures
-          <button onClick={() => showFormHere(section.sectionInd)}>Add after this section</button>
-          {formLocation === section.sectionInd 
+          <button onClick={() => showFormHere(idx + 1)}>Add after this section</button>
+          {formLocation === idx + 1
             ? <>
                 <NewSection hideSelf={hideForm}/>
                 <button onClick={hideForm}>cancel</button>

@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { v4 as uuidv4 } from 'uuid'
+
 
 const initialState = {
-	sectionList: [
-		{bpm: 120, numMeasures: 4, sectionInd: 1},
-		{bpm: 140, numMeasures: 8, sectionInd: 2}
-	],
+	sectionList: [],
 	formLocation: NaN
 }
 
@@ -14,7 +13,9 @@ const sectionSlice = createSlice({
 	reducers: {
 		addSection(state, action) {
 			const { bpm, numMeasures } = action.payload
-			state.sectionList.push({bpm, numMeasures, sectionInd: state.sectionList.length + 1})
+			const idx = state.formLocation
+			//Insert the new section at the location specified by where the form was rendered
+			state.sectionList.splice(idx, 0, {bpm, numMeasures, id: uuidv4()})
 		},
 		displayForm(state, action) {
 			const newLocation = action.payload

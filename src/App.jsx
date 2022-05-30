@@ -22,17 +22,28 @@ const App = () => {
 	//HARDCODED 4/4 signature for testing
 	const beatsPerMeasure = 4
 
-	const playClicktrackSection = (sectionData) => {
+	const playClicktrackSection = (sectionData, startTime) => {
 		const numMeasures = sectionData.numMeasures
 		Tone.start()
 		Tone.Transport.bpm.value = sectionData.bpm
 		Tone.Transport.start()
 		for (let i = 0; i < numMeasures; i++) {
-			const startOfMeasure = Tone.now() + i * Tone.Time('1m').toSeconds()
+			const startOfMeasure = startTime + i * Tone.Time('1m').toSeconds()
 			woodblock1.start(startOfMeasure)
 			for (let j = 1; j < beatsPerMeasure; j++) {
 				woodblock2.start(startOfMeasure + j * Tone.Time('4n').toSeconds())
 			}
+		}
+		return startTime + numMeasures * Tone.Time('1m').toSeconds()
+	}
+
+	const playClicktrack = () => {
+		if (sections.length) {
+			let nextStartTime = 0
+			for (let section of sections) {
+				nextStartTime = playClicktrackSection(section, nextStartTime)
+			}
+			console.log('NEXT START TIME', nextStartTime)
 		}
 	}
 
@@ -67,9 +78,7 @@ const App = () => {
 					}
 				</div>
 			)}
-			<button onClick={() => playClicktrackSection({
-				bpm: 190, numMeasures: 3
-			})}>Play</button>
+			<button onClick={playClicktrack}>Play</button>
 		</>
 	)
 }

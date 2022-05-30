@@ -1,5 +1,4 @@
 import * as Tone from 'tone'
-import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
 import NewSection from './components/NewSection'
@@ -7,7 +6,6 @@ import NewSection from './components/NewSection'
 
 const App = () => {
 	const dispatch = useDispatch()
-	const [started, setStarted] = useState(false)
 	const sections = useSelector(state => state.sections.sectionList)
 	const formLocation = useSelector(state => state.sections.formLocation)
 
@@ -21,14 +19,21 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	const playClicktrack = () => {
-		if (!started) {
-			console.log('Starting')
-			Tone.start()
-			setStarted(true)
+	//HARDCODED 4/4 signature for testing
+	const beatsPerMeasure = 4
+
+	const playClicktrackSection = (sectionData) => {
+		const numMeasures = sectionData.numMeasures
+		Tone.start()
+		Tone.Transport.bpm.value = sectionData.bpm
+		Tone.Transport.start()
+		for (let i = 0; i < numMeasures; i++) {
+			const startOfMeasure = Tone.now() + i * Tone.Time('1m').toSeconds()
+			woodblock1.start(startOfMeasure)
+			for (let j = 1; j < beatsPerMeasure; j++) {
+				woodblock2.start(startOfMeasure + j * Tone.Time('4n').toSeconds())
+			}
 		}
-		woodblock1.start(Tone.now())
-		woodblock2.start(Tone.now() + 1)
 	}
 
 	const showFormHere = location => {
@@ -62,7 +67,9 @@ const App = () => {
 					}
 				</div>
 			)}
-			<button onClick={playClicktrack}>Play</button>
+			<button onClick={() => playClicktrackSection({
+				bpm: 190, numMeasures: 3
+			})}>Play</button>
 		</>
 	)
 }

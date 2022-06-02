@@ -19,22 +19,20 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	//HARDCODED 4/4 signature for testing
-	const beatsPerMeasure = 4
-
 	const playClicktrackSection = (sectionData, startTime) => {
 		const numMeasures = sectionData.numMeasures
+		const beatsPerMeasure = sectionData.numBeats
 		Tone.start()
 		Tone.Transport.bpm.value = sectionData.bpm
 		Tone.Transport.start()
 		for (let i = 0; i < numMeasures; i++) {
-			const startOfMeasure = startTime + i * Tone.Time('1m').toSeconds()
+			const startOfMeasure = startTime + i * Tone.Time('4n').toSeconds() * beatsPerMeasure
 			woodblock1.start(startOfMeasure)
 			for (let j = 1; j < beatsPerMeasure; j++) {
 				woodblock2.start(startOfMeasure + j * Tone.Time('4n').toSeconds())
 			}
 		}
-		return startTime + numMeasures * Tone.Time('1m').toSeconds()
+		return startTime + numMeasures * Tone.Time('4n').toSeconds() * beatsPerMeasure
 	}
 
 	const playClicktrack = () => {
@@ -71,7 +69,8 @@ const App = () => {
 			}
 			{sections.map((section, idx) =>
 				<div key={section.id}>
-					{section.bpm}bpm for {section.numMeasures} measures
+					<p>{section.bpm}bpm for {section.numMeasures} measures</p>
+					<p>Beats per measure: {section.numBeats}</p>
 					<button onClick={idx => handleDelete(idx)}>Delete</button>
 					<button onClick={() => showFormHere(idx + 1)}>Add after this section</button>
 					{formLocation === idx + 1

@@ -1,8 +1,8 @@
 #Future tasks
 
-- [x] Add form for making a new section, which can be expanded at any point in the click track
-- [x] Setup linting
-- [x] Integrate tone js to actually play the click track
 - [x] Add ability to delete existing sections
 - [x] Add exact bpm selection for sections
-- [ ] Add ability to change time signature for sections
+- [x] Add ability to change time signature for sections
+- [ ] Add ability to edit existing sections
+- [ ] Add abilility to create a ritardando or accelerando section with rampTo
+- [ ] Add basic styling

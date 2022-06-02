@@ -17,6 +17,10 @@ const sectionSlice = createSlice({
 			//Insert the new section at the location specified by where the form was rendered
 			state.sectionList.splice(idx, 0, { bpm, numMeasures, id: uuidv4() })
 		},
+		deleteSection(state, action) {
+			const { idx } = action.payload
+			state.sectionList.splice(idx, 1)
+		},
 		displayForm(state, action) {
 			const newLocation = action.payload
 			state.formLocation = newLocation
@@ -24,5 +28,5 @@ const sectionSlice = createSlice({
 	}
 })
 
-export const { addSection, displayForm } = sectionSlice.actions
+export const { addSection, deleteSection, displayForm } = sectionSlice.actions
 export default sectionSlice.reducer

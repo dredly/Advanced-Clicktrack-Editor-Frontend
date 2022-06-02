@@ -1,6 +1,6 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
-import { displayForm } from './reducers/sectionReducer'
+import { displayForm, deleteSection } from './reducers/sectionReducer'
 import NewSection from './components/NewSection'
 
 
@@ -55,6 +55,10 @@ const App = () => {
 		dispatch(displayForm(NaN))
 	}
 
+	const handleDelete = idx => {
+		dispatch(deleteSection(idx))
+	}
+
 	return (
 		<>
 			<button onClick={() => showFormHere(0)}>Add to start</button>
@@ -68,6 +72,7 @@ const App = () => {
 			{sections.map((section, idx) =>
 				<div key={section.id}>
 					{section.bpm}bpm for {section.numMeasures} measures
+					<button onClick={idx => handleDelete(idx)}>Delete</button>
 					<button onClick={() => showFormHere(idx + 1)}>Add after this section</button>
 					{formLocation === idx + 1
 						? <>

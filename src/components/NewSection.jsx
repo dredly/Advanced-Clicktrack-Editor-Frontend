@@ -19,7 +19,7 @@ const NewSection = ({ hideSelf }) => {
 				<input key="measures" type="number" min={1} max={1000} name="numMeasures" defaultValue={defaultMeasures}/>
 			</label>
 			<label>Select a bpm
-				<input key="changebpm" type="range" min={20} max={400} name="bpm" defaultValue={defaultBpm}/>
+				<input key="changebpm" type="number" min={20} max={400} name="bpm" defaultValue={defaultBpm}/>
 			</label>
 			<button>Add this section</button>
 		</form>

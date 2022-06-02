@@ -4,5 +4,5 @@
 - [x] Setup linting
 - [x] Integrate tone js to actually play the click track
 - [x] Add ability to delete existing sections
-- [ ] Add exact bpm selection for sections
+- [x] Add exact bpm selection for sections
 - [ ] Add ability to change time signature for sections

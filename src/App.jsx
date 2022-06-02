@@ -39,7 +39,7 @@ const App = () => {
 
 	const playClicktrack = () => {
 		if (sections.length) {
-			let nextStartTime = 0
+			let nextStartTime = Tone.now()
 			for (let section of sections) {
 				nextStartTime = playClicktrackSection(section, nextStartTime)
 			}

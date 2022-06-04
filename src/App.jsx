@@ -1,13 +1,13 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
-import { displayForm, deleteSection } from './reducers/sectionReducer'
-import NewSection from './components/NewSection'
+import { displayForm, deleteSection, updateSection } from './reducers/sectionReducer'
+import SectionForm from './components/SectionForm'
 
 
 const App = () => {
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
-	const formLocation = useSelector(state => state.sections.formLocation)
+	const createFormLocation = useSelector(state => state.sections.createFormLocation)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -57,12 +57,16 @@ const App = () => {
 		dispatch(deleteSection(idx))
 	}
 
+	const handleEdit = section => {
+		dispatch(updateSection(section))
+	}
+
 	return (
 		<>
 			<button onClick={() => showFormHere(0)}>Add to start</button>
-			{formLocation === 0
+			{createFormLocation === 0
 				? <>
-					<NewSection hideSelf={hideForm}/>
+					<SectionForm hideSelf={hideForm}/>
 					<button onClick={hideForm}>cancel</button>
 				</>
 				: null
@@ -71,11 +75,12 @@ const App = () => {
 				<div key={section.id}>
 					<p>{section.bpm}bpm for {section.numMeasures} measures</p>
 					<p>Beats per measure: {section.numBeats}</p>
+					<button onClick={idx => handleEdit(idx)}>Edit</button>
 					<button onClick={idx => handleDelete(idx)}>Delete</button>
 					<button onClick={() => showFormHere(idx + 1)}>Add after this section</button>
-					{formLocation === idx + 1
+					{createFormLocation === idx + 1
 						? <>
-							<NewSection hideSelf={hideForm}/>
+							<SectionForm hideSelf={hideForm} />
 							<button onClick={hideForm}>cancel</button>
 						</>
 						: null

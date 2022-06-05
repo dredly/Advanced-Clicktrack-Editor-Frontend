@@ -19,16 +19,24 @@ const sectionSlice = createSlice({
 			state.sectionList.splice(idx, 0, { bpm, numMeasures, numBeats, id: uuidv4() })
 		},
 		updateSection(state, action) {
-			const { data } = action.payload
-			console.log(`Going to update section with id ${data.id}`)
+			const data  = action.payload
+			state.sectionList = state.sectionList.map(section =>
+				section.id !== data.id ? section : data
+			)
+			console.log(`Updating section with id ${data.id}`)
 		},
 		deleteSection(state, action) {
 			const { idx } = action.payload
 			state.sectionList.splice(idx, 1)
 		},
 		displayForm(state, action) {
-			const newLocation = action.payload
-			state.createFormLocation = newLocation
+			const { location, type } = action.payload
+			if (type === 'create') {
+				state.createFormLocation = location
+			}
+			else if (type === 'edit') {
+				state.editFormLocation = location
+			}
 		}
 	}
 })

@@ -1,6 +1,6 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
-import { displayForm, deleteSection, updateSection } from './reducers/sectionReducer'
+import { displayForm, deleteSection } from './reducers/sectionReducer'
 import SectionForm from './components/SectionForm'
 
 
@@ -8,6 +8,7 @@ const App = () => {
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)
+	const editFormLocation = useSelector(state => state.sections.editFormLocation)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -45,29 +46,25 @@ const App = () => {
 		}
 	}
 
-	const showFormHere = location => {
-		dispatch(displayForm(location))
+	const showFormHere = (location, type) => {
+		dispatch(displayForm({ location, type }))
 	}
 
-	const hideForm = () => {
-		dispatch(displayForm(NaN))
+	const hideForm = type => {
+		dispatch(displayForm({ location: NaN, type }))
 	}
 
 	const handleDelete = idx => {
 		dispatch(deleteSection(idx))
 	}
 
-	const handleEdit = section => {
-		dispatch(updateSection(section))
-	}
-
 	return (
 		<>
-			<button onClick={() => showFormHere(0)}>Add to start</button>
+			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 			{createFormLocation === 0
 				? <>
-					<SectionForm hideSelf={hideForm}/>
-					<button onClick={hideForm}>cancel</button>
+					<SectionForm hideSelf={() => hideForm('create')}/>
+					<button onClick={() => hideForm('create')}>cancel</button>
 				</>
 				: null
 			}
@@ -75,13 +72,25 @@ const App = () => {
 				<div key={section.id}>
 					<p>{section.bpm}bpm for {section.numMeasures} measures</p>
 					<p>Beats per measure: {section.numBeats}</p>
-					<button onClick={idx => handleEdit(idx)}>Edit</button>
+					<button onClick={() => showFormHere(idx + 1, 'edit')}>Edit</button>
 					<button onClick={idx => handleDelete(idx)}>Delete</button>
-					<button onClick={() => showFormHere(idx + 1)}>Add after this section</button>
+					<button onClick={() => showFormHere(idx + 1, 'create')}>
+						Add after this section
+					</button>
 					{createFormLocation === idx + 1
 						? <>
-							<SectionForm hideSelf={hideForm} />
-							<button onClick={hideForm}>cancel</button>
+							<SectionForm hideSelf={() => hideForm('create')} />
+							<button onClick={() => hideForm('create')}>cancel</button>
+						</>
+						: null
+					}
+					{editFormLocation === idx + 1
+						? <>
+							<SectionForm
+								hideSelf={() => hideForm('edit')}
+								existingData={section}
+							/>
+							<button onClick={() => hideForm('edit')}>cancel</button>
 						</>
 						: null
 					}

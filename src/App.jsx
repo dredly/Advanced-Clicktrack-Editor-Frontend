@@ -21,31 +21,34 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	const playClicktrackSection = (sectionData, startTime) => {
-		const numMeasures = sectionData.numMeasures
-		const beatsPerMeasure = sectionData.numBeats
+	// Refactor to use loops - THIS WILL BREAK EVERYTHING
+	const playClicktrackSection = (sectionData) => {
+		// const numMeasures = sectionData.numMeasures
+		// const beatsPerMeasure = sectionData.numBeats
+		const testLoop = new Tone.Loop(time => {
+			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
+			// Play the louder version of the sound on the first beat of each measure
+			if (Number(currentBeats) === 0) {
+				woodblock1.start(time)
+			} else {
+				woodblock2.start(time)
+			}
+		}, '4n').start(0)
+		console.log(testLoop) //So that eslint doesn't complain
 		Tone.start()
 		Tone.Transport.bpm.value = sectionData.bpm
 		Tone.Transport.start()
-		for (let i = 0; i < numMeasures; i++) {
-			const startOfMeasure = startTime + i * Tone.Time('4n').toSeconds() * beatsPerMeasure
-			woodblock1.start(startOfMeasure)
-			for (let j = 1; j < beatsPerMeasure; j++) {
-				woodblock2.start(startOfMeasure + j * Tone.Time('4n').toSeconds())
-			}
-		}
-		return startTime + numMeasures * Tone.Time('4n').toSeconds() * beatsPerMeasure
 	}
 
-	const playClicktrack = () => {
-		if (sections.length) {
-			let nextStartTime = Tone.now()
-			for (let section of sections) {
-				nextStartTime = playClicktrackSection(section, nextStartTime)
-			}
-			console.log('NEXT START TIME', nextStartTime)
-		}
-	}
+	// const playClicktrack = () => {
+	// 	if (sections.length) {
+	// 		let nextStartTime = Tone.now()
+	// 		for (let section of sections) {
+	// 			nextStartTime = playClicktrackSection(section, nextStartTime)
+	// 		}
+	// 		console.log('NEXT START TIME', nextStartTime)
+	// 	}
+	// }
 
 	const showFormHere = (location, type) => {
 		dispatch(displayForm({ location, type }))
@@ -78,7 +81,8 @@ const App = () => {
 					formLocations={{ createFormLocation, editFormLocation }}
 				/>
 			)}
-			<button onClick={playClicktrack}>Play</button>
+			{/* Play just the first section for now to test */}
+			<button onClick={() => playClicktrackSection(sections[0])}>Play</button>
 		</>
 	)
 }

@@ -1,7 +1,11 @@
 import { addSection, updateSection } from '../reducers/sectionReducer'
 import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import SingleBpmSelection from './SingleBpmSelection'
+import MultipleBpmSelection from './MultipleBpmSelection'
 
 const SectionForm = ({ hideSelf, existingData }) => {
+	const [isTempoChange, setIsTempoChange] = useState(false)
 	const dispatch = useDispatch()
 
 	const defaults = {
@@ -42,33 +46,41 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				? editSection
 				: addNewSection
 		)} >
-			<label>Select a number of measures
-				<input
-					key="measures"
-					type="number"
-					min={1} max={1000}
-					name="numMeasures"
-					defaultValue={data.numMeasures}
-				/>
-			</label>
-			<label>Select a bpm
-				<input
-					key="changebpm"
-					type="number"
-					min={20} max={400}
-					name="bpm"
-					defaultValue={data.bpm}
-				/>
-			</label>
-			<label>Select a number of beats per measure
-				<input
-					key="changetimesig"
-					type="number"
-					min={2} max={9}
-					name="numBeats"
-					defaultValue={data.numBeats}
-				/>
-			</label>
+			<div>
+				<label>Select a number of measures
+					<input
+						key="measures"
+						type="number"
+						min={1} max={1000}
+						name="numMeasures"
+						defaultValue={data.numMeasures}
+					/>
+				</label>
+			</div>
+			<div>
+				<label>Tempo change
+					<input
+						key="toggletempochange"
+						type="checkbox"
+						onChange={() => setIsTempoChange(!isTempoChange)}
+					/>
+				</label>
+				{( isTempoChange
+					? <MultipleBpmSelection defaultBpm={data.bpm} />
+					: <SingleBpmSelection defaultBpm={data.bpm} />
+				)}
+			</div>
+			<div>
+				<label>Select a number of beats per measure
+					<input
+						key="changetimesig"
+						type="number"
+						min={2} max={9}
+						name="numBeats"
+						defaultValue={data.numBeats}
+					/>
+				</label>
+			</div>
 			<button>
 				{(existingData
 					? 'Save Changes'

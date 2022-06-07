@@ -2,6 +2,7 @@ import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
 import SectionForm from './components/SectionForm'
+import SectionDisplay from './components/SectionDisplay'
 
 
 const App = () => {
@@ -69,32 +70,13 @@ const App = () => {
 				: null
 			}
 			{sections.map((section, idx) =>
-				<div key={section.id}>
-					<p>{section.bpm}bpm for {section.numMeasures} measures</p>
-					<p>Beats per measure: {section.numBeats}</p>
-					<button onClick={() => showFormHere(idx + 1, 'edit')}>Edit</button>
-					<button onClick={idx => handleDelete(idx)}>Delete</button>
-					<button onClick={() => showFormHere(idx + 1, 'create')}>
-						Add after this section
-					</button>
-					{createFormLocation === idx + 1
-						? <>
-							<SectionForm hideSelf={() => hideForm('create')} />
-							<button onClick={() => hideForm('create')}>cancel</button>
-						</>
-						: null
-					}
-					{editFormLocation === idx + 1
-						? <>
-							<SectionForm
-								hideSelf={() => hideForm('edit')}
-								existingData={section}
-							/>
-							<button onClick={() => hideForm('edit')}>cancel</button>
-						</>
-						: null
-					}
-				</div>
+				<SectionDisplay
+					key={section.id}
+					section={section}
+					idx={idx}
+					handlers={{ showFormHere, hideForm, handleDelete }}
+					formLocations={{ createFormLocation, editFormLocation }}
+				/>
 			)}
 			<button onClick={playClicktrack}>Play</button>
 		</>

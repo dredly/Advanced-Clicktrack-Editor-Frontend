@@ -3,7 +3,12 @@ import SectionForm from './SectionForm'
 const SectionDisplay = ({ section, idx, handlers, formLocations }) => {
 	return (
 		<div>
-			<p>{section.bpm}bpm for {section.numMeasures} measures</p>
+			{( section.bpm === section.bpmEnd
+				? <p>{section.bpm}bpm for {section.numMeasures} measures</p>
+				: Number(section.bpm) < Number(section.bpmEnd)
+					? <p>Acceleration from {section.bpm} to {section.bpmEnd} over {section.numMeasures} measures</p>
+					: <p>Deceleration from {section.bpm} to {section.bpmEnd} over {section.numMeasures} measures</p>
+			)}
 			<p>Beats per measure: {section.numBeats}</p>
 			<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 			<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>

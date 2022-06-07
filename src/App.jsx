@@ -23,8 +23,9 @@ const App = () => {
 
 	// Refactor to use loops - THIS WILL BREAK EVERYTHING
 	const playClicktrackSection = (sectionData) => {
-		// const numMeasures = sectionData.numMeasures
+		const numMeasures = sectionData.numMeasures
 		const beatsPerMeasure = sectionData.numBeats
+		const endTime = Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
 		const testLoop = new Tone.Loop(time => {
 			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
 			// Play the louder version of the sound on the first beat of each measure
@@ -33,7 +34,7 @@ const App = () => {
 			} else {
 				woodblock2.start(time)
 			}
-		}, '4n').start(0)
+		}, '4n').start(0).stop(endTime)
 		console.log(testLoop) //So that eslint doesn't complain
 		Tone.start()
 		Tone.Transport.bpm.value = sectionData.bpm

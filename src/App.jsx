@@ -24,7 +24,7 @@ const App = () => {
 	// Refactor to use loops - THIS WILL BREAK EVERYTHING
 	const playClicktrackSection = (sectionData) => {
 		// const numMeasures = sectionData.numMeasures
-		// const beatsPerMeasure = sectionData.numBeats
+		const beatsPerMeasure = sectionData.numBeats
 		const testLoop = new Tone.Loop(time => {
 			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
 			// Play the louder version of the sound on the first beat of each measure
@@ -37,6 +37,7 @@ const App = () => {
 		console.log(testLoop) //So that eslint doesn't complain
 		Tone.start()
 		Tone.Transport.bpm.value = sectionData.bpm
+		Tone.Transport.timeSignature = beatsPerMeasure
 		Tone.Transport.start()
 	}
 

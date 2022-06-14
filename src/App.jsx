@@ -21,11 +21,13 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	const playClicktrackSection = sectionData => {
+	const playClicktrackSection = (sectionData, startTime) => {
+		const bpm = sectionData.bpm
 		const numMeasures = sectionData.numMeasures
 		const beatsPerMeasure = sectionData.numBeats
-		const endTime = Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
+		const endTime = startTime + Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
 		const loop = new Tone.Loop(time => {
+			console.log('BBS', Tone.Time(time).toBarsBeatsSixteenths())
 			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
 			// Play the louder version of the sound on the first beat of each measure
 			if (Number(currentBeats) === 0) {
@@ -33,18 +35,31 @@ const App = () => {
 			} else {
 				woodblock2.start(time)
 			}
-		}, '4n').start(0).stop(endTime)
+		}, '4n').start(startTime).stop(endTime)
 		return {
 			loop,
 			startTime: 0,
-			endTime
+			endTime,
+			numMeasures,
+			beatsPerMeasure,
+			bpm
 		}
 	}
 
 	const playClickTrack = () => {
 		Tone.start()
-		const section1 = playClicktrackSection(sections[0])
+		const section1 = playClicktrackSection(sections[0], 0)
+		const section2start = section1.endTime
+		const section2 = playClicktrackSection(sections[1], section2start)
+		Tone.Transport.bpm.value = section1.bpm
+		Tone.Transport.timeSignature = section1.beatsPerMeasure
+		Tone.Transport.start()
+		setTimeout(() => {
+			Tone.Transport.bpm.value = section2.bpm
+			Tone.Transport.timeSignature = section2.beatsPerMeasure
+		}, section2start * 1000) // Convert from seconds to milliseconds
 		console.log(section1)
+		console.log(section2)
 	}
 
 	const showFormHere = (location, type) => {

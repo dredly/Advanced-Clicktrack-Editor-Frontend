@@ -21,12 +21,11 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	// Refactor to use loops - THIS WILL BREAK EVERYTHING
-	const playClicktrackSection = (sectionData) => {
+	const playClicktrackSection = sectionData => {
 		const numMeasures = sectionData.numMeasures
 		const beatsPerMeasure = sectionData.numBeats
 		const endTime = Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
-		const testLoop = new Tone.Loop(time => {
+		const loop = new Tone.Loop(time => {
 			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
 			// Play the louder version of the sound on the first beat of each measure
 			if (Number(currentBeats) === 0) {
@@ -35,22 +34,18 @@ const App = () => {
 				woodblock2.start(time)
 			}
 		}, '4n').start(0).stop(endTime)
-		console.log(testLoop) //So that eslint doesn't complain
-		Tone.start()
-		Tone.Transport.bpm.value = sectionData.bpm
-		Tone.Transport.timeSignature = beatsPerMeasure
-		Tone.Transport.start()
+		return {
+			loop,
+			startTime: 0,
+			endTime
+		}
 	}
 
-	// const playClicktrack = () => {
-	// 	if (sections.length) {
-	// 		let nextStartTime = Tone.now()
-	// 		for (let section of sections) {
-	// 			nextStartTime = playClicktrackSection(section, nextStartTime)
-	// 		}
-	// 		console.log('NEXT START TIME', nextStartTime)
-	// 	}
-	// }
+	const playClickTrack = () => {
+		Tone.start()
+		const section1 = playClicktrackSection(sections[0])
+		console.log(section1)
+	}
 
 	const showFormHere = (location, type) => {
 		dispatch(displayForm({ location, type }))
@@ -84,7 +79,7 @@ const App = () => {
 				/>
 			)}
 			{/* Play just the first section for now to test */}
-			<button onClick={() => playClicktrackSection(sections[0])}>Play</button>
+			<button onClick={playClickTrack}>Play</button>
 		</>
 	)
 }

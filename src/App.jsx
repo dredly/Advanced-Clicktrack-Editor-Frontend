@@ -38,7 +38,6 @@ const App = () => {
 		}, '4n').start(startTime).stop(endTime)
 		return {
 			loop,
-			startTime: 0,
 			endTime,
 			numMeasures,
 			beatsPerMeasure,
@@ -49,17 +48,22 @@ const App = () => {
 	const playClickTrack = () => {
 		Tone.start()
 		const section1 = playClicktrackSection(sections[0], 0)
-		const section2start = section1.endTime
-		const section2 = playClicktrackSection(sections[1], section2start)
 		Tone.Transport.bpm.value = section1.bpm
 		Tone.Transport.timeSignature = section1.beatsPerMeasure
+		let previousSection = section1
+		let currentSectionIdx = 1
+		while (currentSectionIdx < sections.length) {
+			const startTime = previousSection.endTime
+			console.log('startTime', startTime)
+			const currentSection = playClicktrackSection(sections[currentSectionIdx], startTime)
+			setTimeout(() => {
+				Tone.Transport.bpm.value = currentSection.bpm
+				Tone.Transport.timeSignature = currentSection.beatsPerMeasure
+			}, startTime * 1000) // Convert from seconds to milliseconds
+			currentSectionIdx++
+			previousSection = currentSection
+		}
 		Tone.Transport.start()
-		setTimeout(() => {
-			Tone.Transport.bpm.value = section2.bpm
-			Tone.Transport.timeSignature = section2.beatsPerMeasure
-		}, section2start * 1000) // Convert from seconds to milliseconds
-		console.log(section1)
-		console.log(section2)
 	}
 
 	const showFormHere = (location, type) => {

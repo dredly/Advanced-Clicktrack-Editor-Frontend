@@ -27,8 +27,8 @@ const App = () => {
 		const beatsPerMeasure = sectionData.numBeats
 		const endTime = startTime + Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
 		const loop = new Tone.Loop(time => {
-			console.log('BBS', Tone.Time(time).toBarsBeatsSixteenths())
-			const currentBeats = Tone.Time(time).toBarsBeatsSixteenths().split(':')[1]
+			console.log('BBS', Tone.Time(time - startTime).toBarsBeatsSixteenths())
+			const currentBeats = Tone.Time(time - startTime).toBarsBeatsSixteenths().split(':')[1]
 			// Play the louder version of the sound on the first beat of each measure
 			if (Number(currentBeats) === 0) {
 				woodblock1.start(time)

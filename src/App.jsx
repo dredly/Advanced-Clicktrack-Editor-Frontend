@@ -1,6 +1,7 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
+import tempoChangeTime from './utils/tempoChangeTime'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -23,25 +24,21 @@ const App = () => {
 
 	const playClicktrackSection = (sectionData, startTime) => {
 		const bpm = sectionData.bpm
+		const bpmEnd = sectionData.bpmEnd
 		const numMeasures = sectionData.numMeasures
 		const beatsPerMeasure = sectionData.numBeats
-		const endTime = startTime + Tone.Time('4n').toSeconds() * numMeasures * beatsPerMeasure
+		const numNotes = numMeasures * beatsPerMeasure
+		const endTime = startTime + tempoChangeTime(numNotes, bpm, bpmEnd)
 		const loop = new Tone.Loop(time => {
-			console.log('BBS', Tone.Time(time - startTime).toBarsBeatsSixteenths())
-			const currentBeats = Tone.Time(time - startTime).toBarsBeatsSixteenths().split(':')[1]
-			// Play the louder version of the sound on the first beat of each measure
-			if (Number(currentBeats) === 0) {
-				woodblock1.start(time)
-			} else {
-				woodblock2.start(time)
-			}
+			woodblock1.start(time)
 		}, '4n').start(startTime).stop(endTime)
 		return {
 			loop,
 			endTime,
 			numMeasures,
 			beatsPerMeasure,
-			bpm
+			bpm,
+			bpmEnd
 		}
 	}
 
@@ -50,6 +47,12 @@ const App = () => {
 		const section1 = playClicktrackSection(sections[0], 0)
 		Tone.Transport.bpm.value = section1.bpm
 		Tone.Transport.timeSignature = section1.beatsPerMeasure
+		if (section1.bpmEnd !== section1.bpm) {
+			console.log('NOT EQUAL')
+			const numNotes = section1.numMeasures * section1.beatsPerMeasure
+			const endTime = tempoChangeTime(numNotes, section1.bpm, section1.bpmEnd)
+			Tone.Transport.bpm.linearRampTo(section1.bpmEnd, endTime)
+		}
 		let previousSection = section1
 		let currentSectionIdx = 1
 		while (currentSectionIdx < sections.length) {

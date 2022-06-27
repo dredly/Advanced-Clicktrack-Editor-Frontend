@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 //Initial state just for testing
-const initialState = []
+const initialState = { clickTimes: [] }
 
 const clickTimesSlice = createSlice({
 	name: 'clickTimes',
@@ -9,7 +9,7 @@ const clickTimesSlice = createSlice({
 	reducers: {
 		addTimeArray(state, action) {
 			console.log('PAYLOAD', action.payload)
-			state.push(...action.payload)
+			state.clickTimes.push(...action.payload)
 		}
 	}
 })

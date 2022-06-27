@@ -11,7 +11,7 @@ const App = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)
 	const editFormLocation = useSelector(state => state.sections.editFormLocation)
-	const clickTimes = useSelector(state => state.clickTimes)
+	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -57,9 +57,10 @@ const App = () => {
 		console.log(firstEndTime)
 	}
 
-	const playClickTrack = () => {
-		console.log('clickTimes', clickTimes)
-		clickTimes.forEach(click => {
+	const playClickTrack = (times) => {
+		Tone.start()
+		console.log('times', times)
+		times.forEach(click => {
 			if (click.downBeat) {
 				woodblock1.start(click.time)
 			} else woodblock2.start(click.time)
@@ -100,11 +101,8 @@ const App = () => {
 				/>
 			)}
 			<p>{clickTimes.length ? clickTimes[0].time : 'nothing'}</p>
-			<button onClick={() => {
-				Tone.start()
-				buildClickTrack()
-				playClickTrack()
-			}}>Play</button>
+			<button onClick={buildClickTrack}>Create click track</button>
+			<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
 		</>
 	)
 }

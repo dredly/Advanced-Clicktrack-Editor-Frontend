@@ -53,8 +53,11 @@ const App = () => {
 	}
 
 	const buildClickTrack = () => {
-		const firstEndTime = buildClickTrackSection(sections[0], 0)
-		console.log(firstEndTime)
+		let startTime = 0
+		for (let i = 0; i < sections.length; i++) {
+			const endTime = buildClickTrackSection(sections[i], startTime)
+			startTime = endTime
+		}
 	}
 
 	const playClickTrack = (times) => {

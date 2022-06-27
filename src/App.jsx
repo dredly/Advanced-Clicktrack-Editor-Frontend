@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
-import linearTempoChangeTime from './utils/tempoChangeTime'
+import { addTimeArray } from './reducers/clickTimesReducer'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -11,6 +11,7 @@ const App = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)
 	const editFormLocation = useSelector(state => state.sections.editFormLocation)
+	const clickTimes = useSelector(state => state.clickTimes)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -22,68 +23,47 @@ const App = () => {
 
 	woodblock2.volume.value = -8
 
-	// Try different approach with bpm increase, manually changing the value on each iteration of the loop
-	const playClicktrackSection = (sectionData, startTime) => {
-		const bpm = sectionData.bpm
-		const bpmEnd = sectionData.bpmEnd
-		const numMeasures = sectionData.numMeasures
-		const beatsPerMeasure = sectionData.numBeats
-		const numNotes = numMeasures * beatsPerMeasure
-		const bpmIncrement = (bpmEnd - bpm) / numNotes
-		const bpmArray = []
-		for (let i = 0; i < numNotes; i++) {
-			bpmArray.push(Number(bpm) + i * bpmIncrement)
-		}
-		console.log('bpmArray', bpmArray)
-		console.log(linearTempoChangeTime(bpmArray))
-		const endTime = startTime + linearTempoChangeTime(bpmArray)
-		let noteNum = 0
-		console.log('END TIME', endTime)
-		const loop = new Tone.Loop(time => {
-			if (noteNum % beatsPerMeasure === 0) {
-				woodblock1.start(time)
-			} else woodblock2.start(time)
-			console.log(Tone.Transport.bpm.value)
-			console.log('TIME', time)
-			Tone.Transport.bpm.value += bpmIncrement
-			noteNum++
-		}, '4n').start(startTime)
-		loop.iterations = numNotes
-		return {
-			loop,
-			endTime,
-			numMeasures,
-			beatsPerMeasure,
-			bpm,
-			bpmEnd
-		}
+	const buildClickTrackSection = (sectionData, startTime) => {
+		console.log('SECTION DATA', sectionData)
+		const numNotes = sectionData.numMeasures * sectionData.numBeats
+		const bpmIncrement = (sectionData.bpmEnd - sectionData.bpm) / numNotes
+		const bpmArray = Array.from({ length: numNotes + 1 }, (x, i) => {
+			return Number(sectionData.bpm) + i * bpmIncrement
+		})
+		const intervalArray = bpmArray.map(bpm => 60/bpm)
+		const timeArray = intervalArray.map((interval, idx) => {
+			return idx > 0
+				? startTime + intervalArray.slice(0, idx).reduce((a, b) => a + b)
+				: startTime
+		})
+		console.log('START TIME', startTime)
+		console.log('BPM ARRAY', bpmArray)
+		console.log('INTERVAL ARRAY', intervalArray)
+		console.log('TIME ARRAY', timeArray)
+		const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
+		const clickTimeArray = timeArray
+			.slice(0, timeArray.length -1)
+			.map((time, idx) => (
+				idx % sectionData.numBeats === 0
+					? { time, downBeat: true }
+					: { time }
+			))
+		dispatch(addTimeArray(clickTimeArray))
+		return endTime
 	}
 
-	// PROBLEM: When deccelerating, endTime comes too late
+	const buildClickTrack = () => {
+		const firstEndTime = buildClickTrackSection(sections[0], 0)
+		console.log(firstEndTime)
+	}
+
 	const playClickTrack = () => {
-		Tone.start()
-		const section1 = playClicktrackSection(sections[0], 0)
-		Tone.Transport.bpm.value = section1.bpm
-		Tone.Transport.timeSignature = section1.beatsPerMeasure
-		if (section1.bpmEnd !== section1.bpm) {
-			console.log('NOT EQUAL')
-			// Tone.Transport.bpm.linearRampTo(section1.bpmEnd, section1.endTime)
-		}
-		let previousSection = section1
-		let currentSectionIdx = 1
-		while (currentSectionIdx < sections.length) {
-			const startTime = previousSection.endTime
-			console.log('startTime', startTime)
-			const currentSection = playClicktrackSection(sections[currentSectionIdx], startTime)
-			setTimeout(() => {
-				console.log('CHANGING STUFF NOW')
-				Tone.Transport.bpm.value = currentSection.bpm
-				Tone.Transport.timeSignature = currentSection.beatsPerMeasure
-			}, startTime * 1000) // Convert from seconds to milliseconds
-			currentSectionIdx++
-			previousSection = currentSection
-		}
-		Tone.Transport.start()
+		console.log('clickTimes', clickTimes)
+		clickTimes.forEach(click => {
+			if (click.downBeat) {
+				woodblock1.start(click.time)
+			} else woodblock2.start(click.time)
+		})
 	}
 
 	const showFormHere = (location, type) => {
@@ -97,6 +77,8 @@ const App = () => {
 	const handleDelete = idx => {
 		dispatch(deleteSection(idx))
 	}
+
+	console.log('clickTimes', clickTimes)
 
 	return (
 		<>
@@ -117,8 +99,12 @@ const App = () => {
 					formLocations={{ createFormLocation, editFormLocation }}
 				/>
 			)}
-			{/* Play just the first section for now to test */}
-			<button onClick={playClickTrack}>Play</button>
+			<p>{clickTimes.length ? clickTimes[0].time : 'nothing'}</p>
+			<button onClick={() => {
+				Tone.start()
+				buildClickTrack()
+				playClickTrack()
+			}}>Play</button>
 		</>
 	)
 }

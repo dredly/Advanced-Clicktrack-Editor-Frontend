@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
-import { addTimeArray } from './reducers/clickTimesReducer'
+import { addTimeArray, makeReady } from './reducers/clickTimesReducer'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -12,6 +12,7 @@ const App = () => {
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)
 	const editFormLocation = useSelector(state => state.sections.editFormLocation)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
+	const readyToPlay = useSelector(state => state.clickTimes.readyToPlay)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -58,6 +59,7 @@ const App = () => {
 			const endTime = buildClickTrackSection(sections[i], startTime)
 			startTime = endTime
 		}
+		dispatch(makeReady())
 	}
 
 	const playClickTrack = (times) => {
@@ -103,9 +105,10 @@ const App = () => {
 					formLocations={{ createFormLocation, editFormLocation }}
 				/>
 			)}
-			<p>{clickTimes.length ? clickTimes[0].time : 'nothing'}</p>
-			<button onClick={buildClickTrack}>Create click track</button>
-			<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+			{readyToPlay
+				?	<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+				:   <button onClick={buildClickTrack}>Create click track</button>
+			}
 		</>
 	)
 }

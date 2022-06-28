@@ -85,6 +85,7 @@ const App = () => {
 
 	const handleDelete = idx => {
 		dispatch(deleteSection(idx))
+		dispatch(changeStatus('edited'))
 	}
 
 	console.log('clickTimes', clickTimes)

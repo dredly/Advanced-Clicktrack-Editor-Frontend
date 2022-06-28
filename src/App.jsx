@@ -107,10 +107,18 @@ const App = () => {
 					formLocations={{ createFormLocation, editFormLocation }}
 				/>
 			)}
-			{readyToPlay
-				?	<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-				:   <button onClick={buildClickTrack}>Create click track</button>
-			}
+			<div className='med-top-margin'>
+				{sections.length
+					? readyToPlay
+						?	<>
+							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+							<button>Download click track</button>
+						</>
+						:   <button onClick={buildClickTrack}>Create click track</button>
+					: null
+				}
+			</div>
+
 		</>
 	)
 }

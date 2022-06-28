@@ -1,6 +1,6 @@
 import { addSection, updateSection } from '../reducers/sectionReducer'
 import { changeStatus } from '../reducers/clickTimesReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
@@ -8,6 +8,7 @@ import MultipleBpmSelection from './MultipleBpmSelection'
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(false)
 	const dispatch = useDispatch()
+	const status = useSelector(state => state.clickTimes.status)
 
 	const defaults = {
 		numMeasures: 4,
@@ -25,6 +26,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		console.log('BPM AT END', bpmEnd)
 		const numBeats = evt.target.numBeats.value
 		dispatch(addSection({ bpm, bpmEnd, numMeasures, numBeats }))
+		if (status !== 'not_created') {
+			dispatch(changeStatus('edited'))
+		}
 		hideSelf()
 	}
 

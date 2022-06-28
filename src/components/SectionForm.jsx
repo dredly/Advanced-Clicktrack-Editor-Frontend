@@ -32,10 +32,12 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		console.log('Supposedly updating')
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
+		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
 		const numBeats = evt.target.numBeats.value
 		dispatch(updateSection({
 			numMeasures,
 			bpm,
+			bpmEnd,
 			numBeats,
 			id: data.id
 		}))

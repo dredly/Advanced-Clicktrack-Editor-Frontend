@@ -65,7 +65,9 @@ const App = () => {
 	const playClickTrack = (times) => {
 		Tone.start()
 		console.log('times', times)
-		times.forEach(click => {
+		times.map(t => {
+			return { ...t, time: t.time + Tone.now() }
+		}).forEach(click => {
 			if (click.downBeat) {
 				woodblock1.start(click.time)
 			} else woodblock2.start(click.time)

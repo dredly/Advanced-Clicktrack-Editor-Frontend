@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
-import { addTimeArray, makeReady } from './reducers/clickTimesReducer'
+import { addTimeArray, changeStatus, clear } from './reducers/clickTimesReducer'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -12,7 +12,7 @@ const App = () => {
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)
 	const editFormLocation = useSelector(state => state.sections.editFormLocation)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
-	const readyToPlay = useSelector(state => state.clickTimes.readyToPlay)
+	const status = useSelector(state => state.clickTimes.status)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -54,12 +54,13 @@ const App = () => {
 	}
 
 	const buildClickTrack = () => {
+		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
 			const endTime = buildClickTrackSection(sections[i], startTime)
 			startTime = endTime
 		}
-		dispatch(makeReady())
+		dispatch(changeStatus('ready'))
 	}
 
 	const playClickTrack = (times) => {
@@ -109,12 +110,15 @@ const App = () => {
 			)}
 			<div className='med-top-margin'>
 				{sections.length
-					? readyToPlay
+					? status === 'ready'
 						?	<>
 							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
 							<button>Download click track</button>
 						</>
-						:   <button onClick={buildClickTrack}>Create click track</button>
+						:   <button onClick={buildClickTrack}>{status === 'not_created'
+							? 'Create click track'
+							: 'Update click track'}
+						</button>
 					: null
 				}
 			</div>

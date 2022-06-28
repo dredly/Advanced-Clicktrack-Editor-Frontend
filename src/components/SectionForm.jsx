@@ -1,4 +1,5 @@
 import { addSection, updateSection } from '../reducers/sectionReducer'
+import { changeStatus } from '../reducers/clickTimesReducer'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import SingleBpmSelection from './SingleBpmSelection'
@@ -41,6 +42,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			numBeats,
 			id: data.id
 		}))
+		dispatch(changeStatus('edited'))
 		hideSelf()
 	}
 

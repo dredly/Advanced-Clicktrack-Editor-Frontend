@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-//Initial state just for testing
-const initialState = { clickTimes: [], readyToPlay: false }
+const initialState = { clickTimes: [], status: 'not_created' }
 
 const clickTimesSlice = createSlice({
 	name: 'clickTimes',
@@ -11,11 +10,14 @@ const clickTimesSlice = createSlice({
 			console.log('PAYLOAD', action.payload)
 			state.clickTimes.push(...action.payload)
 		},
-		makeReady(state) {
-			state.readyToPlay = true
+		changeStatus(state, action) {
+			state.status = action.payload
+		},
+		clear(state) {
+			state.clickTimes = []
 		}
 	}
 })
 
-export const { addTimeArray, makeReady } = clickTimesSlice.actions
+export const { addTimeArray, changeStatus, clear } = clickTimesSlice.actions
 export default clickTimesSlice.reducer

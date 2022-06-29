@@ -6,13 +6,14 @@ import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 
 const SectionForm = ({ hideSelf, existingData }) => {
-	const [isTempoChange, setIsTempoChange] = useState(false)
+	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
 	const dispatch = useDispatch()
 	const status = useSelector(state => state.clickTimes.status)
 
 	const defaults = {
 		numMeasures: 4,
 		bpm: 120,
+		bpmEnd: 120,
 		numBeats: 4
 	}
 
@@ -72,11 +73,12 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					<input
 						key="toggletempochange"
 						type="checkbox"
+						checked={isTempoChange}
 						onChange={() => setIsTempoChange(!isTempoChange)}
 					/>
 				</label>
 				{( isTempoChange
-					? <MultipleBpmSelection defaultBpm={data.bpm} />
+					? <MultipleBpmSelection defaultBpm={{ start: data.bpm, end: data.bpmEnd }} />
 					: <SingleBpmSelection defaultBpm={data.bpm} />
 				)}
 			</div>

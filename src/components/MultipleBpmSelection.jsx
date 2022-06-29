@@ -6,7 +6,7 @@ const MultipleBpmSelection = ({ defaultBpm }) => (
 				type="number"
 				min={20} max={400}
 				name="bpm"
-				defaultValue={defaultBpm}
+				defaultValue={defaultBpm.start}
 			/>
 		</label>
 		<label>Select a bpm for end of section
@@ -15,7 +15,7 @@ const MultipleBpmSelection = ({ defaultBpm }) => (
 				type="number"
 				min={20} max={400}
 				name="bpmEnd"
-				defaultValue={defaultBpm}
+				defaultValue={defaultBpm.end}
 			/>
 		</label>
 	</>

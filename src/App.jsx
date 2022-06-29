@@ -88,8 +88,6 @@ const App = () => {
 		dispatch(changeStatus('edited'))
 	}
 
-	console.log('clickTimes', clickTimes)
-
 	return (
 		<>
 			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>

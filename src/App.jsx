@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
-import { addTimeArray, changeStatus, clear } from './reducers/clickTimesReducer'
+import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -13,6 +13,7 @@ const App = () => {
 	const editFormLocation = useSelector(state => state.sections.editFormLocation)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
+	const playing = useSelector(state => state.clickTimes.playing)
 
 	const woodblock1 = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
@@ -65,6 +66,7 @@ const App = () => {
 
 	const playClickTrack = (times) => {
 		Tone.start()
+		dispatch(togglePlaying())
 		console.log('times', times)
 		times.map(t => {
 			return { ...t, time: t.time + Tone.now() }
@@ -73,6 +75,12 @@ const App = () => {
 				woodblock1.start(click.time)
 			} else woodblock2.start(click.time)
 		})
+		const bpmAtEnd = sections[sections.length - 1].bpm
+		const finalInterval = 60 / bpmAtEnd
+		const finalTime = times[times.length - 1].time
+		setTimeout(() => {
+			dispatch(togglePlaying())
+		}, (finalTime + finalInterval) * 1000) //Convert to ms
 	}
 
 	const showFormHere = (location, type) => {
@@ -89,7 +97,7 @@ const App = () => {
 	}
 
 	return (
-		<>
+		<div inert={playing ? 'true' : undefined}>
 			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 			{createFormLocation === 0
 				? <>
@@ -122,7 +130,7 @@ const App = () => {
 				}
 			</div>
 
-		</>
+		</div>
 	)
 }
 

@@ -1,3 +1,7 @@
+[inert] > * {
+  opacity: .5;
+}
+
 .med-top-margin {
 	margin-top: 2rem;
 }

@@ -49,7 +49,7 @@ const App = () => {
 			.map((time, idx) => (
 				idx % sectionData.numBeats === 0
 					? { time, downBeat: true }
-					: { time }
+					: { time, downBeat: false }
 			))
 		dispatch(addTimeArray(clickTimeArray))
 		return endTime

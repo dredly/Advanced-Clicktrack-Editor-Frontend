@@ -97,6 +97,11 @@ const App = () => {
 		dispatch(changeStatus('edited'))
 	}
 
+	const handleDownload = async () => {
+		const result = await clicktrackService.sendData(clickTimes)
+		window.location.href = result.url
+	}
+
 	return (
 		<div inert={playing ? 'true' : undefined}>
 			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
@@ -121,7 +126,7 @@ const App = () => {
 					? status === 'ready'
 						?	<>
 							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-							<button onClick={() => clicktrackService.sendData(clickTimes)}>Download click track</button>
+							<button onClick={handleDownload}>Download click track</button>
 						</>
 						:   <button onClick={buildClickTrack}>{status === 'not_created'
 							? 'Create click track'

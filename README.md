@@ -9,3 +9,4 @@
 - [x] Hide or disable the click track editing components while click track is playing
 - [ ] Improve form styling
 - [ ] Combine in some way with metronome app
+- [ ] Add functionality for the download button to send off data to a python midi microservice

@@ -2,6 +2,7 @@ import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
+import clicktrackService from './services/clicktracks'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 
@@ -120,7 +121,7 @@ const App = () => {
 					? status === 'ready'
 						?	<>
 							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-							<button>Download click track</button>
+							<button onClick={() => clicktrackService.sendData(clickTimes)}>Download click track</button>
 						</>
 						:   <button onClick={buildClickTrack}>{status === 'not_created'
 							? 'Create click track'

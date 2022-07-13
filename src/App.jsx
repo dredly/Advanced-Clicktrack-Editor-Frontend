@@ -1,13 +1,18 @@
 import * as Tone from 'tone'
+import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
+import clicktrackService from './services/clicktracks'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 import DownloadLink from './components/DownloadLink'
 
-
 const App = () => {
+	useEffect(() => {
+		clicktrackService.startUp()
+	}, [])
+
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
 	const createFormLocation = useSelector(state => state.sections.createFormLocation)

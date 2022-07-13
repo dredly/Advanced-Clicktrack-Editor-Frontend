@@ -34,7 +34,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 
 	const editSection = evt => {
 		evt.preventDefault()
-		console.log('Supposedly updating')
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm

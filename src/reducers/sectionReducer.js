@@ -23,7 +23,6 @@ const sectionSlice = createSlice({
 			state.sectionList = state.sectionList.map(section =>
 				section.id !== data.id ? section : data
 			)
-			console.log(`Updating section with id ${data.id}`)
 		},
 		deleteSection(state, action) {
 			const { idx } = action.payload

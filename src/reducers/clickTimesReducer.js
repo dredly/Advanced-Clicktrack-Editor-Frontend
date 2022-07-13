@@ -7,7 +7,6 @@ const clickTimesSlice = createSlice({
 	initialState,
 	reducers: {
 		addTimeArray(state, action) {
-			console.log('PAYLOAD', action.payload)
 			state.clickTimes.push(...action.payload)
 		},
 		changeStatus(state, action) {

@@ -24,7 +24,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		console.log('BPM AT END', bpmEnd)
 		const numBeats = evt.target.numBeats.value
 		dispatch(addSection({ bpm, bpmEnd, numMeasures, numBeats }))
 		if (status !== 'not_created') {

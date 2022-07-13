@@ -2,9 +2,9 @@ import * as Tone from 'tone'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
-import clicktrackService from './services/clicktracks'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
+import DownloadLink from './components/DownloadLink'
 
 
 const App = () => {
@@ -27,7 +27,6 @@ const App = () => {
 	woodblock2.volume.value = -8
 
 	const buildClickTrackSection = (sectionData, startTime) => {
-		console.log('SECTION DATA', sectionData)
 		const numNotes = sectionData.numMeasures * sectionData.numBeats
 		const bpmIncrement = (sectionData.bpmEnd - sectionData.bpm) / numNotes
 		const bpmArray = Array.from({ length: numNotes + 1 }, (x, i) => {
@@ -39,10 +38,6 @@ const App = () => {
 				? startTime + intervalArray.slice(0, idx).reduce((a, b) => a + b)
 				: startTime
 		})
-		console.log('START TIME', startTime)
-		console.log('BPM ARRAY', bpmArray)
-		console.log('INTERVAL ARRAY', intervalArray)
-		console.log('TIME ARRAY', timeArray)
 		const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
 		const clickTimeArray = timeArray
 			.slice(0, timeArray.length -1)
@@ -97,11 +92,6 @@ const App = () => {
 		dispatch(changeStatus('edited'))
 	}
 
-	const handleDownload = async () => {
-		const result = await clicktrackService.sendData(clickTimes)
-		window.location.href = result.url
-	}
-
 	return (
 		<div inert={playing ? 'true' : undefined}>
 			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
@@ -126,7 +116,7 @@ const App = () => {
 					? status === 'ready'
 						?	<>
 							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-							<button onClick={handleDownload}>Download click track</button>
+							<DownloadLink />
 						</>
 						:   <button onClick={buildClickTrack}>{status === 'not_created'
 							? 'Create click track'

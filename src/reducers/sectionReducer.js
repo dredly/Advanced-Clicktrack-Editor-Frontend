@@ -4,8 +4,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 const initialState = {
 	sectionList: [],
-	createFormLocation: NaN,
-	editFormLocation: NaN
+	form: { type: 'create', location: NaN }
 }
 
 const sectionSlice = createSlice({
@@ -30,12 +29,8 @@ const sectionSlice = createSlice({
 		},
 		displayForm(state, action) {
 			const { location, type } = action.payload
-			if (type === 'create') {
-				state.createFormLocation = location
-			}
-			else if (type === 'edit') {
-				state.editFormLocation = location
-			}
+			state.form.location = location
+			state.form.type = type
 		}
 	}
 })

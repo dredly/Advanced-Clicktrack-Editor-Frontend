@@ -16,8 +16,7 @@ const App = () => {
 
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
-	const createFormLocation = useSelector(state => state.sections.createFormLocation)
-	const editFormLocation = useSelector(state => state.sections.editFormLocation)
+	const formInfo = useSelector(state => state.sections.form)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
@@ -103,7 +102,7 @@ const App = () => {
 			<Guidance />
 			<div inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-				{createFormLocation === 0
+				{formInfo.location === 0
 					? <>
 						<SectionForm hideSelf={() => hideForm('create')}/>
 						<button onClick={() => hideForm('create')}>cancel</button>
@@ -116,7 +115,6 @@ const App = () => {
 						section={section}
 						idx={idx}
 						handlers={{ showFormHere, hideForm, handleDelete }}
-						formLocations={{ createFormLocation, editFormLocation }}
 					/>
 				)}
 				<div className='med-top-margin'>

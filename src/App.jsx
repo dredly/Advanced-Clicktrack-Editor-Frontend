@@ -7,6 +7,7 @@ import clicktrackService from './services/clicktracks'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 import DownloadLink from './components/DownloadLink'
+import Guidance from './components/Guidance'
 
 const App = () => {
 	useEffect(() => {
@@ -98,40 +99,43 @@ const App = () => {
 	}
 
 	return (
-		<div inert={playing ? 'true' : undefined}>
-			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-			{createFormLocation === 0
-				? <>
-					<SectionForm hideSelf={() => hideForm('create')}/>
-					<button onClick={() => hideForm('create')}>cancel</button>
-				</>
-				: null
-			}
-			{sections.map((section, idx) =>
-				<SectionDisplay
-					key={section.id}
-					section={section}
-					idx={idx}
-					handlers={{ showFormHere, hideForm, handleDelete }}
-					formLocations={{ createFormLocation, editFormLocation }}
-				/>
-			)}
-			<div className='med-top-margin'>
-				{sections.length
-					? status === 'ready'
-						?	<>
-							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-							<DownloadLink />
-						</>
-						:   <button onClick={buildClickTrack}>{status === 'not_created'
-							? 'Create click track'
-							: 'Update click track'}
-						</button>
+		<>
+			<Guidance />
+			<div inert={playing ? 'true' : undefined}>
+				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
+				{createFormLocation === 0
+					? <>
+						<SectionForm hideSelf={() => hideForm('create')}/>
+						<button onClick={() => hideForm('create')}>cancel</button>
+					</>
 					: null
 				}
-			</div>
+				{sections.map((section, idx) =>
+					<SectionDisplay
+						key={section.id}
+						section={section}
+						idx={idx}
+						handlers={{ showFormHere, hideForm, handleDelete }}
+						formLocations={{ createFormLocation, editFormLocation }}
+					/>
+				)}
+				<div className='med-top-margin'>
+					{sections.length
+						? status === 'ready'
+							?	<>
+								<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+								<DownloadLink />
+							</>
+							:   <button onClick={buildClickTrack}>{status === 'not_created'
+								? 'Create click track'
+								: 'Update click track'}
+							</button>
+						: null
+					}
+				</div>
 
-		</div>
+			</div>
+		</>
 	)
 }
 

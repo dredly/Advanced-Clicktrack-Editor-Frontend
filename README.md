@@ -5,6 +5,6 @@
 - [x] Improve UX for downloading
 - [x] Add basic guidance to start screen
 - [x] Make it impossible to open a create form and an edit form at the same time
-- [ ] Improve form styling
+- [x] Improve form styling
 - [ ] Allow arbitrary strong and weak beats (instead of just strong beat on 1)
 - [ ] Combine in some way with metronome app

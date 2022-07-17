@@ -8,6 +8,7 @@ import MultipleBpmSelection from './MultipleBpmSelection'
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
 	const dispatch = useDispatch()
+	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
 
 	const defaults = {
@@ -55,6 +56,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				? editSection
 				: addNewSection
 		)} >
+			<h3>{formType === 'create' ? 'Adding section' : 'Editing section'}</h3>
 			<div>
 				<label>Select a number of measures
 					<input
@@ -67,14 +69,16 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				</label>
 			</div>
 			<div>
-				<label>Tempo change
-					<input
-						key="toggletempochange"
-						type="checkbox"
-						checked={isTempoChange}
-						onChange={() => setIsTempoChange(!isTempoChange)}
-					/>
-				</label>
+				<div className="small-bottom-margin">
+					<label>Tempo change
+						<input
+							key="toggletempochange"
+							type="checkbox"
+							checked={isTempoChange}
+							onChange={() => setIsTempoChange(!isTempoChange)}
+						/>
+					</label>
+				</div>
 				{( isTempoChange
 					? <MultipleBpmSelection defaultBpm={{ start: data.bpm, end: data.bpmEnd }} />
 					: <SingleBpmSelection defaultBpm={data.bpm} />

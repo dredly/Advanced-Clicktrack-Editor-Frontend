@@ -1,6 +1,9 @@
+import { useSelector } from 'react-redux'
 import SectionForm from './SectionForm'
 
-const SectionDisplay = ({ section, idx, handlers, formLocations }) => {
+const SectionDisplay = ({ section, idx, handlers }) => {
+	const formInfo = useSelector(state => state.sections.form)
+
 	return (
 		<div>
 			<div className='click-track-section'>
@@ -14,24 +17,22 @@ const SectionDisplay = ({ section, idx, handlers, formLocations }) => {
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>
-						Add after this section
+					Add after this section
 				</button>
 			</div>
-			{formLocations.createFormLocation === idx + 1
-				? <>
-					<SectionForm hideSelf={() => handlers.hideForm('create')} />
-					<button onClick={() => handlers.hideForm('create')}>cancel</button>
-				</>
-				: null
-			}
-			{formLocations.editFormLocation === idx + 1
-				? <>
-					<SectionForm
-						hideSelf={() => handlers.hideForm('edit')}
-						existingData={section}
-					/>
-					<button onClick={() => handlers.hideForm('edit')}>cancel</button>
-				</>
+			{formInfo.location === idx + 1
+				? formInfo.type === 'create'
+					?	<>
+						<SectionForm hideSelf={() => handlers.hideForm('create')} />
+						<button onClick={() => handlers.hideForm('create')}>cancel</button>
+					</>
+					: <>
+						<SectionForm
+							hideSelf={() => handlers.hideForm('edit')}
+							existingData={section}
+						/>
+						<button onClick={() => handlers.hideForm('edit')}>cancel</button>
+					</>
 				: null
 			}
 		</div>

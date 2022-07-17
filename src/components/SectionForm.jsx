@@ -94,7 +94,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			<button>
 				{(existingData
 					? 'Save Changes'
-					: 'Add new Section'
+					: 'Add this Section'
 				)}
 			</button>
 		</form>

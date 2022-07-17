@@ -7,6 +7,7 @@ import clicktrackService from './services/clicktracks'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 import DownloadLink from './components/DownloadLink'
+import Guidance from './components/Guidance'
 
 const App = () => {
 	useEffect(() => {
@@ -15,8 +16,7 @@ const App = () => {
 
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
-	const createFormLocation = useSelector(state => state.sections.createFormLocation)
-	const editFormLocation = useSelector(state => state.sections.editFormLocation)
+	const formInfo = useSelector(state => state.sections.form)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
@@ -98,40 +98,42 @@ const App = () => {
 	}
 
 	return (
-		<div inert={playing ? 'true' : undefined}>
-			<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-			{createFormLocation === 0
-				? <>
-					<SectionForm hideSelf={() => hideForm('create')}/>
-					<button onClick={() => hideForm('create')}>cancel</button>
-				</>
-				: null
-			}
-			{sections.map((section, idx) =>
-				<SectionDisplay
-					key={section.id}
-					section={section}
-					idx={idx}
-					handlers={{ showFormHere, hideForm, handleDelete }}
-					formLocations={{ createFormLocation, editFormLocation }}
-				/>
-			)}
-			<div className='med-top-margin'>
-				{sections.length
-					? status === 'ready'
-						?	<>
-							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-							<DownloadLink />
-						</>
-						:   <button onClick={buildClickTrack}>{status === 'not_created'
-							? 'Create click track'
-							: 'Update click track'}
-						</button>
+		<>
+			<Guidance />
+			<div inert={playing ? 'true' : undefined}>
+				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
+				{formInfo.location === 0
+					? <>
+						<SectionForm hideSelf={() => hideForm('create')}/>
+						<button onClick={() => hideForm('create')}>cancel</button>
+					</>
 					: null
 				}
-			</div>
+				{sections.map((section, idx) =>
+					<SectionDisplay
+						key={section.id}
+						section={section}
+						idx={idx}
+						handlers={{ showFormHere, hideForm, handleDelete }}
+					/>
+				)}
+				<div className='med-top-margin'>
+					{sections.length
+						? status === 'ready'
+							?	<>
+								<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+								<DownloadLink />
+							</>
+							:   <button onClick={buildClickTrack}>{status === 'not_created'
+								? 'Create click track'
+								: 'Update click track'}
+							</button>
+						: null
+					}
+				</div>
 
-		</div>
+			</div>
+		</>
 	)
 }
 

@@ -4,9 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
+import AccentSelection from './AccentSelection'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
+	const [accentOnOne, setAccentOnOne] = useState(
+		// If there is existing data and any beats accented beats which aren't the first of a measure,
+		// then set accentOnOne to false
+		existingData && (existingData.accentedBeats.length !== 1 || existingData.accentedBeats[0] !== 0)
+			? false
+			: true
+	)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
@@ -20,13 +28,30 @@ const SectionForm = ({ hideSelf, existingData }) => {
 
 	const data = existingData || defaults
 
+	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
+
 	const addNewSection = evt => {
 		evt.preventDefault()
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		const numBeats = evt.target.numBeats.value
-		dispatch(addSection({ bpm, bpmEnd, numMeasures, numBeats }))
+		const numBeats = currentNumBeats
+		const formFieldNames = Object.values(evt.target).map(val => val.name)
+		// First remove all undefined field names to prevent an error when calling the includes method,
+		// which expects a string
+		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
+		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
+		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
+		console.log('strongBeats', strongBeats)
+		dispatch(addSection({
+			bpm,
+			bpmEnd,
+			numMeasures,
+			numBeats,
+			// by default the first beat of each measure (downbeat)
+			// is accented
+			accentedBeats: strongBeats.length ? strongBeats : [0],
+		}))
 		if (status !== 'not_created') {
 			dispatch(changeStatus('edited'))
 		}
@@ -38,7 +63,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		const numBeats = evt.target.numBeats.value
+		const numBeats = currentNumBeats
 		dispatch(updateSection({
 			numMeasures,
 			bpm,
@@ -91,9 +116,21 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						type="number"
 						min={2} max={9}
 						name="numBeats"
-						defaultValue={data.numBeats}
+						value={currentNumBeats}
+						onChange={({ target }) => setCurrentNumBeats(Number(target.value))}
 					/>
 				</label>
+			</div>
+			<div>
+				<label>Accent first beat?
+					<input
+						key="toggleaccentonone"
+						type="checkbox"
+						checked={accentOnOne}
+						onChange={() => setAccentOnOne(!accentOnOne)}
+					/>
+				</label>
+				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats}/>}
 			</div>
 			<button>
 				{(existingData

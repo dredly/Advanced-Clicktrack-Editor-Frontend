@@ -6,6 +6,10 @@
 	margin-top: 2rem;
 }
 
+.small-bottom-margin {
+	margin-bottom: 0.4rem;
+}
+
 .click-track-section {
 	padding: 0.5rem;
 	border: 1px solid rgb(14, 11, 32);

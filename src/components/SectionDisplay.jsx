@@ -14,6 +14,12 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 						: <p>Deceleration from {section.bpm} to {section.bpmEnd} over {section.numMeasures} measures</p>
 				)}
 				<p>Beats per measure: {section.numBeats}</p>
+				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
+					// Add one to convert from array index (counting from 0)
+					// to display index (counting from 1)
+					? <p>Accents on beats {section.accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
+					: null
+				)}
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>

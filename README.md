@@ -5,6 +5,9 @@
 - [x] Improve UX for downloading
 - [x] Add basic guidance to start screen
 - [x] Make it impossible to open a create form and an edit form at the same time
-- [ ] Improve form styling
-- [ ] Allow arbitrary strong and weak beats (instead of just strong beat on 1)
+- [x] Improve form styling
+- [x] Get info on accented beats to display in SectionDisplay component
+- [x] Fix bug where newly added sections are moved to beginning
+- [x] Get accented beat selection to work on edit form as well
+- [ ] Implement ability to select different tempo curves besides linear
 - [ ] Combine in some way with metronome app

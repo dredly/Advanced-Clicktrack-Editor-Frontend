@@ -33,6 +33,7 @@ const App = () => {
 
 	const buildClickTrackSection = (sectionData, startTime) => {
 		const numNotes = sectionData.numMeasures * sectionData.numBeats
+		const accentArray = sectionData.accentedBeats
 		const bpmIncrement = (sectionData.bpmEnd - sectionData.bpm) / numNotes
 		const bpmArray = Array.from({ length: numNotes + 1 }, (x, i) => {
 			return Number(sectionData.bpm) + i * bpmIncrement
@@ -47,7 +48,7 @@ const App = () => {
 		const clickTimeArray = timeArray
 			.slice(0, timeArray.length -1)
 			.map((time, idx) => (
-				idx % sectionData.numBeats === 0
+				accentArray.includes(idx % sectionData.numBeats)
 					? { time, downBeat: true }
 					: { time, downBeat: false }
 			))

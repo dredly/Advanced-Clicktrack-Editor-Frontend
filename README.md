@@ -7,6 +7,6 @@
 - [x] Make it impossible to open a create form and an edit form at the same time
 - [x] Improve form styling
 - [x] Get info on accented beats to display in SectionDisplay component
-- [ ] Fix bug where newly added sections are moved to beginning
+- [x] Fix bug where newly added sections are moved to beginning
 - [ ] Get accented beat selection to work on edit form as well
 - [ ] Combine in some way with metronome app

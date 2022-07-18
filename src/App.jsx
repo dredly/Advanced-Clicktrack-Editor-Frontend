@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { displayForm, deleteSection } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
 import clicktrackService from './services/clicktracks'
+import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 import DownloadLink from './components/DownloadLink'
@@ -32,18 +33,15 @@ const App = () => {
 	woodblock2.volume.value = -8
 
 	const buildClickTrackSection = (sectionData, startTime) => {
-		const numNotes = sectionData.numMeasures * sectionData.numBeats
-		const accentArray = sectionData.accentedBeats
-		const bpmIncrement = (sectionData.bpmEnd - sectionData.bpm) / numNotes
-		const bpmArray = Array.from({ length: numNotes + 1 }, (x, i) => {
-			return Number(sectionData.bpm) + i * bpmIncrement
-		})
+		// Mean tempo condition of 0.1 currently hardcoded
+		const bpmArray = makeBpmArray({ ...sectionData, meanTempoCondition: 0.9 })
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
 		const timeArray = intervalArray.map((interval, idx) => {
 			return idx > 0
 				? startTime + intervalArray.slice(0, idx).reduce((a, b) => a + b)
 				: startTime
 		})
+		const accentArray = sectionData.accentedBeats
 		const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
 		const clickTimeArray = timeArray
 			.slice(0, timeArray.length -1)
@@ -57,7 +55,6 @@ const App = () => {
 	}
 
 	const buildClickTrack = () => {
-		console.log('sections', sections)
 		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {

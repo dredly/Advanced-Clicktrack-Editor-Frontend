@@ -23,7 +23,8 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		numMeasures: 4,
 		bpm: 120,
 		bpmEnd: 120,
-		numBeats: 4
+		numBeats: 4,
+		accentedBeats: [0]
 	}
 
 	const data = existingData || defaults
@@ -130,7 +131,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setAccentOnOne(!accentOnOne)}
 					/>
 				</label>
-				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats}/>}
+				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.accentedBeats}/>}
 			</div>
 			<button>
 				{(existingData

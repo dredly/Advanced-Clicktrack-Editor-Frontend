@@ -8,5 +8,6 @@
 - [x] Improve form styling
 - [x] Get info on accented beats to display in SectionDisplay component
 - [x] Fix bug where newly added sections are moved to beginning
-- [ ] Get accented beat selection to work on edit form as well
+- [x] Get accented beat selection to work on edit form as well
+- [ ] Implement ability to select different tempo curves besides linear
 - [ ] Combine in some way with metronome app

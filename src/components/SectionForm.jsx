@@ -43,7 +43,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
-		console.log('strongBeats', strongBeats)
 		dispatch(addSection({
 			bpm,
 			bpmEnd,
@@ -65,12 +64,21 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
 		const numBeats = currentNumBeats
+		const formFieldNames = Object.values(evt.target).map(val => val.name)
+		// First remove all undefined field names to prevent an error when calling the includes method,
+		// which expects a string
+		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
+		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
+		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
 		dispatch(updateSection({
 			numMeasures,
 			bpm,
 			bpmEnd,
 			numBeats,
-			id: data.id
+			id: data.id,
+			// by default the first beat of each measure (downbeat)
+			// is accented
+			accentedBeats: strongBeats.length ? strongBeats : [0],
 		}))
 		dispatch(changeStatus('edited'))
 		hideSelf()

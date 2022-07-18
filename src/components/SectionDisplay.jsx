@@ -15,7 +15,9 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 				)}
 				<p>Beats per measure: {section.numBeats}</p>
 				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
-					? <p>Accents on beats {section.accentedBeats.join(', ')}</p>
+					// Add one to convert from array index (counting from 0)
+					// to display index (counting from 1)
+					? <p>Accents on beats {section.accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
 					: null
 				)}
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>

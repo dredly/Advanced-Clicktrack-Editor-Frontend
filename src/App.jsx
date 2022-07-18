@@ -57,6 +57,7 @@ const App = () => {
 	}
 
 	const buildClickTrack = () => {
+		console.log('sections', sections)
 		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {

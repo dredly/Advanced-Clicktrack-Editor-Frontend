@@ -38,6 +38,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
+		const meanTempoCondition = evt.target.meanTempoCondition
+			? evt.target.meanTempoCondition.value
+			: defaults.meanTempoCondition
 		const numBeats = currentNumBeats
 		const formFieldNames = Object.values(evt.target).map(val => val.name)
 		// First remove all undefined field names to prevent an error when calling the includes method,
@@ -48,7 +51,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		dispatch(addSection({
 			bpm,
 			bpmEnd,
-			meanTempoCondition: 0.5,
+			meanTempoCondition,
 			numMeasures,
 			numBeats,
 			// by default the first beat of each measure (downbeat)
@@ -66,6 +69,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
+		const meanTempoCondition = evt.target.meanTempoCondition
+			? evt.target.meanTempoCondition.value
+			: data.meanTempoCondition
 		const numBeats = currentNumBeats
 		const formFieldNames = Object.values(evt.target).map(val => val.name)
 		// First remove all undefined field names to prevent an error when calling the includes method,
@@ -77,7 +83,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			numMeasures,
 			bpm,
 			bpmEnd,
-			meanTempoCondition: 0.5,
+			meanTempoCondition,
 			numBeats,
 			id: data.id,
 			// by default the first beat of each measure (downbeat)

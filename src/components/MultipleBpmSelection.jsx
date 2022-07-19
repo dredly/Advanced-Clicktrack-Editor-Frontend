@@ -24,8 +24,8 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => (
 					key="changemtc"
 					name="meanTempoCondition"
 					type="range"
-					min="0"
-					max="1"
+					min="0.05"
+					max="0.95"
 					step="0.05"
 					defaultValue={defaultMeanTempoCondition}
 				/>

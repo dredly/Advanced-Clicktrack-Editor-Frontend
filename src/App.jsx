@@ -33,8 +33,7 @@ const App = () => {
 	woodblock2.volume.value = -8
 
 	const buildClickTrackSection = (sectionData, startTime) => {
-		// Mean tempo condition of 0.5 currently hardcoded
-		const bpmArray = makeBpmArray({ ...sectionData, meanTempoCondition: 0.5 })
+		const bpmArray = makeBpmArray(sectionData)
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
 		const timeArray = intervalArray.map((interval, idx) => {
 			return idx > 0
@@ -67,7 +66,6 @@ const App = () => {
 	const playClickTrack = (times) => {
 		Tone.start()
 		dispatch(togglePlaying())
-		console.log('times', times)
 		times.map(t => {
 			return { ...t, time: t.time + Tone.now() }
 		}).forEach(click => {

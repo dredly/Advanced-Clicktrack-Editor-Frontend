@@ -1,4 +1,4 @@
-const MultipleBpmSelection = ({ defaultBpm }) => (
+const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => (
 	<>
 		<label>Select a bpm for start of section
 			<input
@@ -18,6 +18,19 @@ const MultipleBpmSelection = ({ defaultBpm }) => (
 				defaultValue={defaultBpm.end}
 			/>
 		</label>
+		<div>
+			<label>Adjust the mean tempo condition
+				<input
+					key="changemtc"
+					name="meanTempoCondition"
+					type="range"
+					min="0.05"
+					max="0.95"
+					step="0.05"
+					defaultValue={defaultMeanTempoCondition}
+				/>
+			</label>
+		</div>
 	</>
 )
 

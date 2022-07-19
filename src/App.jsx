@@ -33,8 +33,8 @@ const App = () => {
 	woodblock2.volume.value = -8
 
 	const buildClickTrackSection = (sectionData, startTime) => {
-		// Mean tempo condition of 0.1 currently hardcoded
-		const bpmArray = makeBpmArray({ ...sectionData, meanTempoCondition: 0.9 })
+		// Mean tempo condition of 0.5 currently hardcoded
+		const bpmArray = makeBpmArray({ ...sectionData, meanTempoCondition: 0.5 })
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
 		const timeArray = intervalArray.map((interval, idx) => {
 			return idx > 0

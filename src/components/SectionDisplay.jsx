@@ -10,8 +10,18 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 				{( section.bpm === section.bpmEnd
 					? <p>{section.bpm}bpm for {section.numMeasures} measures</p>
 					: Number(section.bpm) < Number(section.bpmEnd)
-						? <p>Acceleration from {section.bpm} to {section.bpmEnd} over {section.numMeasures} measures</p>
-						: <p>Deceleration from {section.bpm} to {section.bpmEnd} over {section.numMeasures} measures</p>
+						? <p>
+							Acceleration from {section.bpm
+							} to {section.bpmEnd} over {
+								section.numMeasures
+							} measures with mean tempo condition of {section.meanTempoCondition}
+						</p>
+						: <p>
+							Deceleration from {section.bpm
+							} to {section.bpmEnd} over {
+								section.numMeasures
+							} measures with mean tempo condition of {section.meanTempoCondition}
+						</p>
 				)}
 				<p>Beats per measure: {section.numBeats}</p>
 				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0

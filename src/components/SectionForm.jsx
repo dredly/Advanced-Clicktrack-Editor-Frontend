@@ -2,6 +2,7 @@ import { addSection, updateSection } from '../reducers/sectionReducer'
 import { changeStatus } from '../reducers/clickTimesReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
+import MeasuresInput from './MeasuresInput'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
@@ -23,6 +24,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		numMeasures: 4,
 		bpm: 120,
 		bpmEnd: 120,
+		meanTempoCondition: 0.5,
 		numBeats: 4,
 		accentedBeats: [0]
 	}
@@ -46,6 +48,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		dispatch(addSection({
 			bpm,
 			bpmEnd,
+			meanTempoCondition: 0.5,
 			numMeasures,
 			numBeats,
 			// by default the first beat of each measure (downbeat)
@@ -74,6 +77,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			numMeasures,
 			bpm,
 			bpmEnd,
+			meanTempoCondition: 0.5,
 			numBeats,
 			id: data.id,
 			// by default the first beat of each measure (downbeat)
@@ -91,17 +95,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				: addNewSection
 		)} >
 			<h3>{formType === 'create' ? 'Adding section' : 'Editing section'}</h3>
-			<div>
-				<label>Select a number of measures
-					<input
-						key="measures"
-						type="number"
-						min={1} max={1000}
-						name="numMeasures"
-						defaultValue={data.numMeasures}
-					/>
-				</label>
-			</div>
+			<MeasuresInput defaultNumMeasures={data.numMeasures}/>
 			<div>
 				<div className="small-bottom-margin">
 					<label>Tempo change
@@ -114,7 +108,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					</label>
 				</div>
 				{( isTempoChange
-					? <MultipleBpmSelection defaultBpm={{ start: data.bpm, end: data.bpmEnd }} />
+					? <MultipleBpmSelection
+						defaultBpm={{ start: data.bpm, end: data.bpmEnd }}
+						defaultMeanTempoCondition={data.meanTempoCondition}
+					/>
 					: <SingleBpmSelection defaultBpm={data.bpm} />
 				)}
 			</div>
@@ -142,10 +139,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.accentedBeats}/>}
 			</div>
 			<button>
-				{(existingData
-					? 'Save Changes'
-					: 'Add this Section'
-				)}
+				{(existingData ? 'Save Changes' : 'Add this Section')}
 			</button>
 		</form>
 	)

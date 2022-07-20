@@ -23,16 +23,7 @@ const App = () => {
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
-
-	const strongPlayer = new Tone
-		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
-		.toDestination()
-
-	const weakPlayer = new Tone
-		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
-		.toDestination()
-
-	weakPlayer.volume.value = -8
+	const selectedSamples = useSelector(state => state.samples)
 
 	const buildClickTrackSection = (sectionData, startTime) => {
 		const bpmArray = makeBpmArray(sectionData)
@@ -66,21 +57,36 @@ const App = () => {
 	}
 
 	const playClickTrack = (times) => {
-		Tone.start()
-		dispatch(togglePlaying())
-		times.map(t => {
-			return { ...t, time: t.time + Tone.now() }
-		}).forEach(click => {
-			if (click.downBeat) {
-				strongPlayer.start(click.time)
-			} else weakPlayer.start(click.time)
-		})
-		const bpmAtEnd = sections[sections.length - 1].bpm
-		const finalInterval = 60 / bpmAtEnd
-		const finalTime = times[times.length - 1].time
+		const strongSampleUrl = JSON.parse(selectedSamples.strong).url
+		const weakSampleUrl = JSON.parse(selectedSamples.weak).url
+
+		console.log('sample urls', strongSampleUrl, weakSampleUrl)
+
+		const strongPlayer = new Tone
+			.Player(strongSampleUrl)
+			.toDestination()
+
+		const weakPlayer = new Tone
+			.Player(weakSampleUrl)
+			.toDestination()
+
 		setTimeout(() => {
+			Tone.start()
 			dispatch(togglePlaying())
-		}, (finalTime + finalInterval) * 1000) //Convert to ms
+			times.map(t => {
+				return { ...t, time: t.time + Tone.now() }
+			}).forEach(click => {
+				if (click.downBeat) {
+					strongPlayer.start(click.time)
+				} else weakPlayer.start(click.time)
+			})
+			const bpmAtEnd = sections[sections.length - 1].bpm
+			const finalInterval = 60 / bpmAtEnd
+			const finalTime = times[times.length - 1].time
+			setTimeout(() => {
+				dispatch(togglePlaying())
+			}, (finalTime + finalInterval) * 1000) //Convert to ms
+		}, 200)
 	}
 
 	const showFormHere = (location, type) => {

@@ -7,6 +7,7 @@ import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
+import SampleDisplay from './components/SampleDisplay'
 import DownloadLink from './components/DownloadLink'
 import Guidance from './components/Guidance'
 import SampleSelection from './components/SampleSelection'
@@ -23,15 +24,15 @@ const App = () => {
 	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
 
-	const woodblock1 = new Tone
+	const strongPlayer = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
 		.toDestination()
 
-	const woodblock2 = new Tone
+	const weakPlayer = new Tone
 		.Player('https://res.cloudinary.com/doemj9gq6/video/upload/v1651427128/Samples/Woodblock_oogia1.wav')
 		.toDestination()
 
-	woodblock2.volume.value = -8
+	weakPlayer.volume.value = -8
 
 	const buildClickTrackSection = (sectionData, startTime) => {
 		const bpmArray = makeBpmArray(sectionData)
@@ -71,8 +72,8 @@ const App = () => {
 			return { ...t, time: t.time + Tone.now() }
 		}).forEach(click => {
 			if (click.downBeat) {
-				woodblock1.start(click.time)
-			} else woodblock2.start(click.time)
+				strongPlayer.start(click.time)
+			} else weakPlayer.start(click.time)
 		})
 		const bpmAtEnd = sections[sections.length - 1].bpm
 		const finalInterval = 60 / bpmAtEnd
@@ -99,6 +100,7 @@ const App = () => {
 		<>
 			<Guidance />
 			<SampleSelection />
+			<SampleDisplay />
 			<div inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 				{formInfo.location === 0

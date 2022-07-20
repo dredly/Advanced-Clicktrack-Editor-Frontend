@@ -33,7 +33,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 
 	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
 
-	const addNewSection = evt => {
+	const handleSubmit = (evt) => {
 		evt.preventDefault()
 		const numMeasures = evt.target.numMeasures.value
 		const bpm = evt.target.bpm.value
@@ -48,58 +48,39 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
-		dispatch(addSection({
-			bpm,
-			bpmEnd,
-			meanTempoCondition,
-			numMeasures,
-			numBeats,
-			// by default the first beat of each measure (downbeat)
-			// is accented
-			accentedBeats: strongBeats.length ? strongBeats : [0],
-		}))
-		if (status !== 'not_created') {
+		if (formType === 'create') {
+			dispatch(addSection({
+				bpm,
+				bpmEnd,
+				meanTempoCondition,
+				numMeasures,
+				numBeats,
+				// by default the first beat of each measure (downbeat)
+				// is accented
+				accentedBeats: strongBeats.length ? strongBeats : [0],
+			}))
+			if (status !== 'not_created') {
+				dispatch(changeStatus('edited'))
+			}
+		} else if (formType === 'edit') {
+			dispatch(updateSection({
+				numMeasures,
+				bpm,
+				bpmEnd,
+				meanTempoCondition,
+				numBeats,
+				id: data.id,
+				// by default the first beat of each measure (downbeat)
+				// is accented
+				accentedBeats: strongBeats.length ? strongBeats : [0],
+			}))
 			dispatch(changeStatus('edited'))
 		}
 		hideSelf()
 	}
 
-	const editSection = evt => {
-		evt.preventDefault()
-		const numMeasures = evt.target.numMeasures.value
-		const bpm = evt.target.bpm.value
-		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		const meanTempoCondition = evt.target.meanTempoCondition
-			? evt.target.meanTempoCondition.value
-			: data.meanTempoCondition
-		const numBeats = currentNumBeats
-		const formFieldNames = Object.values(evt.target).map(val => val.name)
-		// First remove all undefined field names to prevent an error when calling the includes method,
-		// which expects a string
-		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
-		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
-		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
-		dispatch(updateSection({
-			numMeasures,
-			bpm,
-			bpmEnd,
-			meanTempoCondition,
-			numBeats,
-			id: data.id,
-			// by default the first beat of each measure (downbeat)
-			// is accented
-			accentedBeats: strongBeats.length ? strongBeats : [0],
-		}))
-		dispatch(changeStatus('edited'))
-		hideSelf()
-	}
-
 	return (
-		<form onSubmit={(
-			existingData
-				? editSection
-				: addNewSection
-		)} >
+		<form onSubmit={handleSubmit}>
 			<h3>{formType === 'create' ? 'Adding section' : 'Editing section'}</h3>
 			<MeasuresInput defaultNumMeasures={data.numMeasures}/>
 			<div>

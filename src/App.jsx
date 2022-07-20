@@ -9,6 +9,7 @@ import SectionForm from './components/SectionForm'
 import SectionDisplay from './components/SectionDisplay'
 import DownloadLink from './components/DownloadLink'
 import Guidance from './components/Guidance'
+import SampleSelection from './components/SampleSelection'
 
 const App = () => {
 	useEffect(() => {
@@ -97,6 +98,7 @@ const App = () => {
 	return (
 		<>
 			<Guidance />
+			<SampleSelection />
 			<div inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 				{formInfo.location === 0

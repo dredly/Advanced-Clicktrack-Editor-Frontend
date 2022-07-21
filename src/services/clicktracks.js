@@ -9,7 +9,7 @@ const startUp = () => {
 }
 
 const sendData = async (data) => {
-	const response = await axios.post(`${baseUrl}/api/makemidi`, data)
+	const response = await axios.post(`${baseUrl}/api/make_wav`, data)
 	return response.data
 }
 

@@ -25,6 +25,14 @@ const App = () => {
 	const playing = useSelector(state => state.clickTimes.playing)
 	const selectedSamples = useSelector(state => state.samples)
 
+	const strongPlayer = new Tone
+		.Player()
+		.toDestination()
+
+	const weakPlayer = new Tone
+		.Player()
+		.toDestination()
+
 	const buildClickTrackSection = (sectionData, startTime) => {
 		const bpmArray = makeBpmArray(sectionData)
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
@@ -56,37 +64,29 @@ const App = () => {
 		dispatch(changeStatus('ready'))
 	}
 
-	const playClickTrack = (times) => {
+	const playClickTrack = async (times) => {
 		const strongSampleUrl = JSON.parse(selectedSamples.strong).url
 		const weakSampleUrl = JSON.parse(selectedSamples.weak).url
 
 		console.log('sample urls', strongSampleUrl, weakSampleUrl)
+		await strongPlayer.load(strongSampleUrl)
+		await weakPlayer.load(weakSampleUrl)
 
-		const strongPlayer = new Tone
-			.Player(strongSampleUrl)
-			.toDestination()
-
-		const weakPlayer = new Tone
-			.Player(weakSampleUrl)
-			.toDestination()
-
+		Tone.start()
+		dispatch(togglePlaying())
+		times.map(t => {
+			return { ...t, time: t.time + Tone.now() }
+		}).forEach(click => {
+			if (click.downBeat) {
+				strongPlayer.start(click.time)
+			} else weakPlayer.start(click.time)
+		})
+		const bpmAtEnd = sections[sections.length - 1].bpm
+		const finalInterval = 60 / bpmAtEnd
+		const finalTime = times[times.length - 1].time
 		setTimeout(() => {
-			Tone.start()
 			dispatch(togglePlaying())
-			times.map(t => {
-				return { ...t, time: t.time + Tone.now() }
-			}).forEach(click => {
-				if (click.downBeat) {
-					strongPlayer.start(click.time)
-				} else weakPlayer.start(click.time)
-			})
-			const bpmAtEnd = sections[sections.length - 1].bpm
-			const finalInterval = 60 / bpmAtEnd
-			const finalTime = times[times.length - 1].time
-			setTimeout(() => {
-				dispatch(togglePlaying())
-			}, (finalTime + finalInterval) * 1000) //Convert to ms
-		}, 500)
+		}, (finalTime + finalInterval) * 1000) //Convert to ms
 	}
 
 	const showFormHere = (location, type) => {

@@ -86,7 +86,7 @@ const App = () => {
 			setTimeout(() => {
 				dispatch(togglePlaying())
 			}, (finalTime + finalInterval) * 1000) //Convert to ms
-		}, 200)
+		}, 500)
 	}
 
 	const showFormHere = (location, type) => {

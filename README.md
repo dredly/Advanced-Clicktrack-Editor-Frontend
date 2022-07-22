@@ -8,7 +8,7 @@
 - [x] Add ability to select different sounds (might need work on backend)
 - [x] Add ability to download midi
 - [x] Improve UX for sample selection
-- [ ] Also send time signature information to backend when making midi
+- [x] Also send time signature information to backend when making midi
 - [ ] Implement polyrhythmic sections
 - [ ] Combine in some way with metronome app
 - [ ] Improve UI and styling

@@ -7,14 +7,31 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
 
+	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
+
+	const wavData = clickTimes.map(note => ({ time: note.time, downBeat: note.downBeat }))
+
+	const midiData = {
+		timeSigData,
+		tempoData: clickTimes.map(note => ({ bpm: note.bpm, downBeat: note.downBeat }))
+	}
+
 	return (
 		<div className='med-top-margin'>
 			{sections.length
 				? status === 'ready'
 					?	<>
 						<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-						<DownloadLink getFile={clicktrackService.getWav} fileFormat={'wav'}/>
-						<DownloadLink getFile={clicktrackService.getMidi} fileFormat={'midi'}/>
+						<DownloadLink
+							getFile={clicktrackService.getWav}
+							fileFormat={'wav'}
+							sendInfo={wavData}
+						/>
+						<DownloadLink
+							getFile={clicktrackService.getMidi}
+							fileFormat={'midi'}
+							sendInfo={midiData}
+						/>
 					</>
 					:   <button onClick={buildClickTrack}>{status === 'not_created'
 						? 'Create click track'

@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
+import { toggleSampleForm } from './reducers/sampleReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionList from './components/SectionList'
@@ -101,12 +102,13 @@ const App = () => {
 	return (
 		<>
 			<Guidance />
+			<SampleDisplay />
+			<button onClick={() => dispatch(toggleSampleForm())}>Change samples</button>
 			{showSampleForm
 				? <SampleSelection />
 				: null
 			}
-			<SampleDisplay />
-			<div inert={playing ? 'true' : undefined}>
+			<div className='med-top-margin' inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 				{formInfo.location === 0
 					? <>

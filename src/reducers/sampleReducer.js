@@ -23,9 +23,12 @@ const samplesSlice = createSlice({
 			const { strongBeatSample, weakBeatSample } = action.payload
 			state.samples.strong = strongBeatSample
 			state.samples.weak = weakBeatSample
+		},
+		toggleSampleForm(state) {
+			state.showSampleForm = !state.showSampleForm
 		}
 	}
 })
 
-export const { changeSamples } = samplesSlice.actions
+export const { changeSamples, toggleSampleForm } = samplesSlice.actions
 export default samplesSlice.reducer

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import SectionForm from './SectionForm'
+import SectionForm from './forms/SectionForm'
 
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import sampleService from '../services/samples'
-import { changeSamples } from '../reducers/sampleReducer'
+import sampleService from '../../services/samples'
+import { changeSamples } from '../../reducers/sampleReducer'
 
 const SampleSelection = () => {
 	const [samples, setSamples] = useState([])

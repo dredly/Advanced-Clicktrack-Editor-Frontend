@@ -1,16 +1,16 @@
 import * as Tone from 'tone'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { displayForm, deleteSection } from './reducers/sectionReducer'
+import { displayForm } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
-import SectionForm from './components/SectionForm'
-import SectionDisplay from './components/SectionDisplay'
+import SectionList from './components/SectionList'
+import SectionForm from './components/forms/SectionForm'
 import SampleDisplay from './components/SampleDisplay'
 import DownloadLink from './components/DownloadLink'
 import Guidance from './components/Guidance'
-import SampleSelection from './components/SampleSelection'
+import SampleSelection from './components/forms/SampleSelection'
 
 const App = () => {
 	useEffect(() => {
@@ -23,7 +23,8 @@ const App = () => {
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
-	const selectedSamples = useSelector(state => state.samples)
+	const selectedSamples = useSelector(state => state.samples.samples)
+	const showSampleForm = useSelector(state => state.samples.showSampleForm)
 
 	const strongPlayer = new Tone
 		.Player()
@@ -97,15 +98,13 @@ const App = () => {
 		dispatch(displayForm({ location: NaN, type }))
 	}
 
-	const handleDelete = idx => {
-		dispatch(deleteSection(idx))
-		dispatch(changeStatus('edited'))
-	}
-
 	return (
 		<>
 			<Guidance />
-			<SampleSelection />
+			{showSampleForm
+				? <SampleSelection />
+				: null
+			}
 			<SampleDisplay />
 			<div inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
@@ -116,14 +115,7 @@ const App = () => {
 					</>
 					: null
 				}
-				{sections.map((section, idx) =>
-					<SectionDisplay
-						key={section.id}
-						section={section}
-						idx={idx}
-						handlers={{ showFormHere, hideForm, handleDelete }}
-					/>
-				)}
+				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
 				<div className='med-top-margin'>
 					{sections.length
 						? status === 'ready'

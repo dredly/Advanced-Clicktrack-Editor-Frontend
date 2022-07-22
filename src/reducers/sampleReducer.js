@@ -1,6 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { strong: null, weak: null }
+const initialState = {
+	samples: {
+		strong: JSON.stringify({
+			name: 'Woodblock',
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1658393312/Samples/ffkwnjeyvugkc9p8pecl.wav'
+		}),
+		weak: JSON.stringify({
+			name: 'Woodblock (Quiet)',
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1658393325/Samples/nmxxfb4xdhblrkcj4zni.wav'
+		}),
+	},
+	showSampleForm: false
+}
 
 const samplesSlice = createSlice({
 	name: 'samples',
@@ -9,8 +21,8 @@ const samplesSlice = createSlice({
 		changeSamples(state, action) {
 			console.log('CALLING REDUCER')
 			const { strongBeatSample, weakBeatSample } = action.payload
-			state.strong = strongBeatSample
-			state.weak = weakBeatSample
+			state.samples.strong = strongBeatSample
+			state.samples.weak = weakBeatSample
 		}
 	}
 })

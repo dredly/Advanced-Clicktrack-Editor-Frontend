@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 
 const SampleDisplay = () => {
-	const selectedSamples = useSelector(state => state.samples)
+	const selectedSamples = useSelector(state => state.samples.samples)
 
 	if (!selectedSamples.strong || !selectedSamples.weak) {
 		return <h3>No samples selected</h3>

@@ -1,11 +1,11 @@
-import { addSection, updateSection } from '../reducers/sectionReducer'
-import { changeStatus } from '../reducers/clickTimesReducer'
+import { addSection, updateSection } from '../../reducers/sectionReducer'
+import { changeStatus } from '../../reducers/clickTimesReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import MeasuresInput from './MeasuresInput'
-import SingleBpmSelection from './SingleBpmSelection'
-import MultipleBpmSelection from './MultipleBpmSelection'
-import AccentSelection from './AccentSelection'
+import MeasuresInput from '../MeasuresInput'
+import SingleBpmSelection from '../SingleBpmSelection'
+import MultipleBpmSelection from '../MultipleBpmSelection'
+import AccentSelection from '../AccentSelection'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)

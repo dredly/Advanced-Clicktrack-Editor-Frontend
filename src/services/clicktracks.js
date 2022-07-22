@@ -8,9 +8,14 @@ const startUp = () => {
 	axios.get(baseUrl)
 }
 
-const sendData = async (data) => {
+const getWav = async (data) => {
 	const response = await axios.post(`${baseUrl}/api/make_wav`, data)
 	return response.data
 }
 
-export default { sendData, startUp }
+const getMidi = async (data) => {
+	const response = await axios.post(`${baseUrl}/api/make_midi`, data)
+	return response.data
+}
+
+export default { getWav, getMidi, startUp }

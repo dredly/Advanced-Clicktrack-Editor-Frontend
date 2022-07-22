@@ -47,8 +47,8 @@ const App = () => {
 			.slice(0, timeArray.length -1)
 			.map((time, idx) => (
 				accentArray.includes(idx % sectionData.numBeats)
-					? { time, downBeat: true }
-					: { time, downBeat: false }
+					? { time, bpm: bpmArray[idx], downBeat: true }
+					: { time, bpm: bpmArray[idx], downBeat: false }
 			))
 		dispatch(addTimeArray(clickTimeArray))
 		return endTime
@@ -129,7 +129,8 @@ const App = () => {
 						? status === 'ready'
 							?	<>
 								<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-								<DownloadLink />
+								<DownloadLink getFile={clicktrackService.getWav} fileFormat={'wav'}/>
+								<DownloadLink getFile={clicktrackService.getMidi} fileFormat={'midi'}/>
 							</>
 							:   <button onClick={buildClickTrack}>{status === 'not_created'
 								? 'Create click track'

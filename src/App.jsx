@@ -7,9 +7,9 @@ import { toggleSampleForm } from './reducers/sampleReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionList from './components/SectionList'
-import SectionForm from './components/forms/SectionForm'
+import SectionForm from './components/forms/SectionForm/SectionForm'
 import SampleDisplay from './components/SampleDisplay'
-import DownloadLink from './components/DownloadLink'
+import Result from './components/Result'
 import Guidance from './components/Guidance'
 import SampleSelection from './components/forms/SampleSelection'
 
@@ -21,8 +21,6 @@ const App = () => {
 	const dispatch = useDispatch()
 	const sections = useSelector(state => state.sections.sectionList)
 	const formInfo = useSelector(state => state.sections.form)
-	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
-	const status = useSelector(state => state.clickTimes.status)
 	const playing = useSelector(state => state.clickTimes.playing)
 	const selectedSamples = useSelector(state => state.samples.samples)
 	const showSampleForm = useSelector(state => state.samples.showSampleForm)
@@ -118,22 +116,7 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-				<div className='med-top-margin'>
-					{sections.length
-						? status === 'ready'
-							?	<>
-								<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-								<DownloadLink getFile={clicktrackService.getWav} fileFormat={'wav'}/>
-								<DownloadLink getFile={clicktrackService.getMidi} fileFormat={'midi'}/>
-							</>
-							:   <button onClick={buildClickTrack}>{status === 'not_created'
-								? 'Create click track'
-								: 'Update click track'}
-							</button>
-						: null
-					}
-				</div>
-
+				<Result playClickTrack={playClickTrack} buildClickTrack={buildClickTrack}/>
 			</div>
 		</>
 	)

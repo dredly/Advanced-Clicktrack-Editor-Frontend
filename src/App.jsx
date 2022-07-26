@@ -68,7 +68,6 @@ const App = () => {
 		const strongSampleUrl = JSON.parse(selectedSamples.strong).url
 		const weakSampleUrl = JSON.parse(selectedSamples.weak).url
 
-		console.log('sample urls', strongSampleUrl, weakSampleUrl)
 		await strongPlayer.load(strongSampleUrl)
 		await weakPlayer.load(weakSampleUrl)
 

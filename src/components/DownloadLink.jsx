@@ -5,8 +5,7 @@ const DownloadLink = ({ getFile, fileFormat, sendInfo }) => {
 
 	const handleDownload = async () => {
 		setUrl('...loading')
-		// The backend needs times for making a wav file, but bpm for making
-		// a midi file
+		console.log(JSON.stringify(sendInfo))
 		const result = await getFile(sendInfo)
 		setUrl(result.url)
 	}

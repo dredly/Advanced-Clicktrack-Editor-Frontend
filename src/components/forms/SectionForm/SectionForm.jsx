@@ -6,6 +6,7 @@ import MeasuresInput from './MeasuresInput'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
+import NumBeatsInput from './NumBeatsInput'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -16,6 +17,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			? false
 			: true
 	)
+	const [isPolyrhythm, setIsPolyrhythm] = useState(false)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
@@ -85,6 +87,16 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			<MeasuresInput defaultNumMeasures={data.numMeasures}/>
 			<div>
 				<div className="small-bottom-margin">
+					<label>Polyrhythm
+						<input
+							key="togglepolyrhythm"
+							type="checkbox"
+							checked={isPolyrhythm}
+							onChange={() => setIsPolyrhythm(!isPolyrhythm)}
+						/>
+					</label>
+				</div>
+				<div className="small-bottom-margin">
 					<label>Tempo change
 						<input
 							key="toggletempochange"
@@ -103,16 +115,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				)}
 			</div>
 			<div>
-				<label>Select a number of beats per measure
-					<input
-						key="changetimesig"
-						type="number"
-						min={2} max={9}
-						name="numBeats"
-						value={currentNumBeats}
-						onChange={({ target }) => setCurrentNumBeats(Number(target.value))}
-					/>
-				</label>
+				<NumBeatsInput currentNumBeats={currentNumBeats} setCurrentNumBeats={setCurrentNumBeats}/>
 			</div>
 			<div>
 				<label>Accent first beat?

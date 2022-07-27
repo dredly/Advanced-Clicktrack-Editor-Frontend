@@ -19,7 +19,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			? false
 			: true
 	)
-	const [isPolyrhythm, setIsPolyrhythm] = useState(false)
+	const [isPolyrhythm, setIsPolyrhythm] = useState(existingData && existingData.secondaryBpm ? true : false)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
@@ -30,13 +30,15 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		bpmEnd: 120,
 		meanTempoCondition: 0.5,
 		numBeats: 4,
-		accentedBeats: [0]
+		accentedBeats: [0],
+		secondaryBpm: null,
+		secondaryNumBeats: ''
 	}
 
 	const data = existingData || defaults
 
 	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
-	const [secondaryNumBeats, setSecondaryNumBeats] = useState('')
+	const [secondaryNumBeats, setSecondaryNumBeats] = useState(data.secondaryNumBeats)
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault()
@@ -83,6 +85,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				bpmEnd,
 				meanTempoCondition,
 				numBeats,
+				secondaryNumBeats,
+				secondaryBpm,
+				secondaryBpmEnd,
 				id: data.id,
 				// by default the first beat of each measure (downbeat)
 				// is accented

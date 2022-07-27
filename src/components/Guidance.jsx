@@ -22,6 +22,7 @@ const Guidance = () => {
 					When you are finished creating and editing sections, click on the {'"Create click track"'}
 					button. You can now either play the track directly in the browser or download a wav file.
 				</li>
+				<li><strong>Warning</strong> Downloading tracks currently not compatible with polyrhtyhms</li>
 			</ul>
 		</div>
 	)

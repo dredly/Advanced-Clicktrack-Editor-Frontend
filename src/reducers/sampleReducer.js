@@ -19,7 +19,6 @@ const samplesSlice = createSlice({
 	initialState,
 	reducers: {
 		changeSamples(state, action) {
-			console.log('CALLING REDUCER')
 			const { strongBeatSample, weakBeatSample } = action.payload
 			state.samples.strong = strongBeatSample
 			state.samples.weak = weakBeatSample

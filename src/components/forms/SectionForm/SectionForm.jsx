@@ -2,10 +2,13 @@ import { addSection, updateSection } from '../../../reducers/sectionReducer'
 import { changeStatus } from '../../../reducers/clickTimesReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
+import getSecondBpm from '../../../utils/polyrhythmCalculator'
 import MeasuresInput from './MeasuresInput'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
+import NumBeatsInput from './NumBeatsInput'
+import PolyrhythmSelection from './PolyrhythmSelection'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -16,6 +19,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			? false
 			: true
 	)
+	const [isPolyrhythm, setIsPolyrhythm] = useState(existingData && existingData.secondaryBpm ? true : false)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
@@ -26,22 +30,31 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		bpmEnd: 120,
 		meanTempoCondition: 0.5,
 		numBeats: 4,
-		accentedBeats: [0]
+		accentedBeats: [0],
+		secondaryBpm: null,
+		secondaryNumBeats: ''
 	}
 
 	const data = existingData || defaults
 
 	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
+	const [secondaryNumBeats, setSecondaryNumBeats] = useState(data.secondaryNumBeats)
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault()
 		const numMeasures = evt.target.numMeasures.value
+		const numBeats = currentNumBeats
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
+		const secondaryBpm = secondaryNumBeats
+			? getSecondBpm(bpm, numBeats, secondaryNumBeats)
+			: null
+		const secondaryBpmEnd = secondaryNumBeats
+			? getSecondBpm(bpmEnd, numBeats, secondaryNumBeats)
+			: null
 		const meanTempoCondition = evt.target.meanTempoCondition
 			? evt.target.meanTempoCondition.value
 			: defaults.meanTempoCondition
-		const numBeats = currentNumBeats
 		const formFieldNames = Object.values(evt.target).map(val => val.name)
 		// First remove all undefined field names to prevent an error when calling the includes method,
 		// which expects a string
@@ -55,6 +68,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				meanTempoCondition,
 				numMeasures,
 				numBeats,
+				secondaryNumBeats,
+				secondaryBpm,
+				secondaryBpmEnd,
 				// by default the first beat of each measure (downbeat)
 				// is accented
 				accentedBeats: strongBeats.length ? strongBeats : [0],
@@ -69,6 +85,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				bpmEnd,
 				meanTempoCondition,
 				numBeats,
+				secondaryNumBeats,
+				secondaryBpm,
+				secondaryBpmEnd,
 				id: data.id,
 				// by default the first beat of each measure (downbeat)
 				// is accented
@@ -103,17 +122,25 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				)}
 			</div>
 			<div>
-				<label>Select a number of beats per measure
+				<NumBeatsInput currentNumBeats={currentNumBeats} setCurrentNumBeats={setCurrentNumBeats}/>
+			</div>
+			<div className="small-bottom-margin">
+				<label>Polyrhythm?
 					<input
-						key="changetimesig"
-						type="number"
-						min={2} max={9}
-						name="numBeats"
-						value={currentNumBeats}
-						onChange={({ target }) => setCurrentNumBeats(Number(target.value))}
+						key="togglepolyrhythm"
+						type="checkbox"
+						checked={isPolyrhythm}
+						onChange={() => setIsPolyrhythm(!isPolyrhythm)}
 					/>
 				</label>
 			</div>
+			{( isPolyrhythm
+				? <PolyrhythmSelection
+					currentNumBeats={secondaryNumBeats}
+					setCurrentNumBeats={setSecondaryNumBeats}
+				/>
+				: null
+			)}
 			<div>
 				<label>Accent first beat?
 					<input

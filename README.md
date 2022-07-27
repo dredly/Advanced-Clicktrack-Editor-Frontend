@@ -9,6 +9,6 @@
 - [x] Add ability to download midi
 - [x] Improve UX for sample selection
 - [x] Also send time signature information to backend when making midi
-- [ ] Implement polyrhythmic sections
+- [ ] Fix timing issues with polyrhythmic tempo change sections
 - [ ] Combine in some way with metronome app
 - [ ] Improve UI and styling

@@ -54,12 +54,78 @@ const App = () => {
 		return endTime
 	}
 
+	const buildPolyrhythmicSection = (sectionDatas, startTime) => {
+		// sectionDatas is an array of rhythms, with sectionDatas[0] being the primary rhythm
+		const bpmArrays = sectionDatas.map(sd => makeBpmArray(sd))
+		const intervalArrays = bpmArrays.map(bpma => bpma.map(bpm => 60/bpm))
+		const timeArrays = intervalArrays.map(ia => ia.map((interval, idx) => {
+			return idx > 0
+				? startTime + ia.slice(0, idx).reduce((a, b) => a + b)
+				: startTime
+		}))
+
+		// Last entry of the first time array, since it is the primary rhythm
+		const endTime = timeArrays[0][timeArrays[0].length - 1]
+
+		// Remove the last entry of each timeArray
+		timeArrays.forEach(ta => {
+			ta.pop()
+		})
+
+		// Combine the two time arrays into one
+		// This solution should work for wav, but will need different solution for midi
+		const combinedArray = timeArrays
+			.reduce((a, b) => a.concat(b))
+			.sort((a, b) => a - b)
+
+		// Instead just delete duplicates
+		const clickTimeArrayWithDuplicates = combinedArray.map((time, idx) => {
+			// Check if time is equal to the next time
+			if (idx < combinedArray.length - 1 && time === combinedArray[idx + 1]) {
+				return JSON.stringify({ time, downBeat: true })
+			}
+
+			// Check if time is equal to previous time
+			if (idx > 0 &&  time === combinedArray[idx - 1]) {
+				// Add a tiny increment to the time so that ToneJS does not throw an error
+				// from being asked to play two notes perfectly simultaneously
+				return JSON.stringify({ time, downBeat: true })
+			}
+
+			return JSON.stringify({ time, downBeat: false })
+		})
+
+		const clickTimeArray = [... new Set(clickTimeArrayWithDuplicates)]
+			.map(ct => JSON.parse(ct))
+
+		dispatch(addTimeArray(clickTimeArray))
+		return endTime
+	}
+
 	const buildClickTrack = () => {
 		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
-			const endTime = buildClickTrackSection(sections[i], startTime)
-			startTime = endTime
+			if (sections[i].secondaryBpm) {
+				const sectionData1 = {
+					numMeasures: sections[i].numMeasures,
+					numBeats: sections[i].numBeats,
+					meanTempoCondition: sections[i].meanTempoCondition,
+					bpm: sections[i].bpm,
+					bpmEnd: sections[i].bpmEnd,
+				}
+				const sectionData2 = {
+					...sectionData1,
+					numBeats: sections[i].secondaryNumBeats,
+					bpm: sections[i].secondaryBpm,
+					bpmEnd: sections[i].secondaryBpmEnd
+				}
+				const endTime = buildPolyrhythmicSection([sectionData1, sectionData2], startTime)
+				startTime = endTime
+			} else {
+				const endTime = buildClickTrackSection(sections[i], startTime)
+				startTime = endTime
+			}
 		}
 		dispatch(changeStatus('ready'))
 	}
@@ -95,6 +161,8 @@ const App = () => {
 	const hideForm = type => {
 		dispatch(displayForm({ location: NaN, type }))
 	}
+
+	console.log('sections', sections)
 
 	return (
 		<>

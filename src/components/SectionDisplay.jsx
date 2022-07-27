@@ -23,7 +23,10 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 							} measures with mean tempo condition of {section.meanTempoCondition}
 						</p>
 				)}
-				<p>Beats per measure: {section.numBeats}</p>
+				{( section.secondaryBpm
+					? <p>{section.secondaryNumBeats} against {section.numBeats} polyrhythm</p>
+					: <p>Beats per measure: {section.numBeats}</p>
+				)}
 				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
 					// Add one to convert from array index (counting from 0)
 					// to display index (counting from 1)

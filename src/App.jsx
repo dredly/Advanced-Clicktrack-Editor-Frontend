@@ -66,6 +66,7 @@ const App = () => {
 
 		// Last entry of the first time array, since it is the primary rhythm
 		const endTime = timeArrays[0][timeArrays[0].length - 1]
+		console.log('endTime', endTime)
 
 		// Remove the last entry of each timeArray
 		timeArrays.forEach(ta => {
@@ -77,6 +78,10 @@ const App = () => {
 		const combinedArray = timeArrays
 			.reduce((a, b) => a.concat(b))
 			.sort((a, b) => a - b)
+			// Round off the numbers to prevent weird floating point imprecisions
+			.map(time => Math.round(time * 10 ** 6) / 10 ** 6)
+
+		console.log('combinedArray', combinedArray)
 
 		// Instead just delete duplicates
 		const clickTimeArrayWithDuplicates = combinedArray.map((time, idx) => {
@@ -97,6 +102,8 @@ const App = () => {
 
 		const clickTimeArray = [... new Set(clickTimeArrayWithDuplicates)]
 			.map(ct => JSON.parse(ct))
+
+		console.log('clickTimeArray', clickTimeArray)
 
 		dispatch(addTimeArray(clickTimeArray))
 		return endTime

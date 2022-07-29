@@ -64,6 +64,21 @@ const App = () => {
 				: startTime
 		}))
 
+		// Slightly adjust the second time array so that downbeats properly line up with
+		// the first
+		for (let i=0; i < timeArrays[1].length; i += sectionDatas[1].numBeats) {
+			const secondaryDownBeat = timeArrays[1][i]
+			const primaryDownBeat = timeArrays[0][(i / sectionDatas[1].numBeats) * sectionDatas[0].numBeats]
+			const difference = primaryDownBeat - secondaryDownBeat
+			if (difference) {
+				for (let j=i; j < i + sectionDatas[1].numBeats - 1; j++) {
+					timeArrays[1][j] += difference
+				}
+			}
+		}
+
+		console.log('time arrays', timeArrays)
+
 		// Last entry of the first time array, since it is the primary rhythm
 		const endTime = timeArrays[0][timeArrays[0].length - 1]
 		console.log('endTime', endTime)
@@ -72,6 +87,9 @@ const App = () => {
 		timeArrays.forEach(ta => {
 			ta.pop()
 		})
+
+		//Not quite sure why, but there's an extra entry in this array that needs to be removed
+		timeArrays[1].pop()
 
 		// Combine the two time arrays into one
 		// This solution should work for wav, but will need different solution for midi

@@ -7,6 +7,7 @@
 - [x] Also send time signature information to backend when making midi
 - [x] Fix timing issues with polyrhythmic tempo change sections
 - [x] Show line graph to illustrate MTC in tempo change sections
-- [ ] Render proper data to the axis of line graph
+- [x] Render proper data to the axis of line graph
+- [ ] Fix bug with line graph displaying incorrectly when editing a section
 - [ ] Improve UI and styling
 - [ ] Add help dialogue system

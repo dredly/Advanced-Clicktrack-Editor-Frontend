@@ -3,6 +3,10 @@ import TempoCurveGraph from './TempoCurveGraph'
 
 const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 	const [currentMtc, setCurrentMtc] = useState(defaultMeanTempoCondition)
+	const [currentStartBpm, setCurrentStartBpm] = useState(defaultBpm.start)
+	const [currentEndBpm, setCurrentEndBpm] = useState(defaultBpm.end)
+
+	console.log('defaultBpm', defaultBpm)
 
 	return (
 		<>
@@ -12,7 +16,8 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 					type="number"
 					min={20} max={400}
 					name="bpm"
-					defaultValue={defaultBpm.start}
+					defaultValue={Number(defaultBpm.start)}
+					onChange={({ target }) => setCurrentStartBpm(Number(target.value))}
 				/>
 			</label>
 			<label>Select a bpm for end of section
@@ -21,7 +26,8 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 					type="number"
 					min={20} max={400}
 					name="bpmEnd"
-					defaultValue={defaultBpm.end}
+					defaultValue={Number(defaultBpm.end)}
+					onChange={({ target }) => setCurrentEndBpm(Number(target.value))}
 				/>
 			</label>
 			<div>
@@ -38,9 +44,9 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 					/>
 				</label>
 				<TempoCurveGraph dataPoints={[
-					{ x: 0, y: 0 },
-					{ x: currentMtc, y: 0.5 },
-					{ x: 1, y: 1 },
+					{ x: 0, y: currentStartBpm },
+					{ x: currentMtc, y: currentStartBpm + 0.5 * (currentEndBpm - currentStartBpm) },
+					{ x: 1, y: currentEndBpm },
 				]}/>
 			</div>
 		</>

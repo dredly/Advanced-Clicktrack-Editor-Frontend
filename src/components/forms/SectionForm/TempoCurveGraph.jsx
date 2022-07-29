@@ -1,11 +1,27 @@
-import { LineChart, Line, XAxis, YAxis } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Label } from 'recharts'
 
 const TempoCurveGraph = ({ dataPoints }) => {
-	//Temporary, while setting up a different charting library
 	return(
-		<LineChart width={300} height={100} data={dataPoints}>
-			<XAxis dataKey="x" type="number" />
-			<YAxis dataKey="y" />
+		<LineChart width={350} height={200} data={dataPoints} margin={{ top: 5, right: 5, bottom: 20, left: 5 }}>
+			<XAxis
+				dataKey="x"
+				type="number"
+			>
+				<Label
+					value="Progress through section"
+					position="insideBottom"
+					offset={-5}
+				/>
+			</XAxis>
+			<YAxis
+				dataKey="y"
+				domain={['dataMin', 'dataMax']}
+				label={{
+					value: 'Tempo (BPM)',
+					angle: -90,
+					position: 'insideBottomLeft'
+				}}
+			/>
 			<Line type="monotoneY" dataKey="y" stroke="#8884d8" strokeWidth={2} isAnimationActive={false} />
 		</LineChart>
 	)

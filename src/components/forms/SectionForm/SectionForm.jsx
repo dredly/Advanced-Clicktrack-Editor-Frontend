@@ -46,10 +46,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numBeats = currentNumBeats
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		const secondaryBpm = secondaryNumBeats
+		const secondaryBpm = secondaryNumBeats && isPolyrhythm
 			? getSecondBpm(bpm, numBeats, secondaryNumBeats)
 			: null
-		const secondaryBpmEnd = secondaryNumBeats
+		const secondaryBpmEnd = secondaryNumBeats && isPolyrhythm
 			? getSecondBpm(bpmEnd, numBeats, secondaryNumBeats)
 			: null
 		const meanTempoCondition = evt.target.meanTempoCondition

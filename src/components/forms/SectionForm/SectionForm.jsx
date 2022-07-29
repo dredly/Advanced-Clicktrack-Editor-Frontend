@@ -115,7 +115,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				</div>
 				{( isTempoChange
 					? <MultipleBpmSelection
-						defaultBpm={{ start: data.bpm, end: data.bpmEnd }}
+						defaultBpm={{ start: Number(data.bpm), end: Number(data.bpmEnd) }}
 						defaultMeanTempoCondition={data.meanTempoCondition}
 					/>
 					: <SingleBpmSelection defaultBpm={data.bpm} />

@@ -84,12 +84,17 @@ const App = () => {
 		console.log('endTime', endTime)
 
 		// Remove the last entry of each timeArray
-		timeArrays.forEach(ta => {
+		timeArrays.forEach((ta, idx) => {
 			ta.pop()
+			const expectedLength = sectionDatas[idx].numMeasures * sectionDatas[idx].numBeats
+			if (ta.length > expectedLength) {
+				const lengthDiff = ta.length - expectedLength
+				ta.splice(ta.length - lengthDiff, lengthDiff)
+			}
 		})
 
-		//Not quite sure why, but there's an extra entry in this array that needs to be removed
-		timeArrays[1].pop()
+		// TODO: If either array is longer than expected cut off the extra elements
+		// -> May not need to filter out the NaNs in next step?
 
 		// Combine the two time arrays into one
 		// This solution should work for wav, but will need different solution for midi
@@ -98,6 +103,7 @@ const App = () => {
 			.sort((a, b) => a - b)
 			// Round off the numbers to prevent weird floating point imprecisions
 			.map(time => Math.round(time * 10 ** 6) / 10 ** 6)
+			.filter(t => !isNaN(t)) // Remove the NaN weirdness from the end
 
 		console.log('combinedArray', combinedArray)
 

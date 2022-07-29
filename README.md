@@ -1,14 +1,13 @@
 #Future tasks
 
-- [x] Get info on accented beats to display in SectionDisplay component
-- [x] Fix bug where newly added sections are moved to beginning
-- [x] Get accented beat selection to work on edit form as well
-- [x] Implement ability to select different tempo curves besides linear
 - [x] Refactor SectionForm component
 - [x] Add ability to select different sounds (might need work on backend)
 - [x] Add ability to download midi
 - [x] Improve UX for sample selection
 - [x] Also send time signature information to backend when making midi
 - [x] Fix timing issues with polyrhythmic tempo change sections
-- [ ] Try to implement better input for mean tempo condition
+- [x] Show line graph to illustrate MTC in tempo change sections
+- [x] Render proper data to the axis of line graph
+- [x] Fix bug with line graph displaying incorrectly when editing a section
 - [ ] Improve UI and styling
+- [ ] Add help dialogue system

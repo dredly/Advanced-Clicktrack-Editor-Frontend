@@ -9,6 +9,8 @@ import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
 import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
+import HelpIcon from '../../HelpIcon'
+import { polyrhythmHelp } from '../../../utils/helpText'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -133,6 +135,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setIsPolyrhythm(!isPolyrhythm)}
 					/>
 				</label>
+				<HelpIcon content={polyrhythmHelp}/>
 			</div>
 			{( isPolyrhythm
 				? <PolyrhythmSelection

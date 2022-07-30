@@ -6,10 +6,17 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	const sections = useSelector(state => state.sections.sectionList)
 	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
 	const status = useSelector(state => state.clickTimes.status)
+	const selectedSamples = useSelector(state => state.samples.samples)
+
+	const strongSampleUrl = JSON.parse(selectedSamples.strong).url
+	const weakSampleUrl = JSON.parse(selectedSamples.weak).url
 
 	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
 
-	const wavData = clickTimes.map(note => ({ time: note.time, downBeat: note.downBeat }))
+	const wavData = {
+		sampleData: { strongUrl: strongSampleUrl, weakUrl: weakSampleUrl },
+		timeData: clickTimes.map(note => ({ time: note.time, downBeat: note.downBeat }))
+	}
 
 	const midiData = {
 		timeSigData,

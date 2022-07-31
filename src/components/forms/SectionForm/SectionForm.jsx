@@ -25,6 +25,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
+	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const defaults = {
 		numMeasures: 4,
@@ -135,7 +136,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setIsPolyrhythm(!isPolyrhythm)}
 					/>
 				</label>
-				<HelpIcon content={polyrhythmHelp}/>
+				{(showHelp
+					? <HelpIcon content={polyrhythmHelp}/>
+					: null
+				)}
 			</div>
 			{( isPolyrhythm
 				? <PolyrhythmSelection

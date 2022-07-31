@@ -10,8 +10,8 @@ import SectionList from './components/SectionList'
 import SectionForm from './components/forms/SectionForm/SectionForm'
 import SampleDisplay from './components/SampleDisplay'
 import Result from './components/Result'
-import Guidance from './components/Guidance'
 import SampleSelection from './components/forms/SampleSelection'
+import { toggleHelp } from './reducers/uiReducer'
 
 const App = () => {
 	useEffect(() => {
@@ -24,6 +24,7 @@ const App = () => {
 	const playing = useSelector(state => state.clickTimes.playing)
 	const selectedSamples = useSelector(state => state.samples.samples)
 	const showSampleForm = useSelector(state => state.samples.showSampleForm)
+	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const strongPlayer = new Tone
 		.Player()
@@ -197,13 +198,17 @@ const App = () => {
 
 	return (
 		<>
-			<Guidance />
 			<SampleDisplay />
 			<button onClick={() => dispatch(toggleSampleForm())}>Change samples</button>
 			{showSampleForm
 				? <SampleSelection />
 				: null
 			}
+			<div className="med-top-margin">
+				<button onClick={() => dispatch(toggleHelp())}>
+					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
+				</button>
+			</div>
 			<div className='med-top-margin' inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
 				{formInfo.location === 0

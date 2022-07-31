@@ -1,12 +1,15 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import TempoCurveGraph from './TempoCurveGraph'
+import HelpIcon from '../../HelpIcon'
+import { mtcHelp } from '../../../utils/helpText'
 
 const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 	const [currentMtc, setCurrentMtc] = useState(defaultMeanTempoCondition)
 	const [currentStartBpm, setCurrentStartBpm] = useState(defaultBpm.start)
 	const [currentEndBpm, setCurrentEndBpm] = useState(defaultBpm.end)
 
-	console.log('defaultBpm', defaultBpm)
+	const showHelp = useSelector(state => state.ui.showHelp)
 
 	return (
 		<>
@@ -43,6 +46,10 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 						onChange={({ target }) => setCurrentMtc(target.value)}
 					/>
 				</label>
+				{(showHelp
+					? <HelpIcon content={mtcHelp}/>
+					: null
+				)}
 				<TempoCurveGraph dataPoints={[
 					{ x: 0, y: currentStartBpm },
 					{ x: currentMtc, y: currentStartBpm + 0.5 * (currentEndBpm - currentStartBpm) },

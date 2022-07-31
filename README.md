@@ -8,7 +8,7 @@
 - [x] Fix bug where editing a polyrhythmic section and toggling off polyrhtyhm does not change it back to a non polyrhythmic section
 - [x] Add help dialogue system
 - [x] Send sample urls to backend when requesting a wav file
-- [ ] Add option to toggle all help buttons on or off
+- [x] Add option to toggle all help buttons on or off
 - [ ] Add more help dialogues
 - [ ] Improve UI and styling
 

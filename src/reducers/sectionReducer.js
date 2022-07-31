@@ -45,7 +45,7 @@ const sectionSlice = createSlice({
 			)
 		},
 		deleteSection(state, action) {
-			const { idx } = action.payload
+			const idx = action.payload
 			state.sectionList.splice(idx, 1)
 		},
 		displayForm(state, action) {

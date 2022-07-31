@@ -9,7 +9,7 @@ const SectionList = ({ showFormHere, hideForm }) => {
 	const sections = useSelector(state => state.sections.sectionList)
 
 	const handleDelete = idx => {
-		dispatch(deleteSection(idx))
+		dispatch(deleteSection(Number(idx)))
 		dispatch(changeStatus('edited'))
 	}
 

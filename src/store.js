@@ -10,7 +10,11 @@ const store = configureStore({
 		clickTimes: clickTimesReducer,
 		samples: sampleReducer,
 		ui: uiReducer,
-	}
+	},
+	// middleware: (getDefaultMiddleware) =>
+	// 	getDefaultMiddleware({
+	// 		serializableCheck: false
+	// 	}),
 })
 
 export default store

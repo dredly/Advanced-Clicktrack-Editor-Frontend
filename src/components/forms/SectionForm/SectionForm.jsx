@@ -10,7 +10,7 @@ import AccentSelection from './AccentSelection'
 import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
 import HelpIcon from '../../HelpIcon'
-import { polyrhythmHelp } from '../../../utils/helpText'
+import { accentSelectionHelp, polyrhythmHelp } from '../../../utils/helpText'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -25,6 +25,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
 	const status = useSelector(state => state.clickTimes.status)
+	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const defaults = {
 		numMeasures: 4,
@@ -135,7 +136,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setIsPolyrhythm(!isPolyrhythm)}
 					/>
 				</label>
-				<HelpIcon content={polyrhythmHelp}/>
+				{(showHelp
+					? <HelpIcon content={polyrhythmHelp}/>
+					: null
+				)}
 			</div>
 			{( isPolyrhythm
 				? <PolyrhythmSelection
@@ -153,6 +157,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setAccentOnOne(!accentOnOne)}
 					/>
 				</label>
+				{(showHelp
+					? <HelpIcon content={accentSelectionHelp}/>
+					: null
+				)}
 				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.accentedBeats}/>}
 			</div>
 			<button>

@@ -3,14 +3,12 @@ import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
 import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
-import { toggleSampleForm } from './reducers/sampleReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionList from './components/SectionList'
 import SectionForm from './components/forms/SectionForm/SectionForm'
-import SampleDisplay from './components/SampleDisplay'
+import SampleChoices from './components/SampleChoices'
 import Result from './components/Result'
-import SampleSelection from './components/forms/SampleSelection'
 import { toggleHelp } from './reducers/uiReducer'
 import HelpIcon from './components/HelpIcon'
 import { addToStartHelp } from './utils/helpText'
@@ -25,7 +23,6 @@ const App = () => {
 	const formInfo = useSelector(state => state.sections.form)
 	const playing = useSelector(state => state.clickTimes.playing)
 	const selectedSamples = useSelector(state => state.samples.samples)
-	const showSampleForm = useSelector(state => state.samples.showSampleForm)
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const strongPlayer = new Tone
@@ -165,8 +162,8 @@ const App = () => {
 	}
 
 	const playClickTrack = async (times) => {
-		const strongSampleUrl = JSON.parse(selectedSamples.strong).url
-		const weakSampleUrl = JSON.parse(selectedSamples.weak).url
+		const strongSampleUrl = selectedSamples.strong.url
+		const weakSampleUrl = selectedSamples.weak.url
 
 		await strongPlayer.load(strongSampleUrl)
 		await weakPlayer.load(weakSampleUrl)
@@ -200,12 +197,6 @@ const App = () => {
 
 	return (
 		<>
-			<SampleDisplay />
-			<button onClick={() => dispatch(toggleSampleForm())}>Change samples</button>
-			{showSampleForm
-				? <SampleSelection />
-				: null
-			}
 			<div className="med-top-margin">
 				<button onClick={() => dispatch(toggleHelp())}>
 					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
@@ -225,6 +216,7 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
+				<SampleChoices />
 				<Result playClickTrack={playClickTrack} buildClickTrack={buildClickTrack}/>
 			</div>
 		</>

@@ -12,6 +12,8 @@ import SampleDisplay from './components/SampleDisplay'
 import Result from './components/Result'
 import SampleSelection from './components/forms/SampleSelection'
 import { toggleHelp } from './reducers/uiReducer'
+import HelpIcon from './components/HelpIcon'
+import { addToStartHelp } from './utils/helpText'
 
 const App = () => {
 	useEffect(() => {
@@ -211,6 +213,10 @@ const App = () => {
 			</div>
 			<div className='med-top-margin' inert={playing ? 'true' : undefined}>
 				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
+				{(showHelp
+					? <HelpIcon content={addToStartHelp}/>
+					: null
+				)}
 				{formInfo.location === 0
 					? <>
 						<SectionForm hideSelf={() => hideForm('create')}/>

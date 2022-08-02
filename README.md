@@ -9,6 +9,8 @@
 - [x] Add help dialogue system
 - [x] Send sample urls to backend when requesting a wav file
 - [x] Add option to toggle all help buttons on or off
-- [ ] Add more help dialogues
+- [x] Add more help dialogues
+- [x] Change to new backend url
+- [ ] Get rid of old sample selection stuff
 - [ ] Improve UI and styling
 

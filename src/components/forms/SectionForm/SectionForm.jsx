@@ -10,7 +10,7 @@ import AccentSelection from './AccentSelection'
 import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
 import HelpIcon from '../../HelpIcon'
-import { polyrhythmHelp } from '../../../utils/helpText'
+import { accentSelectionHelp, polyrhythmHelp } from '../../../utils/helpText'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -157,6 +157,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						onChange={() => setAccentOnOne(!accentOnOne)}
 					/>
 				</label>
+				{(showHelp
+					? <HelpIcon content={accentSelectionHelp}/>
+					: null
+				)}
 				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.accentedBeats}/>}
 			</div>
 			<button>

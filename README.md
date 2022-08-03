@@ -12,6 +12,6 @@
 - [x] Add more help dialogues
 - [x] Change to new backend url
 - [x] Get rid of old sample selection stuff
-- [ ] Fix bug where changing the accented notes messes everything up
+- [x] Fix bug where changing the accented notes messes everything up
 - [ ] Improve UI and styling
 

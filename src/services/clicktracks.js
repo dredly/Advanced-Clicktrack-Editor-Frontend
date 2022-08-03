@@ -1,6 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://127.0.0.1:5000'
-// const baseUrl = 'https://clicktrack-audio-backend.herokuapp.com/'
+//const baseUrl = 'http://127.0.0.1:5000'
+const baseUrl = 'https://clicktrack-audio-backend.herokuapp.com/'
 
 // Sends a trivial request to the backend to prevent heroku from
 // cold starting once a user requests a wav file
@@ -14,7 +14,7 @@ const getWav = async (data) => {
 }
 
 const getMidi = async (data) => {
-	const response = await axios.post(`${baseUrl}/api/make_polyrhythm_test`, data)
+	const response = await axios.post(`${baseUrl}/api/make_midi`, data)
 	return response.data
 }
 

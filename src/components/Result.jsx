@@ -13,12 +13,10 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 
 	const midiData = {
 		timeSigData,
-		// TODO: need to pass clicktime data only for the primary rhythm
 		tempoData: clickTimesNonPoly.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
 		sectionData: sections
 	}
 
-	// Hardcode instrument for testing
 	const wavData = {
 		...midiData,
 		instrument: selectedSampleValue

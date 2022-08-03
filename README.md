@@ -11,6 +11,6 @@
 - [x] Add option to toggle all help buttons on or off
 - [x] Add more help dialogues
 - [x] Change to new backend url
-- [ ] Get rid of old sample selection stuff
+- [x] Get rid of old sample selection stuff
 - [ ] Improve UI and styling
 

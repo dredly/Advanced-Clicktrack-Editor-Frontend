@@ -1,5 +1,5 @@
 import axios from 'axios'
-// const baseUrl = 'http://127.0.0.1:5000'
+//const baseUrl = 'http://127.0.0.1:5000'
 const baseUrl = 'https://clicktrack-audio-backend.herokuapp.com/'
 
 // Sends a trivial request to the backend to prevent heroku from

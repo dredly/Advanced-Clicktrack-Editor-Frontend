@@ -2,15 +2,13 @@ import * as Tone from 'tone'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
-import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
-import { toggleSampleForm } from './reducers/sampleReducer'
+import { addTimeArray, addTimeArrayNonPoly, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionList from './components/SectionList'
 import SectionForm from './components/forms/SectionForm/SectionForm'
-import SampleDisplay from './components/SampleDisplay'
+import SampleChoices from './components/SampleChoices'
 import Result from './components/Result'
-import SampleSelection from './components/forms/SampleSelection'
 import { toggleHelp } from './reducers/uiReducer'
 import HelpIcon from './components/HelpIcon'
 import { addToStartHelp } from './utils/helpText'
@@ -25,7 +23,6 @@ const App = () => {
 	const formInfo = useSelector(state => state.sections.form)
 	const playing = useSelector(state => state.clickTimes.playing)
 	const selectedSamples = useSelector(state => state.samples.samples)
-	const showSampleForm = useSelector(state => state.samples.showSampleForm)
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const strongPlayer = new Tone
@@ -36,7 +33,7 @@ const App = () => {
 		.Player()
 		.toDestination()
 
-	const buildClickTrackSection = (sectionData, startTime) => {
+	const buildClickTrackSection = (sectionData, startTime, isPolyrhythmic) => {
 		const bpmArray = makeBpmArray(sectionData)
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
 		const timeArray = intervalArray.map((interval, idx) => {
@@ -53,7 +50,13 @@ const App = () => {
 					? { time, bpm: bpmArray[idx], downBeat: true }
 					: { time, bpm: bpmArray[idx], downBeat: false }
 			))
-		dispatch(addTimeArray(clickTimeArray))
+		if (isPolyrhythmic) {
+			console.log('About to dispatch to poly array')
+			dispatch(addTimeArray(clickTimeArray))
+		} else {
+			console.log('About to dispatch to non - poly array')
+			dispatch(addTimeArrayNonPoly(clickTimeArray))
+		}
 		return endTime
 	}
 
@@ -136,8 +139,7 @@ const App = () => {
 		return endTime
 	}
 
-	const buildClickTrack = () => {
-		dispatch(clear())
+	const buildClickTrackWithPolyrhythms = () => {
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
 			if (sections[i].secondaryBpm) {
@@ -157,16 +159,28 @@ const App = () => {
 				const endTime = buildPolyrhythmicSection([sectionData1, sectionData2], startTime)
 				startTime = endTime
 			} else {
-				const endTime = buildClickTrackSection(sections[i], startTime)
+				const endTime = buildClickTrackSection(sections[i], startTime, true)
 				startTime = endTime
 			}
 		}
-		dispatch(changeStatus('ready'))
+	}
+
+	// This is necessary for the midi processing to work in the backend
+	// Could also be used for building click tracks in general if we detect that they contain
+	// no polyrhythms
+	const buildClickTrackWithoutPolyrhythms = () => {
+		let startTime = 0
+		for (let i = 0; i < sections.length; i++) {
+			// Todo add isPolyrhythmic arg to buildClickTrackSection function so that it knows which
+			// piece of state to dispatch to
+			const endTime = buildClickTrackSection(sections[i], startTime, false)
+			startTime = endTime
+		}
 	}
 
 	const playClickTrack = async (times) => {
-		const strongSampleUrl = JSON.parse(selectedSamples.strong).url
-		const weakSampleUrl = JSON.parse(selectedSamples.weak).url
+		const strongSampleUrl = selectedSamples.strong.url
+		const weakSampleUrl = selectedSamples.weak.url
 
 		await strongPlayer.load(strongSampleUrl)
 		await weakPlayer.load(weakSampleUrl)
@@ -196,16 +210,8 @@ const App = () => {
 		dispatch(displayForm({ location: NaN, type }))
 	}
 
-	console.log('sections', sections)
-
 	return (
 		<>
-			<SampleDisplay />
-			<button onClick={() => dispatch(toggleSampleForm())}>Change samples</button>
-			{showSampleForm
-				? <SampleSelection />
-				: null
-			}
 			<div className="med-top-margin">
 				<button onClick={() => dispatch(toggleHelp())}>
 					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
@@ -225,7 +231,13 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-				<Result playClickTrack={playClickTrack} buildClickTrack={buildClickTrack}/>
+				<SampleChoices />
+				<Result playClickTrack={playClickTrack} buildClickTrack={() => {
+					dispatch(clear())
+					buildClickTrackWithPolyrhythms()
+					buildClickTrackWithoutPolyrhythms()
+					dispatch(changeStatus('ready'))
+				}}/>
 			</div>
 		</>
 	)

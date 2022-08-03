@@ -4,24 +4,26 @@ import clicktrackService from '../services/clicktracks'
 
 const Result = ({ playClickTrack, buildClickTrack }) => {
 	const sections = useSelector(state => state.sections.sectionList)
-	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
+	const clickTimes = useSelector(state => state.clickTimes.timeArray)
+	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 	const status = useSelector(state => state.clickTimes.status)
-	// const selectedSamples = useSelector(state => state.samples.samples)
-
-	// const strongSampleUrl = JSON.parse(selectedSamples.strong).url
-	// const weakSampleUrl = JSON.parse(selectedSamples.weak).url
+	const selectedSampleValue = useSelector(state => state.samples.samples.strong.value)
 
 	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
 
-	// const wavData = {
-	// 	sampleData: { strongUrl: strongSampleUrl, weakUrl: weakSampleUrl },
-	// 	timeData: clickTimes.map(note => ({ time: note.time, downBeat: note.downBeat }))
-	// }
-
 	const midiData = {
 		timeSigData,
-		tempoData: clickTimes.map(note => ({ bpm: note.bpm, downBeat: note.downBeat }))
+		tempoData: clickTimesNonPoly.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
+		sectionData: sections
 	}
+
+	const wavData = {
+		...midiData,
+		instrument: selectedSampleValue
+	}
+
+	console.log('clickTimes', clickTimes)
+	console.log('clickTimesNonPoly', clickTimesNonPoly)
 
 	return (
 		<div className='med-top-margin'>
@@ -33,7 +35,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 							getFile={clicktrackService.getWav}
 							fileFormat={'wav'}
 							// Switch to sending midi data to test conversion on backend
-							sendInfo={midiData}
+							sendInfo={wavData}
 						/>
 						<DownloadLink
 							getFile={clicktrackService.getMidi}

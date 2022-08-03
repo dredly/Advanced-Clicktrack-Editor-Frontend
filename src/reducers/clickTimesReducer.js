@@ -1,13 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = { clickTimes: [], status: 'not_created', playing: false }
+const initialState = { timeArray: [], clickTimesNonPoly: [], status: 'not_created', playing: false }
 
 const clickTimesSlice = createSlice({
 	name: 'clickTimes',
 	initialState,
 	reducers: {
 		addTimeArray(state, action) {
-			state.clickTimes.push(...action.payload)
+			console.log('Hit the reducer for addTimeArray')
+			console.log('addTimeArray payload', action.payload)
+			console.log('state.clickTimes before', state.clickTimes)
+			state.timeArray.push(...action.payload)
+		},
+		addTimeArrayNonPoly(state, action) {
+			console.log('Hit the reducer for addTimeArrayNonPoly')
+			console.log('addTimeArrayNonPoly payload', action.payload)
+			console.log('state.clickTimesNonPoly before', state.clickTimesNonPoly)
+			state.clickTimesNonPoly.push(...action.payload)
 		},
 		changeStatus(state, action) {
 			state.status = action.payload
@@ -16,10 +25,11 @@ const clickTimesSlice = createSlice({
 			state.playing = !state.playing
 		},
 		clear(state) {
-			state.clickTimes = []
+			state.timeArray = []
+			state.clickTimesNonPoly = []
 		}
 	}
 })
 
-export const { addTimeArray, changeStatus, togglePlaying, clear } = clickTimesSlice.actions
+export const { addTimeArray, addTimeArrayNonPoly, changeStatus, togglePlaying, clear } = clickTimesSlice.actions
 export default clickTimesSlice.reducer

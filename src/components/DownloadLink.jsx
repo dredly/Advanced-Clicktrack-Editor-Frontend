@@ -5,7 +5,6 @@ const DownloadLink = ({ getFile, fileFormat, sendInfo }) => {
 
 	const handleDownload = async () => {
 		setUrl('...loading')
-		console.log(JSON.stringify(sendInfo))
 		const result = await getFile(sendInfo)
 		setUrl(result.url)
 	}

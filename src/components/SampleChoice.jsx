@@ -1,7 +1,12 @@
 import * as Tone from 'tone'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeSamples } from '../reducers/sampleReducer'
 
 const SampleChoice = ({ sample }) => {
+	const dispatch = useDispatch()
+	const selectedSampleValue = useSelector(state => state.samples.samples.strong.value)
 
+	const styleClass = selectedSampleValue === sample.strong.value ? 'selected-sample sample': 'sample'
 	const previewPlayer = new Tone.Player(sample.strong.url).toDestination()
 
 	const listen = () => {
@@ -10,12 +15,11 @@ const SampleChoice = ({ sample }) => {
 	}
 
 	const chooseSample = () => {
-		// TODO: add this functionality with use dispatch
-		console.log('Gonna choose this sample')
+		dispatch(changeSamples(sample.strong.value))
 	}
 
 	return (
-		<div>
+		<div className={styleClass}>
 			<button onClick={chooseSample}>
 				{sample.strong.name}
 			</button>

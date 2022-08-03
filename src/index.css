@@ -22,3 +22,12 @@
 	border-radius: 3px;
 	cursor: pointer;
 }
+
+.sample {
+	width: fit-content;
+}
+
+.selected-sample {
+	border: 2px solid rgb(83, 32, 74);
+	border-radius: 2px;
+}

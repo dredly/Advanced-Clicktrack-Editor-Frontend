@@ -193,8 +193,6 @@ const App = () => {
 		dispatch(displayForm({ location: NaN, type }))
 	}
 
-	console.log('sections', sections)
-
 	return (
 		<>
 			<div className="med-top-margin">

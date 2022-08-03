@@ -4,7 +4,8 @@ import clicktrackService from '../services/clicktracks'
 
 const Result = ({ playClickTrack, buildClickTrack }) => {
 	const sections = useSelector(state => state.sections.sectionList)
-	const clickTimes = useSelector(state => state.clickTimes.clickTimes)
+	const clickTimes = useSelector(state => state.clickTimes.timeArray)
+	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 	const status = useSelector(state => state.clickTimes.status)
 	const selectedSampleValue = useSelector(state => state.samples.samples.strong.value)
 
@@ -12,7 +13,9 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 
 	const midiData = {
 		timeSigData,
-		tempoData: clickTimes.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
+		// TODO: need to pass clicktime data only for the primary rhythm
+		tempoData: clickTimesNonPoly.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
+		sectionData: sections
 	}
 
 	// Hardcode instrument for testing
@@ -20,6 +23,9 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 		...midiData,
 		instrument: selectedSampleValue
 	}
+
+	console.log('clickTimes', clickTimes)
+	console.log('clickTimesNonPoly', clickTimesNonPoly)
 
 	return (
 		<div className='med-top-margin'>

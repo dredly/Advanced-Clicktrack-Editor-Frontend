@@ -2,7 +2,7 @@ import * as Tone from 'tone'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
-import { addTimeArray, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
+import { addTimeArray, addTimeArrayNonPoly, changeStatus, togglePlaying, clear } from './reducers/clickTimesReducer'
 import clicktrackService from './services/clicktracks'
 import makeBpmArray from './utils/tempoCurveCalculator'
 import SectionList from './components/SectionList'
@@ -33,7 +33,7 @@ const App = () => {
 		.Player()
 		.toDestination()
 
-	const buildClickTrackSection = (sectionData, startTime) => {
+	const buildClickTrackSection = (sectionData, startTime, isPolyrhythmic) => {
 		const bpmArray = makeBpmArray(sectionData)
 		const intervalArray = bpmArray.map(bpm => 60/bpm)
 		const timeArray = intervalArray.map((interval, idx) => {
@@ -50,7 +50,13 @@ const App = () => {
 					? { time, bpm: bpmArray[idx], downBeat: true }
 					: { time, bpm: bpmArray[idx], downBeat: false }
 			))
-		dispatch(addTimeArray(clickTimeArray))
+		if (isPolyrhythmic) {
+			console.log('About to dispatch to poly array')
+			dispatch(addTimeArray(clickTimeArray))
+		} else {
+			console.log('About to dispatch to non - poly array')
+			dispatch(addTimeArrayNonPoly(clickTimeArray))
+		}
 		return endTime
 	}
 
@@ -133,7 +139,8 @@ const App = () => {
 		return endTime
 	}
 
-	const buildClickTrack = () => {
+	const buildClickTrackWithPolyrhythms = () => {
+		console.log('Sections', sections)
 		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
@@ -154,11 +161,24 @@ const App = () => {
 				const endTime = buildPolyrhythmicSection([sectionData1, sectionData2], startTime)
 				startTime = endTime
 			} else {
-				const endTime = buildClickTrackSection(sections[i], startTime)
+				const endTime = buildClickTrackSection(sections[i], startTime, true)
 				startTime = endTime
 			}
 		}
-		dispatch(changeStatus('ready'))
+	}
+
+	// This is necessary for the midi processing to work in the backend
+	// Could also be used for building click tracks in general if we detect that they contain
+	// no polyrhythms
+	const buildClickTrackWithoutPolyrhythms = () => {
+		dispatch(clear())
+		let startTime = 0
+		for (let i = 0; i < sections.length; i++) {
+			// Todo add isPolyrhythmic arg to buildClickTrackSection function so that it knows which
+			// piece of state to dispatch to
+			const endTime = buildClickTrackSection(sections[i], startTime, false)
+			startTime = endTime
+		}
 	}
 
 	const playClickTrack = async (times) => {
@@ -215,7 +235,13 @@ const App = () => {
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
 				<SampleChoices />
-				<Result playClickTrack={playClickTrack} buildClickTrack={buildClickTrack}/>
+				<Result playClickTrack={playClickTrack} buildClickTrack={() => {
+					buildClickTrackWithPolyrhythms()
+					setTimeout(() => {
+						buildClickTrackWithoutPolyrhythms()
+						dispatch(changeStatus('ready'))
+					}, 50)
+				}}/>
 			</div>
 		</>
 	)

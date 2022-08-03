@@ -14,7 +14,7 @@ const getWav = async (data) => {
 }
 
 const getMidi = async (data) => {
-	const response = await axios.post(`${baseUrl}/api/make_midi`, data)
+	const response = await axios.post(`${baseUrl}/api/make_polyrhythm_test`, data)
 	return response.data
 }
 

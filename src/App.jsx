@@ -140,8 +140,6 @@ const App = () => {
 	}
 
 	const buildClickTrackWithPolyrhythms = () => {
-		console.log('Sections', sections)
-		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
 			if (sections[i].secondaryBpm) {
@@ -171,7 +169,6 @@ const App = () => {
 	// Could also be used for building click tracks in general if we detect that they contain
 	// no polyrhythms
 	const buildClickTrackWithoutPolyrhythms = () => {
-		dispatch(clear())
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
 			// Todo add isPolyrhythmic arg to buildClickTrackSection function so that it knows which
@@ -236,11 +233,10 @@ const App = () => {
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
 				<SampleChoices />
 				<Result playClickTrack={playClickTrack} buildClickTrack={() => {
+					dispatch(clear())
 					buildClickTrackWithPolyrhythms()
-					setTimeout(() => {
-						buildClickTrackWithoutPolyrhythms()
-						dispatch(changeStatus('ready'))
-					}, 50)
+					buildClickTrackWithoutPolyrhythms()
+					dispatch(changeStatus('ready'))
 				}}/>
 			</div>
 		</>

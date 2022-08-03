@@ -25,7 +25,8 @@ const clickTimesSlice = createSlice({
 			state.playing = !state.playing
 		},
 		clear(state) {
-			state.clickTimes = []
+			state.timeArray = []
+			state.clickTimesNonPoly = []
 		}
 	}
 })

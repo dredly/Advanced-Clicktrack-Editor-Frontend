@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux'
 import DownloadLink from './DownloadLink'
-import clicktrackService from '../services/clicktracks'
 
 const Result = ({ playClickTrack, buildClickTrack }) => {
 	const sections = useSelector(state => state.sections.sectionList)
@@ -17,13 +16,14 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 		sectionData: sections
 	}
 
-	const wavData = {
+	// For files with actual audio data, i.e. wav and ogg, the backend needs to know which
+	// instrument to use for synthesis
+	const audioData = {
 		...midiData,
 		instrument: selectedSampleValue
 	}
 
-	console.log('clickTimes', clickTimes)
-	console.log('clickTimesNonPoly', clickTimesNonPoly)
+	const formats = ['wav', 'flac', 'ogg']
 
 	return (
 		<div className='med-top-margin'>
@@ -32,16 +32,12 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 					?	<>
 						<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
 						<DownloadLink
-							getFile={clicktrackService.getWav}
-							fileFormat={'wav'}
-							// Switch to sending midi data to test conversion on backend
-							sendInfo={wavData}
-						/>
-						<DownloadLink
-							getFile={clicktrackService.getMidi}
 							fileFormat={'midi'}
 							sendInfo={midiData}
 						/>
+						{formats.map(f => (
+							<DownloadLink fileFormat={f} sendInfo={audioData} key={f} />
+						))}
 					</>
 					:   <button onClick={buildClickTrack}>{status === 'not_created'
 						? 'Create click track'

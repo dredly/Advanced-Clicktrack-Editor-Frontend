@@ -13,3 +13,9 @@ export const addToStartHelp = 'Click here to add a first section. If you already
 
 export const accentSelectionHelp = 'Tick the boxes to select which notes are accented (played louder). For example ticking the \
 	second and third box will result in accents on beats 2 and 3'
+
+export const multipleSamplesHelp = 'You can optionally select a second sample. If a section is a polyrhythm, this sample will be used to play\
+	the notes of the secondary rhythm. Otherwise it will be used for weak beats while the first sample will be used for strong beats (downbeats)'
+
+export const fileFormatsHelp = 'A midi file does not actually include any sound, but is instead a set of instructions for a synthesiser or piece\
+	of software to play a song. This will be the fastest to download. All the other formats will give you immediately playable audio.'

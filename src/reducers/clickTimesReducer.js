@@ -7,15 +7,9 @@ const clickTimesSlice = createSlice({
 	initialState,
 	reducers: {
 		addTimeArray(state, action) {
-			console.log('Hit the reducer for addTimeArray')
-			console.log('addTimeArray payload', action.payload)
-			console.log('state.clickTimes before', state.clickTimes)
 			state.timeArray.push(...action.payload)
 		},
 		addTimeArrayNonPoly(state, action) {
-			console.log('Hit the reducer for addTimeArrayNonPoly')
-			console.log('addTimeArrayNonPoly payload', action.payload)
-			console.log('state.clickTimesNonPoly before', state.clickTimesNonPoly)
 			state.clickTimesNonPoly.push(...action.payload)
 		},
 		changeStatus(state, action) {

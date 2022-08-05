@@ -1,5 +1,7 @@
 import { useSelector } from 'react-redux'
 import DownloadLink from './DownloadLink'
+import HelpIcon from './HelpIcon'
+import { fileFormatsHelp } from '../utils/helpText'
 
 const Result = ({ playClickTrack, buildClickTrack }) => {
 	const sections = useSelector(state => state.sections.sectionList)
@@ -7,6 +9,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 	const status = useSelector(state => state.clickTimes.status)
 	const selectedSampleValue = useSelector(state => state.samples.samples[0].strong.value)
+	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
 
@@ -30,14 +33,22 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 			{sections.length
 				? status === 'ready'
 					?	<>
-						<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
-						<DownloadLink
-							fileFormat={'midi'}
-							sendInfo={midiData}
-						/>
-						{formats.map(f => (
-							<DownloadLink fileFormat={f} sendInfo={audioData} key={f} />
-						))}
+						<div className='small-bottom-margin'>
+							<button onClick={() => playClickTrack(clickTimes)}>Play click track</button>
+						</div>
+						{(showHelp
+							? <HelpIcon content={fileFormatsHelp}/>
+							: null
+						)}
+						<div>
+							<DownloadLink
+								fileFormat={'midi'}
+								sendInfo={midiData}
+							/>
+							{formats.map(f => (
+								<DownloadLink fileFormat={f} sendInfo={audioData} key={f} />
+							))}
+						</div>
 					</>
 					:   <button onClick={buildClickTrack}>{status === 'not_created'
 						? 'Create click track'

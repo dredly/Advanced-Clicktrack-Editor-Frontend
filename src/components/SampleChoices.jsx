@@ -1,12 +1,21 @@
 import allSamples from '../utils/sampleInfo'
 import SampleChoice from './SampleChoice'
+import HelpIcon from './HelpIcon'
+import { useSelector } from 'react-redux/es/exports'
+import { multipleSamplesHelp } from '../utils/helpText'
 
 const SampleChoices = () => {
+	const showHelp = useSelector(state => state.ui.showHelp)
+
 	return (
 		<details className='med-top-margin'>
 			{/* TODO: Find good way for mobile users to select second sample */}
 			<summary>Choose a sample for playback</summary>
-			You can select up to 2 samples. The second sample will be used for the weak beats. Shift-click to select a second one.
+			You can select up to 2 samples. Shift-click to select a second sample.
+			{(showHelp
+				? <HelpIcon content={multipleSamplesHelp}/>
+				: null
+			)}
 			{allSamples.map(s => (
 				<SampleChoice sample={s} key={s.strong.value}/>
 			))}

@@ -3,12 +3,12 @@ import SampleChoice from './SampleChoice'
 
 const SampleChoices = () => {
 	return (
-		<div className='med-top-margin'>
-			<h3>Choose a sample for playback</h3>
+		<details className='med-top-margin'>
+			<summary>Choose a sample for playback</summary>
 			{allSamples.map(s => (
 				<SampleChoice sample={s} key={s.strong.value}/>
 			))}
-		</div>
+		</details>
 	)
 }
 

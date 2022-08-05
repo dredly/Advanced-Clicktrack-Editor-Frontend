@@ -1,6 +1,8 @@
 import * as Tone from 'tone'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeSamples } from '../reducers/sampleReducer'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 
 const SampleChoice = ({ sample }) => {
 	const dispatch = useDispatch()
@@ -25,6 +27,7 @@ const SampleChoice = ({ sample }) => {
 			</button>
 			<button onClick={listen}>
 				Listen
+				<span className='small-left-margin'><FontAwesomeIcon icon={faVolumeHigh} /></span>
 			</button>
 		</div>
 	)

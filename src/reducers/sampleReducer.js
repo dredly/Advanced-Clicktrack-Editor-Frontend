@@ -6,14 +6,14 @@ const initialState = {
 		strong: {
 			name: 'High pitched Woodblock',
 			value: 'woodblock_high',
-			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1659481353/Samples/woodblock_high_bmyttx.mp3'
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1659709148/Samples/woodblock_high_srygbo.ogg',
 		},
 		weak: {
 			// The same sample but with a volume transformation
-			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/e_volume:-60/v1659481353/Samples/woodblock_high_bmyttx.mp3'
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/e_volume:-60/v1659709148/Samples/woodblock_high_srygbo.ogg',
 		},
 	},
-	showSampleForm: false
+	showSampleForm: false,
 }
 
 const samplesSlice = createSlice({

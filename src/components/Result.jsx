@@ -6,7 +6,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	const clickTimes = useSelector(state => state.clickTimes.timeArray)
 	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 	const status = useSelector(state => state.clickTimes.status)
-	const selectedSampleValue = useSelector(state => state.samples.samples.strong.value)
+	const selectedSampleValue = useSelector(state => state.samples.samples[0].strong.value)
 
 	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
 

@@ -22,7 +22,7 @@ const App = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 	const formInfo = useSelector(state => state.sections.form)
 	const playing = useSelector(state => state.clickTimes.playing)
-	const selectedSamples = useSelector(state => state.samples.samples)
+	const selectedSamples = useSelector(state => state.samples.samples[0])
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const strongPlayer = new Tone

@@ -2,18 +2,18 @@ import { createSlice } from '@reduxjs/toolkit'
 import allSamples from '../utils/sampleInfo'
 
 const initialState = {
-	samples: {
+	samples: [{
 		strong: {
 			name: 'High pitched Woodblock',
 			value: 'woodblock_high',
-			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1659481353/Samples/woodblock_high_bmyttx.mp3'
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/v1659709148/Samples/woodblock_high_srygbo.ogg',
 		},
 		weak: {
 			// The same sample but with a volume transformation
-			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/e_volume:-60/v1659481353/Samples/woodblock_high_bmyttx.mp3'
+			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/e_volume:-60/v1659709148/Samples/woodblock_high_srygbo.ogg',
 		},
-	},
-	showSampleForm: false
+	}] ,
+	showSampleForm: false,
 }
 
 const samplesSlice = createSlice({
@@ -23,7 +23,12 @@ const samplesSlice = createSlice({
 		changeSamples(state, action) {
 			const newSampleValue = action.payload
 			const newSamples = allSamples.find(s => s.strong.value === newSampleValue)
-			state.samples = newSamples
+			state.samples = [newSamples]
+		},
+		addSecondSample(state, action) {
+			const newSampleValue = action.payload
+			const newSamples = allSamples.find(s => s.strong.value === newSampleValue)
+			state.samples[1] = newSamples
 		},
 		toggleSampleForm(state) {
 			state.showSampleForm = !state.showSampleForm
@@ -31,5 +36,5 @@ const samplesSlice = createSlice({
 	}
 })
 
-export const { changeSamples, toggleSampleForm } = samplesSlice.actions
+export const { changeSamples, addSecondSample, toggleSampleForm } = samplesSlice.actions
 export default samplesSlice.reducer

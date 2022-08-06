@@ -11,6 +11,7 @@ import SampleChoices from './components/SampleChoices'
 import Result from './components/Result'
 import { toggleHelp } from './reducers/uiReducer'
 import HelpIcon from './components/HelpIcon'
+// import TestingZone from './components/TestingZone'
 import { addToStartHelp } from './utils/helpText'
 
 const App = () => {
@@ -25,13 +26,9 @@ const App = () => {
 	const selectedSamples = useSelector(state => state.samples.samples)
 	const showHelp = useSelector(state => state.ui.showHelp)
 
-	const strongPlayer = new Tone
-		.Player()
-		.toDestination()
-
-	const weakPlayer = new Tone
-		.Player()
-		.toDestination()
+	const strongPlayer = new Tone.Player().toDestination()
+	const weakPlayer = new Tone.Player().toDestination()
+	const secondaryPlayer = new Tone.Player().toDestination()
 
 	const buildClickTrackSection = (sectionData, startTime, isPolyrhythmic) => {
 		const bpmArray = makeBpmArray(sectionData)
@@ -99,43 +96,65 @@ const App = () => {
 			}
 		})
 
-		// TODO: If either array is longer than expected cut off the extra elements
-		// -> May not need to filter out the NaNs in next step?
+		// Will need to do things differently if a second instrument is selected
 
-		// Combine the two time arrays into one
-		// This solution should work for wav, but will need different solution for midi
-		const combinedArray = timeArrays
-			.reduce((a, b) => a.concat(b))
-			.sort((a, b) => a - b)
+		if (selectedSamples.length === 1) {
+			// Combine the two time arrays into one
+			const combinedArray = timeArrays
+				.reduce((a, b) => a.concat(b))
+				.sort((a, b) => a - b)
 			// Round off the numbers to prevent weird floating point imprecisions
-			.map(time => Math.round(time * 10 ** 6) / 10 ** 6)
-			.filter(t => !isNaN(t)) // Remove the NaN weirdness from the end
+				.map(time => Math.round(time * 10 ** 6) / 10 ** 6)
+				.filter(t => !isNaN(t)) // Remove the NaN weirdness from the end
 
-		console.log('combinedArray', combinedArray)
-
-		// Instead just delete duplicates
-		const clickTimeArrayWithDuplicates = combinedArray.map((time, idx) => {
+			// Instead just delete duplicates
+			const clickTimeArrayWithDuplicates = combinedArray.map((time, idx) => {
 			// Check if time is equal to the next time
-			if (idx < combinedArray.length - 1 && time === combinedArray[idx + 1]) {
-				return JSON.stringify({ time, downBeat: true })
-			}
+				if (idx < combinedArray.length - 1 && time === combinedArray[idx + 1]) {
+					return JSON.stringify({ time, downBeat: true })
+				}
 
-			// Check if time is equal to previous time
-			if (idx > 0 &&  time === combinedArray[idx - 1]) {
-				// Add a tiny increment to the time so that ToneJS does not throw an error
-				// from being asked to play two notes perfectly simultaneously
-				return JSON.stringify({ time, downBeat: true })
-			}
+				// Check if time is equal to previous time
+				if (idx > 0 &&  time === combinedArray[idx - 1]) {
+					return JSON.stringify({ time, downBeat: true })
+				}
 
-			return JSON.stringify({ time, downBeat: false })
-		})
+				return JSON.stringify({ time, downBeat: false })
+			})
 
-		const clickTimeArray = [... new Set(clickTimeArrayWithDuplicates)]
-			.map(ct => JSON.parse(ct))
+			const clickTimeArray = [... new Set(clickTimeArrayWithDuplicates)]
+				.map(ct => JSON.parse(ct))
 
-		console.log('clickTimeArray', clickTimeArray)
+			dispatch(addTimeArray(clickTimeArray))
+		} else if (selectedSamples.length === 2) {
+			// For now downbeat will always be false, but need to figure out way of playing both samples at same time when they sync
+			const strongClickArray = timeArrays[0].map(time => {
+				return { time, secondInstrument: false, downBeat: false }
+			})
+			const weakClickArray = timeArrays[1].map(time => {
+				return { time, secondInstrument: true, downBeat: false }
+			})
+			const combinedArray = [strongClickArray, weakClickArray]
+				.reduce((a, b) => a.concat(b))
+				.sort((a, b) => a.time - b.time)
+				// Round off the numbers to prevent weird floating point imprecisions
+				.map(click => {
+					return { ...click, time: Math.round(click.time * 10 ** 6) / 10 ** 6 }
+				})
+				.filter(click => !isNaN(click.time)) // Remove the NaN weirdness from the end
+				// Add 0.00001 to the times of all downbeats on the second instrument, to prevent
+				// ToneJS from throwing an error
+				.map((click, idx, arr) => {
+					if (idx > 0 && click.time === arr[idx -1].time) {
+						return { ...click, time: click.time + 0.00001 }
+					}
+					return click
+				})
 
-		dispatch(addTimeArray(clickTimeArray))
+			console.log('combinedArray', combinedArray)
+
+			dispatch(addTimeArray(combinedArray))
+		}
 		return endTime
 	}
 
@@ -179,20 +198,39 @@ const App = () => {
 	}
 
 	const playClickTrack = async (times) => {
-		const strongSampleUrl = selectedSamples.strong.url
-		const weakSampleUrl = selectedSamples.weak.url
+		let strongSampleUrl
+		let weakSampleUrl
+
+		//Check if there are polyrhythms and a second instrument has been chosen
+		const numPolySections = sections.map(s => s.secondaryNumBeats).filter(snb => snb).length
+		if (numPolySections && selectedSamples[1]) {
+			strongSampleUrl = selectedSamples[0].strong.url
+			weakSampleUrl = selectedSamples[0].weak.url
+			const secondarySampleUrl = selectedSamples[1].strong.url
+			await secondaryPlayer.load(secondarySampleUrl)
+		} else {
+			strongSampleUrl = selectedSamples[0].strong.url
+			weakSampleUrl = selectedSamples[1] ? selectedSamples[1].strong.url : selectedSamples[0].weak.url
+		}
 
 		await strongPlayer.load(strongSampleUrl)
 		await weakPlayer.load(weakSampleUrl)
 
 		Tone.start()
 		dispatch(togglePlaying())
+		console.log('times',times)
 		times.map(t => {
 			return { ...t, time: t.time + Tone.now() }
 		}).forEach(click => {
 			if (click.downBeat) {
 				strongPlayer.start(click.time)
-			} else weakPlayer.start(click.time)
+			} else {
+				if (click.secondInstrument) {
+					secondaryPlayer.start(click.time)
+				} else {
+					weakPlayer.start(click.time)
+				}
+			}
 		})
 		const bpmAtEnd = sections[sections.length - 1].bpm
 		const finalInterval = 60 / bpmAtEnd
@@ -212,6 +250,7 @@ const App = () => {
 
 	return (
 		<>
+			{/* <TestingZone /> */}
 			<div className="med-top-margin">
 				<button onClick={() => dispatch(toggleHelp())}>
 					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}

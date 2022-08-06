@@ -1,11 +1,12 @@
 import { useState } from 'react'
+import clicktrackService from '../services/clicktracks'
 
-const DownloadLink = ({ getFile, fileFormat, sendInfo }) => {
+const DownloadLink = ({ fileFormat, sendInfo }) => {
 	const [url, setUrl] = useState('')
 
 	const handleDownload = async () => {
 		setUrl('...loading')
-		const result = await getFile(sendInfo)
+		const result = await clicktrackService.getFile(sendInfo, fileFormat)
 		setUrl(result.url)
 	}
 

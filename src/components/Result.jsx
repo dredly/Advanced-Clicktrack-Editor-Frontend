@@ -8,7 +8,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	const clickTimes = useSelector(state => state.clickTimes.timeArray)
 	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 	const status = useSelector(state => state.clickTimes.status)
-	const selectedSampleValue = useSelector(state => state.samples.samples[0].strong.value)
+	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
@@ -23,7 +23,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 	// instrument to use for synthesis
 	const audioData = {
 		...midiData,
-		instrument: selectedSampleValue
+		instruments: selectedSampleValues
 	}
 
 	const formats = ['wav', 'flac', 'ogg']

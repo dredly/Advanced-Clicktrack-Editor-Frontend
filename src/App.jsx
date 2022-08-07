@@ -158,7 +158,7 @@ const App = () => {
 		return endTime
 	}
 
-	const buildClickTrackWithPolyrhythms = () => {
+	const buildClickTrackWithPolyrhythms = (samples) => {
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
 			if (sections[i].secondaryBpm) {
@@ -175,7 +175,7 @@ const App = () => {
 					bpm: sections[i].secondaryBpm,
 					bpmEnd: sections[i].secondaryBpmEnd
 				}
-				const endTime = buildPolyrhythmicSection([sectionData1, sectionData2], startTime)
+				const endTime = buildPolyrhythmicSection([sectionData1, sectionData2], startTime, samples)
 				startTime = endTime
 			} else {
 				const endTime = buildClickTrackSection(sections[i], startTime, true)
@@ -200,6 +200,8 @@ const App = () => {
 	const playClickTrack = async (times) => {
 		let strongSampleUrl
 		let weakSampleUrl
+
+		console.log('selectedSamples inside playClickTrack', selectedSamples)
 
 		//Check if there are polyrhythms and a second instrument has been chosen
 		const numPolySections = sections.map(s => s.secondaryNumBeats).filter(snb => snb).length
@@ -248,6 +250,15 @@ const App = () => {
 		dispatch(displayForm({ location: NaN, type }))
 	}
 
+	const buildClickTrack = () => {
+		dispatch(clear())
+		buildClickTrackWithPolyrhythms()
+		buildClickTrackWithoutPolyrhythms()
+		dispatch(changeStatus('ready'))
+	}
+
+	console.log('selectedSamples', selectedSamples)
+
 	return (
 		<>
 			{/* <TestingZone /> */}
@@ -270,13 +281,8 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-				<SampleChoices />
-				<Result playClickTrack={playClickTrack} buildClickTrack={() => {
-					dispatch(clear())
-					buildClickTrackWithPolyrhythms()
-					buildClickTrackWithoutPolyrhythms()
-					dispatch(changeStatus('ready'))
-				}}/>
+				<SampleChoices rebuild={buildClickTrack}/>
+				<Result playClickTrack={playClickTrack} buildClickTrack={buildClickTrack}/>
 			</div>
 		</>
 	)

@@ -1,12 +1,14 @@
 import * as Tone from 'tone'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeSamples, addSecondSample } from '../reducers/sampleReducer'
+import { changeStatus } from '../reducers/clickTimesReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 
 const SampleChoice = ({ sample }) => {
 	const dispatch = useDispatch()
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
+	const status = useSelector(state => state.clickTimes.status)
 
 	const styleClass = selectedSampleValues.includes(sample.strong.value) ? 'selected-sample sample': 'sample'
 	const previewPlayer = new Tone.Player(sample.strong.url).toDestination()
@@ -18,11 +20,12 @@ const SampleChoice = ({ sample }) => {
 
 	const chooseSample = (evt) => {
 		if (evt.shiftKey) {
-			console.log('SHIFT CLICK')
 			dispatch(addSecondSample(sample.strong.value))
 		} else {
-			console.log('NORMAL CLICK')
 			dispatch(changeSamples(sample.strong.value))
+		}
+		if (status === 'ready') {
+			dispatch(changeStatus('edited'))
 		}
 	}
 

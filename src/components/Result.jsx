@@ -28,6 +28,8 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 
 	const formats = ['wav', 'flac', 'ogg']
 
+	console.log('clickTimes from Result.jsx', clickTimes)
+
 	return (
 		<div className='med-top-margin'>
 			{sections.length
@@ -50,7 +52,7 @@ const Result = ({ playClickTrack, buildClickTrack }) => {
 							))}
 						</div>
 					</>
-					:   <button onClick={buildClickTrack}>{status === 'not_created'
+					:   <button onClick={() => buildClickTrack()}>{status === 'not_created'
 						? 'Create click track'
 						: 'Update click track'}
 					</button>

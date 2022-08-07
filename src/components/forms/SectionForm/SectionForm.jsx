@@ -71,9 +71,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				meanTempoCondition,
 				numMeasures,
 				numBeats,
-				secondaryNumBeats,
-				secondaryBpm,
-				secondaryBpmEnd,
+				secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: null,
+				secondaryBpm: isPolyrhythm ? secondaryBpm: null,
+				secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
 				// by default the first beat of each measure (downbeat)
 				// is accented
 				accentedBeats: strongBeats.length ? strongBeats : [0],
@@ -88,9 +88,9 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				bpmEnd,
 				meanTempoCondition,
 				numBeats,
-				secondaryNumBeats,
-				secondaryBpm,
-				secondaryBpmEnd,
+				secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: null,
+				secondaryBpm: isPolyrhythm ? secondaryBpm: null,
+				secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
 				id: data.id,
 				// by default the first beat of each measure (downbeat)
 				// is accented

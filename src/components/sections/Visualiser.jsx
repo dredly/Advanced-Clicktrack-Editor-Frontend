@@ -17,7 +17,7 @@ const Visualiser = () => {
 			{(showVisualisation
 				? <>
 					<h3>Tempo Visualisation</h3>
-					<FullTempoGraph dataPoints={fullTempoData.dataPoints}/>
+					<FullTempoGraph dataPoints={fullTempoData.dataPoints} sectionBoundaries={fullTempoData.sections}/>
 				</>
 				: null
 			)}

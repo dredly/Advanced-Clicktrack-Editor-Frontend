@@ -35,10 +35,9 @@ export const getFullTempoData = (sectionData) => {
 		)
 	}
 
-	console.log('dataPoints', dataPoints)
-
 	return {
-		dataPoints
+		dataPoints,
+		sections: sectionBoundaryNumNotes
 	}
 }
 

@@ -1,6 +1,6 @@
-import { LineChart, Line, XAxis, YAxis, Label } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Label, ReferenceArea } from 'recharts'
 
-const FullTempoGraph = ({ dataPoints }) => (
+const FullTempoGraph = ({ dataPoints, sectionBoundaries }) => (
 	<LineChart width={350} height={200} data={dataPoints}>
 		<XAxis
 			dataKey="x"
@@ -22,6 +22,9 @@ const FullTempoGraph = ({ dataPoints }) => (
 			}}
 		/>
 		<Line type="monotoneY" dataKey="y" stroke="#8884d8" strokeWidth={2} isAnimationActive={false} />
+		{sectionBoundaries.slice(0, -1).map((sb, idx) => (
+			<ReferenceArea x1={sb} x2={sectionBoundaries[idx + 1]} stroke="red" strokeOpacity={0.3} key={idx}/>
+		))}
 	</LineChart>
 )
 

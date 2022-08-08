@@ -21,7 +21,7 @@ const FullTempoGraph = ({ dataPoints, sectionBoundaries }) => (
 				position: 'insideBottomLeft'
 			}}
 		/>
-		<Line type="monotoneY" dataKey="y" stroke="#8884d8" strokeWidth={2} isAnimationActive={false} />
+		<Line type="monotone" dataKey="y" stroke="#8884d8" strokeWidth={2} isAnimationActive={false} />
 		{sectionBoundaries.slice(0, -1).map((sb, idx) => (
 			<ReferenceArea x1={sb} x2={sectionBoundaries[idx + 1]} stroke="red" strokeOpacity={0.3} key={idx}/>
 		))}

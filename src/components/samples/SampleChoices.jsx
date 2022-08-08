@@ -1,8 +1,8 @@
-import allSamples from '../utils/sampleInfo'
+import allSamples from '../../utils/sampleInfo'
 import SampleChoice from './SampleChoice'
-import HelpIcon from './HelpIcon'
-import { useSelector } from 'react-redux/es/exports'
-import { multipleSamplesHelp } from '../utils/helpText'
+import HelpIcon from '../HelpIcon'
+import { useSelector } from 'react-redux'
+import { multipleSamplesHelp } from '../../utils/helpText'
 
 const SampleChoices = ({ rebuild }) => {
 	const showHelp = useSelector(state => state.ui.showHelp)

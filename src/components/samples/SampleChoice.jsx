@@ -1,7 +1,7 @@
 import * as Tone from 'tone'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeSamples, addSecondSample } from '../reducers/sampleReducer'
-import { changeStatus } from '../reducers/clickTimesReducer'
+import { changeSamples, addSecondSample } from '../../reducers/sampleReducer'
+import { changeStatus } from '../../reducers/clickTimesReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 

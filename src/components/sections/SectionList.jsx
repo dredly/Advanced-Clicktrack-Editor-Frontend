@@ -1,7 +1,8 @@
 import SectionDisplay from './SectionDisplay'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteSection } from '../reducers/sectionReducer'
-import { changeStatus } from '../reducers/clickTimesReducer'
+import { deleteSection } from '../../reducers/sectionReducer'
+import { changeStatus } from '../../reducers/clickTimesReducer'
+import Visualiser from './Visualiser'
 
 const SectionList = ({ showFormHere, hideForm }) => {
 	const dispatch = useDispatch()
@@ -22,6 +23,10 @@ const SectionList = ({ showFormHere, hideForm }) => {
 					idx={idx}
 					handlers={{ showFormHere, hideForm, handleDelete }}
 				/>
+			)}
+			{( sections.length
+				? <Visualiser />
+				: null
 			)}
 		</>
 	)

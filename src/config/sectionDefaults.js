@@ -6,5 +6,5 @@ export const defaults = {
 	numBeats: 4,
 	accentedBeats: [0],
 	secondaryBpm: null,
-	secondaryNumBeats: ''
+	secondaryNumBeats: 4
 }

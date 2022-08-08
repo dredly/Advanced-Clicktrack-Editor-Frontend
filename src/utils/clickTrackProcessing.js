@@ -59,6 +59,7 @@ export const combineTimeArrays = (timeArrays, numInstruments) => {
 }
 
 export const buildClickTrackSection = (sectionData, startTime, isPolyrhythmic, dispatch) => {
+	console.log('sectionData', sectionData)
 	const bpmArray = makeBpmArray(sectionData)
 	const intervalArray = bpmArray.map(bpm => 60/bpm)
 	const timeArray = intervalArray.map((_interval, idx) => {
@@ -77,9 +78,11 @@ export const buildClickTrackSection = (sectionData, startTime, isPolyrhythmic, d
 		))
 	if (isPolyrhythmic) {
 		console.log('About to dispatch to poly array')
+		console.log(clickTimeArray)
 		dispatch(addTimeArray(clickTimeArray))
 	} else {
 		console.log('About to dispatch to non - poly array')
+		console.log(clickTimeArray)
 		dispatch(addTimeArrayNonPoly(clickTimeArray))
 	}
 	return endTime

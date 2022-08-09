@@ -48,4 +48,21 @@ export const getFullTempoData = (sectionData) => {
 	}
 }
 
+export const splitIntoSeries = dataPoints => {
+	const series = []
+	for (let i=0; i < dataPoints.length; i += 3) {
+		if (i > 0) {
+			series.push({
+				name: `Series ${i / 3 + 1}a`,
+				data: dataPoints.slice(i-1, i+1)
+			})
+		}
+		series.push({
+			name: `Series ${i / 3 + 1}b`,
+			data: dataPoints.slice(i, i + 3)
+		})
+	}
+	return series
+}
+
 export default makeBpmArray

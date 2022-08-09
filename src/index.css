@@ -35,3 +35,7 @@
 	border: 2px solid rgb(83, 32, 74);
 	border-radius: 2px;
 }
+
+.hidden {
+	display: none;
+}

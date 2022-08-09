@@ -24,6 +24,10 @@ export const getFullTempoData = (sectionData) => {
 		mtcBpms.push(sectionBoundaryBpms[i] + 0.5 * (sectionBoundaryBpms[i + 1] - sectionBoundaryBpms[i]))
 	}
 
+	const sectionBoundaryNumMeasures = [0].concat(
+		sectionData.map(sd => Number(sd.numMeasures))
+	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
+
 	const sectionBoundaryNumNotes = [0].concat(
 		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
 	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
@@ -36,9 +40,20 @@ export const getFullTempoData = (sectionData) => {
 
 	for (let i = 0; i < mtcBpms.length; i++) {
 		dataPoints.push(
-			{ x: sectionBoundaryNumNotes[i], y: sectionBoundaryBpms[2  * i] },
-			{ x: mtcNumNotes[i], y: mtcBpms[i] },
-			{ x: sectionBoundaryNumNotes[i + 1], y: sectionBoundaryBpms[2 * i + 1] },
+			{
+				x: sectionBoundaryNumNotes[i],
+				y: sectionBoundaryBpms[2  * i],
+				m: sectionBoundaryNumMeasures[i]
+			},
+			{
+				x: mtcNumNotes[i],
+				y: mtcBpms[i],
+			},
+			{
+				x: sectionBoundaryNumNotes[i + 1],
+				y: sectionBoundaryBpms[2 * i + 1],
+				m: sectionBoundaryNumMeasures[i + 1]
+			},
 		)
 	}
 

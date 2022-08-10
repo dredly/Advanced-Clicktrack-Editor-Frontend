@@ -28,7 +28,7 @@ const Controls = () => {
 	}
 
 	return (
-		<div>
+		<div className='med-top-margin'>
 			<button onClick={playClickTrack}>Play</button>
 		</div>
 	)

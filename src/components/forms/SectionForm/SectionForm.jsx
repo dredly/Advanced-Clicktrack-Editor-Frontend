@@ -1,5 +1,4 @@
 import { addSection, updateSection } from '../../../reducers/sectionReducer'
-import { changeStatus } from '../../../reducers/clickTimesReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import getSecondBpm from '../../../utils/polyrhythmCalculator'
@@ -25,7 +24,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const [isPolyrhythm, setIsPolyrhythm] = useState(existingData && existingData.secondaryBpm ? true : false)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
-	const status = useSelector(state => state.clickTimes.status)
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const data = existingData || defaults
@@ -69,10 +67,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			dispatch(addSection(newSection))
 		} else if (formType === 'edit') {
 			dispatch(updateSection(editedSection))
-		}
-
-		if (status !== 'not_created') {
-			dispatch(changeStatus('edited'))
 		}
 		hideSelf()
 	}

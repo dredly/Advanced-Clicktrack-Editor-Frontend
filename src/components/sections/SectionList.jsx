@@ -1,7 +1,6 @@
 import SectionDisplay from './SectionDisplay'
 import { useSelector, useDispatch } from 'react-redux'
 import { deleteSection } from '../../reducers/sectionReducer'
-import { changeStatus } from '../../reducers/clickTimesReducer'
 import Visualiser from './Visualiser'
 
 const SectionList = ({ showFormHere, hideForm }) => {
@@ -11,7 +10,6 @@ const SectionList = ({ showFormHere, hideForm }) => {
 
 	const handleDelete = idx => {
 		dispatch(deleteSection(Number(idx)))
-		dispatch(changeStatus('edited'))
 	}
 
 	return (

@@ -14,7 +14,7 @@ const makeBpmArray = (sectionData) => {
 	return bpmArray
 }
 
-export const getFullTempoData = (sectionData) => {
+export const getFullTempoDataSymbolic = (sectionData) => {
 	const sectionBoundaryBpms = sectionData
 		.map(sd => [Number(sd.bpm), Number(sd.bpmEnd)])
 		.reduce((a, b) => a.concat(b))
@@ -78,6 +78,15 @@ export const splitIntoSeries = dataPoints => {
 		})
 	}
 	return series
+}
+
+export const getFullTempoDataPhysical = (clickTimeData) => {
+	const dataPoints = clickTimeData.map(ct => {
+		return { x: ct.time, y: ct.bpm }
+	})
+	return {
+		dataPoints
+	}
 }
 
 export default makeBpmArray

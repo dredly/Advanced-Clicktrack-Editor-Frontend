@@ -86,8 +86,6 @@ const App = () => {
 	const buildClickTrackWithoutPolyrhythms = () => {
 		let startTime = 0
 		for (let i = 0; i < sections.length; i++) {
-			// Todo add isPolyrhythmic arg to buildClickTrackSection function so that it knows which
-			// piece of state to dispatch to
 			const endTime = buildClickTrackSection(sections[i], startTime, false, dispatch)
 			startTime = endTime
 		}

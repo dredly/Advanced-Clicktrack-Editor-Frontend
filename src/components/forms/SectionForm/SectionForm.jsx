@@ -54,7 +54,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
 		const newSection = {
 			numMeasures, numBeats, bpm, bpmEnd, meanTempoCondition,
-			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: null,
+			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
 			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
 			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
 			// by default the first beat of each measure (downbeat)

@@ -7,10 +7,9 @@ const Visualiser = () => {
 	const dispatch = useDispatch()
 	const showVisualisation = useSelector(state => state.ui.showVisualisation)
 	const sections = useSelector(state => state.sections.sectionList)
-	const clickTimesNonPoly = useSelector(state => state.clickTimes.clickTimesNonPoly)
 
 	const fullTempoDataSymbolic = getFullTempoDataSymbolic(sections)
-	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly)
+	const fullTempoDataPhysical = getFullTempoDataPhysical(sections)
 	console.log('fullTempoDataPhysical', fullTempoDataPhysical)
 
 	return (

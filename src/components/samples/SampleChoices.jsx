@@ -4,7 +4,7 @@ import HelpIcon from '../HelpIcon'
 import { useSelector } from 'react-redux'
 import { multipleSamplesHelp } from '../../utils/helpText'
 
-const SampleChoices = ({ rebuild }) => {
+const SampleChoices = () => {
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	return (
@@ -17,7 +17,7 @@ const SampleChoices = ({ rebuild }) => {
 				: null
 			)}
 			{allSamples.map(s => (
-				<SampleChoice sample={s} rebuild={rebuild} key={s.strong.value}/>
+				<SampleChoice sample={s} key={s.strong.value}/>
 			))}
 		</details>
 	)

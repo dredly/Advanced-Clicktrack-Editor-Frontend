@@ -4,7 +4,7 @@ import { displayForm } from './reducers/sectionReducer'
 import clicktrackService from './services/clicktracks'
 import SectionList from './components/sections/SectionList'
 import SectionForm from './components/forms/SectionForm/SectionForm'
-//import SampleChoices from './components/samples/SampleChoices'
+import SampleChoices from './components/samples/SampleChoices'
 import { toggleHelp } from './reducers/uiReducer'
 import HelpIcon from './components/HelpIcon'
 import Controls from './components/Controls'
@@ -52,6 +52,7 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
+				<SampleChoices />
 				<Controls/>
 			</div>
 		</>

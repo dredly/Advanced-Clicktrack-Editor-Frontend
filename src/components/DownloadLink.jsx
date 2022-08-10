@@ -12,7 +12,7 @@ const DownloadLink = ({ fileFormat, sendInfo }) => {
 
 	return (
 		<div>
-			<button onClick={handleDownload}>Export to {fileFormat} file</button>
+			<button onClick={handleDownload}>{fileFormat}</button>
 			{url
 				? url === '...loading'
 					? <p>...loading</p>

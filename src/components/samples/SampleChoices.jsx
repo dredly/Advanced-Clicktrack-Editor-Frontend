@@ -7,7 +7,7 @@ const SampleChoices = () => {
 	const allSamplesExceptSelected = allSamples.filter(s => s.strong.value !== selectedSamplePrimary.strong.value)
 
 	return (
-		<details className='med-top-margin'>
+		<details>
 			{/* TODO: Find good way for mobile users to select second sample */}
 			<summary>Choose sample(s) for playback</summary>
 			<div className='flex-row-container-responsive'>

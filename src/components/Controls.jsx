@@ -1,15 +1,13 @@
 import * as Tone from 'tone'
 
 import { useSelector } from 'react-redux'
-import { getClickTimesNonPoly, getClickTimesPoly } from '../utils/clickTimesCalculator'
-import DownloadLink from './DownloadLink'
+import { getClickTimesPoly } from '../utils/clickTimesCalculator'
+
 
 const Controls = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 	const selectedSamples = useSelector(state => state.samples.samples)
-	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 
-	const clickTimesNonPoly = getClickTimesNonPoly(sections)
 	const clickTimesPoly = getClickTimesPoly(sections, selectedSamples.length)
 
 	const strongPlayer = new Tone.Player().toDestination()
@@ -35,7 +33,8 @@ const Controls = () => {
 		await strongPlayer.load(strongSampleUrl)
 		await weakPlayer.load(weakSampleUrl)
 
-		Tone.start()
+		await Tone.start()
+
 		clickTimesPoly.map(ct => {
 			return { ...ct, time: ct.time + Tone.now() }
 		}).forEach(click => {
@@ -51,33 +50,15 @@ const Controls = () => {
 		})
 	}
 
-	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
-
-	const midiData = {
-		timeSigData,
-		tempoData: clickTimesNonPoly.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
-		sectionData: sections
+	const stopPlayBack = () => {
+		console.log('Stopping')
+		Tone.start()
 	}
-
-	// For files with actual audio data, i.e. wav and ogg, the backend needs to know which
-	// instrument to use for synthesis
-	const audioData = {
-		...midiData,
-		instruments: selectedSampleValues
-	}
-
-	const audioFormats = ['wav', 'flac', 'ogg']
 
 	return (
 		<div className='med-top-margin'>
 			<button onClick={playClickTrack}>Play</button>
-			<details>
-				<summary>Export to file</summary>
-				<DownloadLink fileFormat='midi' sendInfo={midiData}/>
-				{audioFormats.map(af => (
-					<DownloadLink fileFormat={af} sendInfo={audioData} key={af} />
-				))}
-			</details>
+			<button onClick={stopPlayBack}>Stop</button>
 		</div>
 	)
 }

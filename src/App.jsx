@@ -10,6 +10,7 @@ import HelpIcon from './components/HelpIcon'
 import Controls from './components/Controls'
 // import TestingZone from './components/TestingZone'
 import { addToStartHelp } from './utils/helpText'
+import FileExport from './components/FileExport'
 
 
 const App = () => {
@@ -52,8 +53,11 @@ const App = () => {
 					: null
 				}
 				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-				<SampleChoices />
 				<Controls/>
+				<div className='flex-row-container-responsive med-top-margin'>
+					<SampleChoices />
+					<FileExport />
+				</div>
 			</div>
 		</>
 	)

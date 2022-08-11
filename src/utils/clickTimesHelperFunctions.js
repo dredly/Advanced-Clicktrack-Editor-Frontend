@@ -1,6 +1,6 @@
 import makeBpmArray from './tempoCurveCalculator'
 
-export const buildClickTrackSection = (startTime, sectionData) => {
+export const buildClickTrackSection = (startTime, sectionData, last=false) => {
 	const bpmArray = makeBpmArray(sectionData)
 	const intervalArray = bpmArray.map(bpm => 60/bpm)
 	const timeArray = intervalArray.map((_interval, idx) => {
@@ -11,6 +11,18 @@ export const buildClickTrackSection = (startTime, sectionData) => {
 	const accentArray = sectionData.accentedBeats
 
 	const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
+
+	// To keep the final click on for visualisation
+	if (last) {
+		const sectionTimeArray = timeArray
+			.map((time, idx) => (
+				accentArray.includes(idx % sectionData.numBeats)
+					? { time, bpm: bpmArray[idx], downBeat: true }
+					: { time, bpm: bpmArray[idx], downBeat: false }
+			))
+
+		return { sectionTimeArray, endTime }
+	}
 
 	const sectionTimeArray = timeArray
 		.slice(0, timeArray.length -1)

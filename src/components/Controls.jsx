@@ -2,7 +2,8 @@ import * as Tone from 'tone'
 
 import { useSelector } from 'react-redux'
 import { getClickTimesPoly } from '../utils/clickTimesCalculator'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons'
 
 const Controls = () => {
 	const sections = useSelector(state => state.sections.sectionList)
@@ -58,8 +59,8 @@ const Controls = () => {
 
 	return (
 		<div className='med-top-margin'>
-			<button onClick={playClickTrack}>Play</button>
-			<button onClick={stopPlayBack}>Stop</button>
+			<button onClick={playClickTrack}><FontAwesomeIcon icon={faPlay} />  Play</button>
+			<button onClick={stopPlayBack}><FontAwesomeIcon icon={faStop} />Stop</button>
 		</div>
 	)
 }

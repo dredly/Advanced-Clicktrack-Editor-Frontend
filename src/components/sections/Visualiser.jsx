@@ -12,8 +12,8 @@ const Visualiser = () => {
 
 	const fullTempoDataSymbolic = getFullTempoDataSymbolic(sections)
 
-	const clickTimesNonPoly = getClickTimesNonPoly(sections)
-	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly)
+	const clickTimesNonPoly = getClickTimesNonPoly(sections, true)
+	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly, sections)
 	console.log('fullTempoDataPhysical', fullTempoDataPhysical)
 
 	return (
@@ -25,7 +25,7 @@ const Visualiser = () => {
 					<h4>Symbolic Time (notes)</h4>
 					<FullTempoGraphSymbolic dataPoints={fullTempoDataSymbolic.dataPoints} sectionBoundaries={fullTempoDataSymbolic.sections}/>
 					<h4>Physical Time (seconds)</h4>
-					<FullTempoGraphPhysical dataPoints={fullTempoDataPhysical.dataPoints} />
+					<FullTempoGraphPhysical dataPoints={fullTempoDataPhysical.dataPoints} sectionBoundaries={fullTempoDataPhysical.sections} />
 				</>
 				: null
 			)}

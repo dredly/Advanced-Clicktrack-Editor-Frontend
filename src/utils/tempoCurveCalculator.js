@@ -80,12 +80,21 @@ export const splitIntoSeries = dataPoints => {
 	return series
 }
 
-export const getFullTempoDataPhysical = (clickTimeData) => {
+export const getFullTempoDataPhysical = (clickTimeData, sectionData) => {
 	const dataPoints = clickTimeData.map(ct => {
 		return { x: ct.time, y: ct.bpm }
 	})
+
+	const sectionBoundaryNumNotes = [0].concat(
+		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
+	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
+
+	const sectionBoundaryTimes = sectionBoundaryNumNotes.map(nn => dataPoints[nn].x)
+
+	console.log('sectionBoundaryTimes', sectionBoundaryTimes)
 	return {
-		dataPoints
+		dataPoints,
+		sections: sectionBoundaryTimes
 	}
 }
 

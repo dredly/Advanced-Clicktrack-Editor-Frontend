@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-	showHelp: true
+	showHelp: true,
+	showVisualisation: false,
+	playing: false
 }
 
 const uiSlice = createSlice({
@@ -10,9 +12,12 @@ const uiSlice = createSlice({
 	reducers: {
 		toggleHelp(state) {
 			state.showHelp = !state.showHelp
+		},
+		toggleVisualisation(state) {
+			state.showVisualisation = !state.showVisualisation
 		}
 	}
 })
 
-export const { toggleHelp } = uiSlice.actions
+export const { toggleHelp, toggleVisualisation } = uiSlice.actions
 export default uiSlice.reducer

@@ -1,5 +1,4 @@
 import { addSection, updateSection } from '../../../reducers/sectionReducer'
-import { changeStatus } from '../../../reducers/clickTimesReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import getSecondBpm from '../../../utils/polyrhythmCalculator'
@@ -11,6 +10,7 @@ import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
 import HelpIcon from '../../HelpIcon'
 import { accentSelectionHelp, polyrhythmHelp } from '../../../utils/helpText'
+import { defaults } from '../../../config/sectionDefaults'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -24,19 +24,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const [isPolyrhythm, setIsPolyrhythm] = useState(existingData && existingData.secondaryBpm ? true : false)
 	const dispatch = useDispatch()
 	const formType = useSelector(state => state.sections.form.type)
-	const status = useSelector(state => state.clickTimes.status)
 	const showHelp = useSelector(state => state.ui.showHelp)
-
-	const defaults = {
-		numMeasures: 4,
-		bpm: 120,
-		bpmEnd: 120,
-		meanTempoCondition: 0.5,
-		numBeats: 4,
-		accentedBeats: [0],
-		secondaryBpm: null,
-		secondaryNumBeats: ''
-	}
 
 	const data = existingData || defaults
 
@@ -64,39 +52,21 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
+		const newSection = {
+			numMeasures, numBeats, bpm, bpmEnd, meanTempoCondition,
+			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
+			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
+			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
+			// by default the first beat of each measure (downbeat)
+			// is accented
+			accentedBeats: strongBeats.length ? strongBeats : [0],
+		}
+		const editedSection = { ...newSection, id: data.id }
+
 		if (formType === 'create') {
-			dispatch(addSection({
-				bpm,
-				bpmEnd,
-				meanTempoCondition,
-				numMeasures,
-				numBeats,
-				secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: null,
-				secondaryBpm: isPolyrhythm ? secondaryBpm: null,
-				secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
-				// by default the first beat of each measure (downbeat)
-				// is accented
-				accentedBeats: strongBeats.length ? strongBeats : [0],
-			}))
-			if (status !== 'not_created') {
-				dispatch(changeStatus('edited'))
-			}
+			dispatch(addSection(newSection))
 		} else if (formType === 'edit') {
-			dispatch(updateSection({
-				numMeasures,
-				bpm,
-				bpmEnd,
-				meanTempoCondition,
-				numBeats,
-				secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: null,
-				secondaryBpm: isPolyrhythm ? secondaryBpm: null,
-				secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
-				id: data.id,
-				// by default the first beat of each measure (downbeat)
-				// is accented
-				accentedBeats: strongBeats.length ? strongBeats : [0],
-			}))
-			dispatch(changeStatus('edited'))
+			dispatch(updateSection(editedSection))
 		}
 		hideSelf()
 	}

@@ -14,4 +14,88 @@ const makeBpmArray = (sectionData) => {
 	return bpmArray
 }
 
+export const getFullTempoDataSymbolic = (sectionData) => {
+	const sectionBoundaryBpms = sectionData
+		.map(sd => [Number(sd.bpm), Number(sd.bpmEnd)])
+		.reduce((a, b) => a.concat(b))
+
+	const mtcBpms = []
+	for (let i = 0; i < sectionBoundaryBpms.length; i += 2) {
+		mtcBpms.push(sectionBoundaryBpms[i] + 0.5 * (sectionBoundaryBpms[i + 1] - sectionBoundaryBpms[i]))
+	}
+
+	const sectionBoundaryNumMeasures = [0].concat(
+		sectionData.map(sd => Number(sd.numMeasures))
+	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
+
+	const sectionBoundaryNumNotes = [0].concat(
+		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
+	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
+
+	const mtcNumNotes = sectionBoundaryNumNotes
+		.slice(1)
+		.map((numNotes, idx) => sectionBoundaryNumNotes[idx] + sectionData[idx].meanTempoCondition * (numNotes - sectionBoundaryNumNotes[idx]))
+
+	const dataPoints = []
+
+	for (let i = 0; i < mtcBpms.length; i++) {
+		dataPoints.push(
+			{
+				x: sectionBoundaryNumNotes[i],
+				y: sectionBoundaryBpms[2  * i],
+				m: sectionBoundaryNumMeasures[i]
+			},
+			{
+				x: mtcNumNotes[i],
+				y: mtcBpms[i],
+			},
+			{
+				x: sectionBoundaryNumNotes[i + 1],
+				y: sectionBoundaryBpms[2 * i + 1],
+				m: sectionBoundaryNumMeasures[i + 1]
+			},
+		)
+	}
+
+	return {
+		dataPoints,
+		sections: sectionBoundaryNumNotes
+	}
+}
+
+export const splitIntoSeries = dataPoints => {
+	const series = []
+	for (let i=0; i < dataPoints.length; i += 3) {
+		if (i > 0) {
+			series.push({
+				name: `Series ${i / 3 + 1}a`,
+				data: dataPoints.slice(i-1, i+1)
+			})
+		}
+		series.push({
+			name: `Series ${i / 3 + 1}b`,
+			data: dataPoints.slice(i, i + 3)
+		})
+	}
+	return series
+}
+
+export const getFullTempoDataPhysical = (clickTimeData, sectionData) => {
+	const dataPoints = clickTimeData.map(ct => {
+		return { x: ct.time, y: ct.bpm }
+	})
+
+	const sectionBoundaryNumNotes = [0].concat(
+		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
+	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
+
+	const sectionBoundaryTimes = sectionBoundaryNumNotes.map(nn => dataPoints[nn].x)
+
+	console.log('sectionBoundaryTimes', sectionBoundaryTimes)
+	return {
+		dataPoints,
+		sections: sectionBoundaryTimes
+	}
+}
+
 export default makeBpmArray

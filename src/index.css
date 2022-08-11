@@ -35,3 +35,17 @@
 	border: 2px solid rgb(83, 32, 74);
 	border-radius: 2px;
 }
+
+.secondary-selected-sample {
+	border: 2px solid rgb(35, 83, 32);
+	border-radius: 2px;
+}
+
+.hidden {
+	display: none;
+}
+
+.flex-row-container-responsive {
+	display: flex;
+	flex-wrap: wrap;
+}

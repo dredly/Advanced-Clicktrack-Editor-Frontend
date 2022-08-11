@@ -1,16 +1,23 @@
 import * as Tone from 'tone'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeSamples, addSecondSample } from '../reducers/sampleReducer'
-import { changeStatus } from '../reducers/clickTimesReducer'
+import { changeSamples, addSecondSample } from '../../reducers/sampleReducer'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
 
-const SampleChoice = ({ sample }) => {
+const SampleChoice = ({ sample, isSecondary }) => {
 	const dispatch = useDispatch()
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
-	const status = useSelector(state => state.clickTimes.status)
 
-	const styleClass = selectedSampleValues.includes(sample.strong.value) ? 'selected-sample sample': 'sample'
+	let styleClass = 'sample'
+	if (isSecondary) {
+		if (selectedSampleValues[1] === sample.strong.value) {
+			styleClass = 'secondary-selected-sample sample'
+		}
+	} else {
+		if (selectedSampleValues[0] === sample.strong.value) {
+			styleClass = 'selected-sample sample'
+		}
+	}
 	const previewPlayer = new Tone.Player(sample.strong.url).toDestination()
 
 	const listen = () => {
@@ -18,14 +25,11 @@ const SampleChoice = ({ sample }) => {
 		previewPlayer.start()
 	}
 
-	const chooseSample = (evt) => {
-		if (evt.shiftKey) {
+	const chooseSample = () => {
+		if (isSecondary) {
 			dispatch(addSecondSample(sample.strong.value))
 		} else {
 			dispatch(changeSamples(sample.strong.value))
-		}
-		if (status === 'ready') {
-			dispatch(changeStatus('edited'))
 		}
 	}
 

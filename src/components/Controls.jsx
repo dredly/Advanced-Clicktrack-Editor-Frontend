@@ -51,8 +51,9 @@ const Controls = () => {
 	}
 
 	const stopPlayBack = () => {
-		console.log('Stopping')
-		Tone.start()
+		[strongPlayer, weakPlayer, secondaryPlayer].forEach(p => {
+			p.stop()
+		})
 	}
 
 	return (

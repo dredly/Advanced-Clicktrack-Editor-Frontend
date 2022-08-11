@@ -3,7 +3,7 @@ export const defaults = {
 	bpm: 120,
 	bpmEnd: 120,
 	meanTempoCondition: 0.5,
-	numBeats: 4,
+	timeSig: [4, 4],
 	accentedBeats: [0],
 	secondaryBpm: null,
 	secondaryNumBeats: 4

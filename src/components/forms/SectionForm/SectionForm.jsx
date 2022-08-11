@@ -6,11 +6,11 @@ import MeasuresInput from './MeasuresInput'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
-import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
 import HelpIcon from '../../HelpIcon'
 import { accentSelectionHelp, polyrhythmHelp } from '../../../utils/helpText'
 import { defaults } from '../../../config/sectionDefaults'
+import TimeSignatureInput from './TimeSignatureInput'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
@@ -28,13 +28,14 @@ const SectionForm = ({ hideSelf, existingData }) => {
 
 	const data = existingData || defaults
 
-	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
+	const [currentNumBeats, setCurrentNumBeats] = useState(data.timeSig[0])
 	const [secondaryNumBeats, setSecondaryNumBeats] = useState(data.secondaryNumBeats)
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault()
 		const numMeasures = evt.target.numMeasures.value
 		const numBeats = currentNumBeats
+		const denominator = evt.target.denominator.value
 		const bpm = evt.target.bpm.value
 		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
 		const secondaryBpm = secondaryNumBeats && isPolyrhythm
@@ -53,7 +54,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
 		const newSection = {
-			numMeasures, numBeats, bpm, bpmEnd, meanTempoCondition,
+			numMeasures, numBeats, denominator, bpm, bpmEnd, meanTempoCondition,
 			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
 			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
 			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
@@ -95,7 +96,11 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				)}
 			</div>
 			<div>
-				<NumBeatsInput currentNumBeats={currentNumBeats} setCurrentNumBeats={setCurrentNumBeats}/>
+				<TimeSignatureInput
+					currentNumBeats={currentNumBeats}
+					setCurrentNumBeats={setCurrentNumBeats}
+					denominator={data.timeSig[1]}
+				/>
 			</div>
 			<div className="small-bottom-margin">
 				<label>Polyrhythm?

@@ -25,7 +25,7 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 				)}
 				{( section.secondaryBpm
 					? <p>{section.secondaryNumBeats} against {section.numBeats} polyrhythm</p>
-					: <p>Beats per measure: {section.numBeats}</p>
+					: <p>{section.numBeats}:{section.denominator} time signature</p>
 				)}
 				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
 					// Add one to convert from array index (counting from 0)

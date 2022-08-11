@@ -11,7 +11,7 @@ import Controls from './components/Controls'
 // import TestingZone from './components/TestingZone'
 import { addToStartHelp } from './utils/helpText'
 import FileExport from './components/FileExport'
-import Visualiser from './components/sections/Visualiser'
+//import Visualiser from './components/sections/Visualiser'
 
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
 	const formInfo = useSelector(state => state.sections.form)
 	const playing = useSelector(state => state.ui.playing)
 	const showHelp = useSelector(state => state.ui.showHelp)
-	const numSections = useSelector(state => state.sections.sectionList.length)
+	//const numSections = useSelector(state => state.sections.sectionList.length)
 
 	const showFormHere = (location, type) => {
 		dispatch(displayForm({ location, type }))
@@ -63,10 +63,10 @@ const App = () => {
 					<FileExport />
 				</div>
 			</div>
-			{( numSections
+			{/* {( numSections
 				? <Visualiser />
 				: null
-			)}
+			)} */}
 		</>
 	)
 }

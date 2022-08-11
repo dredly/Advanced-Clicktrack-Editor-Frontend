@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleVisualisation } from '../../reducers/uiReducer'
-import FullTempoGraph from './FullTempoGraph'
+import FullTempoGraphSymbolic from './FullTempoGraphSymbolic'
+import FullTempoGraphPhysical from './FullTempoGraphPhysical'
 import { getFullTempoDataSymbolic, getFullTempoDataPhysical } from '../../utils/tempoCurveCalculator'
+import { getClickTimesNonPoly } from '../../utils/clickTimesCalculator'
 
 const Visualiser = () => {
 	const dispatch = useDispatch()
@@ -9,7 +11,9 @@ const Visualiser = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 
 	const fullTempoDataSymbolic = getFullTempoDataSymbolic(sections)
-	const fullTempoDataPhysical = getFullTempoDataPhysical(sections)
+
+	const clickTimesNonPoly = getClickTimesNonPoly(sections)
+	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly)
 	console.log('fullTempoDataPhysical', fullTempoDataPhysical)
 
 	return (
@@ -19,9 +23,9 @@ const Visualiser = () => {
 				? <>
 					<h3>Tempo Visualisation</h3>
 					<h4>Symbolic Time (notes)</h4>
-					<FullTempoGraph dataPoints={fullTempoDataSymbolic.dataPoints} sectionBoundaries={fullTempoDataSymbolic.sections}/>
+					<FullTempoGraphSymbolic dataPoints={fullTempoDataSymbolic.dataPoints} sectionBoundaries={fullTempoDataSymbolic.sections}/>
 					<h4>Physical Time (seconds)</h4>
-					{/* <FullTempoGraph dataPoints={fullTempoData.dataPoints} sectionBoundaries={fullTempoData.sections}/> */}
+					<FullTempoGraphPhysical dataPoints={fullTempoDataPhysical.dataPoints} />
 				</>
 				: null
 			)}

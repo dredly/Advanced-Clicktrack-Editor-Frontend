@@ -1,7 +1,7 @@
 import { LineChart, Line, XAxis, YAxis, Label, ReferenceArea, ResponsiveContainer } from 'recharts'
 import { splitIntoSeries } from '../../utils/tempoCurveCalculator'
 
-const FullTempoGraph = ({ dataPoints, sectionBoundaries }) => {
+const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries }) => {
 	const backgroundColours = ['#1E81FF', '#1EFFBE', '#2FFF1E', ]
 	// Set the bounds of the y axis to have some space around the min and max values
 	const yAxisMin = [...dataPoints].sort((a, b) => a.y - b.y)[0].y - 10
@@ -79,4 +79,4 @@ const FullTempoGraph = ({ dataPoints, sectionBoundaries }) => {
 	)
 }
 
-export default FullTempoGraph
+export default FullTempoGraphSymbolic

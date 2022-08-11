@@ -9,8 +9,6 @@ const Controls = () => {
 	const selectedSamples = useSelector(state => state.samples.samples)
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 
-
-	// eslint-disable-next-line no-unused-vars
 	const clickTimesNonPoly = getClickTimesNonPoly(sections)
 	const clickTimesPoly = getClickTimesPoly(sections, selectedSamples.length)
 

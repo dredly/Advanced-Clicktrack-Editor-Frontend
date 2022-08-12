@@ -4,7 +4,7 @@ const PolyrhythmSelection = ({ numerator, denominator }) => {
 
 	return (
 		<label>Choose a time signature for the second rhythm
-			<select defaultValue={numerator} >
+			<select name="secondaryNumerator" defaultValue={numerator} >
 				{numerators.map(n => (
 					<option value={n} key={n}>{n}</option>
 				))}

@@ -7,7 +7,7 @@ export const defaults = {
 	rhythms: [
 		{
 			bpms: [120, 120], //bpm at start and end of section
-			timeSig: [4, 4], //Changed temporarily for testing
+			timeSig: [4, 4],
 			accentedBeats: [0]
 		}
 	]

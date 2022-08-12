@@ -7,32 +7,6 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 	return (
 		<div>
 			<div className='click-track-section'>
-				{( section.bpm === section.bpmEnd
-					? <p>{section.displayBpm}bpm for {section.numMeasures} measures</p>
-					: Number(section.bpm) < Number(section.bpmEnd)
-						? <p>
-							Acceleration from {section.displayBpm
-							} to {section.displayBpmEnd} over {
-								section.numMeasures
-							} measures with mean tempo condition of {section.meanTempoCondition}
-						</p>
-						: <p>
-							Deceleration from {section.displayBpm
-							} to {section.displayBpmEnd} over {
-								section.numMeasures
-							} measures with mean tempo condition of {section.meanTempoCondition}
-						</p>
-				)}
-				{( section.secondaryBpm
-					? <p>{section.secondaryNumBeats} against {section.numBeats} polyrhythm</p>
-					: <p>{section.numBeats}:{section.denominator} time signature</p>
-				)}
-				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
-					// Add one to convert from array index (counting from 0)
-					// to display index (counting from 1)
-					? <p>Accents on beats {section.accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
-					: null
-				)}
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>

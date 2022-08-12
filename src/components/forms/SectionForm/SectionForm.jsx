@@ -117,7 +117,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 							start: Number(displayBpms[0][0]),
 							end: Number(displayBpms[0][1])
 						}}
-						defaultMeanTempoCondition={data.mtc}
+						defaultMeanTempoCondition={data.overallData.mtc}
 					/>
 					: <SingleBpmSelection defaultBpm={displayBpms[0][0]} />
 				)}

@@ -4,9 +4,31 @@ import SectionForm from '../forms/SectionForm/SectionForm'
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
+	const isPolyrhythm = section.rhythms.length > 1
+	const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
+
 	return (
 		<div>
 			<div className='click-track-section'>
+				<div>
+					<h3>{section.overallData.numMeasures} measures</h3>
+					<h4>{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time</h4>
+					{isPolyrhythm
+						? <p>secondary rhythm in {section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time</p>
+						: null
+					}
+					{isTempoChange
+						? <>
+							<p>
+								Tempo change from {section.rhythms[0].bpms[0]}bpm to {section.rhythms[0].bpms[1]}bpm
+							</p>
+							<p>
+								Mean tempo condition = {section.overallData.mtc}
+							</p>
+						</>
+						: `tempo = ${section.rhythms[0].bpms[0]}bpm`
+					}
+				</div>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>

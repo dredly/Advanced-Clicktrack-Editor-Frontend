@@ -4,10 +4,10 @@ export const defaults = {
 		mtc: 0.5
 	},
 	// Can be array of length > 1 for polyrhythms
-	subRhythms: [
+	rhythms: [
 		{
-			bpms: [120, 120],
-			timeSig: [4, 4],
+			bpms: [120, 120], //bpm at start and end of section
+			timeSig: [4, 4], //Changed temporarily for testing
 			accentedBeats: [0]
 		}
 	]

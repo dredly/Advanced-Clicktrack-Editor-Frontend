@@ -5,11 +5,17 @@ const bpmAtCurrentBeat = (currentBeat, exponent, numBeats, startTempo, endTempo)
 }
 
 const makeBpmArray = (sectionData) => {
-	const numNotes = sectionData.numMeasures * sectionData.numBeats
-	const exponent = calcExponent(sectionData.meanTempoCondition)
+	const numNotes = sectionData.overallData.numMeasures * sectionData.rhythms[0].timeSig[0]
+	const exponent = calcExponent(sectionData.overallData.mtc)
 	const bpmArray = Array.from({ length: numNotes + 1 })
-		.map((val, idx) => {
-			return bpmAtCurrentBeat(idx, exponent, numNotes, Number(sectionData.bpm), Number(sectionData.bpmEnd))
+		.map((_val, idx) => {
+			return bpmAtCurrentBeat(
+				idx,
+				exponent,
+				numNotes,
+				sectionData.rhythms[0].bpms[0],
+				sectionData.rhythms[0].bpms[1]
+			)
 		})
 	return bpmArray
 }

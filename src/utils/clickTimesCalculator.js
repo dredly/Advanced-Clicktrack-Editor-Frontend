@@ -21,7 +21,7 @@ export const getClickTimesPoly = (sections, numInstruments) => {
 	let startTime = 0
 
 	for (let i = 0; i < sections.length; i++) {
-		const { sectionTimeArray, endTime } = sections[i].secondaryNumBeats
+		const { sectionTimeArray, endTime } = sections[i].rhythms.length > 1
 			? buildPolyrhythmicSection(startTime, sections[i], numInstruments)
 			: buildClickTrackSection(startTime, sections[i])
 		clickTimesPoly.push(...sectionTimeArray)

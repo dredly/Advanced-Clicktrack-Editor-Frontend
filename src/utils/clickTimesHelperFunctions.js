@@ -8,7 +8,7 @@ export const buildClickTrackSection = (startTime, sectionData, last=false) => {
 			? startTime + intervalArray.slice(0, idx).reduce((a, b) => a + b)
 			: startTime
 	})
-	const accentArray = sectionData.accentedBeats
+	const accentArray = sectionData.rhythms[0].accentedBeats
 
 	const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
 

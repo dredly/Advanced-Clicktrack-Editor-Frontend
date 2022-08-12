@@ -1,14 +1,20 @@
-const PolyrhythmSelection = ({ currentNumBeats, setCurrentNumBeats }) => {
+const PolyrhythmSelection = ({ currentNumBeats, setCurrentNumBeats, denominator }) => {
+	const numerators = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+	const denominators = [2, 4, 8]
+
 	return (
-		<label>Select a number of beats for the secondary rhythm
-			<input
-				key="changesecondarytimesig"
-				type="number"
-				min={2} max={9}
-				name="numBeatsSecondary"
-				value={currentNumBeats}
-				onChange={({ target }) => setCurrentNumBeats(Number(target.value))}
-			/>
+		<label>Choose a time signature for the second rhythm
+			<select value={currentNumBeats} onChange={({ target }) => setCurrentNumBeats(Number(target.value))}>
+				{numerators.map(n => (
+					<option value={n} key={n}>{n}</option>
+				))}
+			</select>
+			:
+			<select name="secondaryDenominator" defaultValue={denominator}>
+				{denominators.map(d => (
+					<option value={d} key={d}>{d}</option>
+				))}
+			</select>
 		</label>
 	)
 }

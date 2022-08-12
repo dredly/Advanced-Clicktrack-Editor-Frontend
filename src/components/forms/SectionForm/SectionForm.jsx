@@ -37,14 +37,15 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const numBeats = currentNumBeats
 		const displayBpm = evt.target.bpm.value
 		const denominator = evt.target.denominator.value
+		const secondaryDenominator = isPolyrhythm ? evt.target.secondaryDenominator.value : null
 		const bpm = displayBpm * (denominator / 4)
 		const displayBpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : displayBpm
 		const bpmEnd = displayBpmEnd * (denominator / 4)
 		const secondaryBpm = secondaryNumBeats && isPolyrhythm
-			? getSecondBpm(bpm, numBeats, secondaryNumBeats)
+			? getSecondBpm(bpm, numBeats, secondaryNumBeats) * (secondaryDenominator / 4)
 			: null
 		const secondaryBpmEnd = secondaryNumBeats && isPolyrhythm
-			? getSecondBpm(bpmEnd, numBeats, secondaryNumBeats)
+			? getSecondBpm(bpmEnd, numBeats, secondaryNumBeats) * (secondaryDenominator / 4)
 			: null
 		const meanTempoCondition = evt.target.meanTempoCondition
 			? evt.target.meanTempoCondition.value
@@ -56,7 +57,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
 		const newSection = {
-			numMeasures, numBeats, displayBpm, denominator, bpm, displayBpmEnd, bpmEnd, meanTempoCondition,
+			numMeasures, numBeats, displayBpm, denominator, secondaryDenominator, bpm, displayBpmEnd, bpmEnd, meanTempoCondition,
 			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
 			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
 			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
@@ -125,6 +126,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				? <PolyrhythmSelection
 					currentNumBeats={secondaryNumBeats}
 					setCurrentNumBeats={setSecondaryNumBeats}
+					denominator={data.secondaryDenominator}
 				/>
 				: null
 			)}

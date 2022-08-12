@@ -8,17 +8,17 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 		<div>
 			<div className='click-track-section'>
 				{( section.bpm === section.bpmEnd
-					? <p>{section.bpm}bpm for {section.numMeasures} measures</p>
+					? <p>{section.displayBpm}bpm for {section.numMeasures} measures</p>
 					: Number(section.bpm) < Number(section.bpmEnd)
 						? <p>
-							Acceleration from {section.bpm
-							} to {section.bpmEnd} over {
+							Acceleration from {section.displayBpm
+							} to {section.displayBpmEnd} over {
 								section.numMeasures
 							} measures with mean tempo condition of {section.meanTempoCondition}
 						</p>
 						: <p>
-							Deceleration from {section.bpm
-							} to {section.bpmEnd} over {
+							Deceleration from {section.displayBpm
+							} to {section.displayBpmEnd} over {
 								section.numMeasures
 							} measures with mean tempo condition of {section.meanTempoCondition}
 						</p>

@@ -35,9 +35,11 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		evt.preventDefault()
 		const numMeasures = evt.target.numMeasures.value
 		const numBeats = currentNumBeats
+		const displayBpm = evt.target.bpm.value
 		const denominator = evt.target.denominator.value
-		const bpm = evt.target.bpm.value
-		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
+		const bpm = displayBpm * (denominator / 4)
+		const displayBpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : displayBpm
+		const bpmEnd = displayBpmEnd * (denominator / 4)
 		const secondaryBpm = secondaryNumBeats && isPolyrhythm
 			? getSecondBpm(bpm, numBeats, secondaryNumBeats)
 			: null
@@ -54,7 +56,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
 		const newSection = {
-			numMeasures, numBeats, denominator, bpm, bpmEnd, meanTempoCondition,
+			numMeasures, numBeats, displayBpm, denominator, bpm, displayBpmEnd, bpmEnd, meanTempoCondition,
 			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
 			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
 			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
@@ -89,7 +91,10 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				</div>
 				{( isTempoChange
 					? <MultipleBpmSelection
-						defaultBpm={{ start: Number(data.bpm), end: Number(data.bpmEnd) }}
+						defaultBpm={{
+							start: Number(data.displayBpm) ? Number(data.displayBpm) : Number(data.bpm),
+							end: Number(data.displayBpmEnd) ? Number(data.displayBpmEnd) : Number(data.bpmEnd),
+						}}
 						defaultMeanTempoCondition={data.meanTempoCondition}
 					/>
 					: <SingleBpmSelection defaultBpm={data.bpm} />

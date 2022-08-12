@@ -10,7 +10,7 @@ import { polyrhythmHelp, accentSelectionHelp } from '../../../utils/helpText'
 import { defaults } from '../../../config/sectionDefaults'
 import TimeSignatureInput from './TimeSignatureInput'
 import getSecondBpm from '../../../utils/polyrhythmCalculator'
-import { addSection } from '../../../reducers/sectionReducer'
+import { addSection, updateSection } from '../../../reducers/sectionReducer'
 
 const SectionForm = ({ hideSelf, existingData }) => {
 	const dispatch = useDispatch()
@@ -92,7 +92,11 @@ const SectionForm = ({ hideSelf, existingData }) => {
 
 		console.log('newSection', newSection)
 
-		dispatch(addSection(newSection))
+		if (formType === 'create') {
+			dispatch(addSection(newSection))
+		} else if (formType === 'edit') {
+			dispatch(updateSection({ ...newSection, id: data.id }))
+		}
 		hideSelf()
 	}
 

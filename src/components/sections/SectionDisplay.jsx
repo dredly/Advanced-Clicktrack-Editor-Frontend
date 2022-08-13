@@ -13,6 +13,7 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 				<div>
 					<h3>{section.overallData.numMeasures} measures</h3>
 					<h4>{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time</h4>
+					<p>Accents on beats {section.rhythms[0].accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
 					{isPolyrhythm
 						? <p>secondary rhythm in {section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time</p>
 						: null

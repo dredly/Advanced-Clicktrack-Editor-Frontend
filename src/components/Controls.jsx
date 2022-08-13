@@ -21,7 +21,7 @@ const Controls = () => {
 		let weakSampleUrl
 
 		//Check if there are polyrhythms and a second instrument has been chosen
-		const numPolySections = sections.map(s => s.secondaryNumBeats).filter(snb => snb).length
+		const numPolySections = sections.map(s => s.rhythms.length > 1).filter(val => val).length
 		if (numPolySections && selectedSamples[1]) {
 			strongSampleUrl = selectedSamples[0].strong.url
 			weakSampleUrl = selectedSamples[0].weak.url

@@ -20,13 +20,15 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 					{isTempoChange
 						? <>
 							<p>
-								Tempo change from {section.rhythms[0].bpms[0]}bpm to {section.rhythms[0].bpms[1]}bpm
+								Tempo change from
+								{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm to
+								{section.rhythms[0].bpms[1] * (4 / section.rhythms[0].timeSig[1])}bpm
 							</p>
 							<p>
 								Mean tempo condition = {section.overallData.mtc}
 							</p>
 						</>
-						: `tempo = ${section.rhythms[0].bpms[0]}bpm`
+						: `tempo = ${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
 					}
 				</div>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>

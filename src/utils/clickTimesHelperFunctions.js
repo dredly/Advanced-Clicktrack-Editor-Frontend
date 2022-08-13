@@ -122,17 +122,12 @@ export const combineTimeArrays = (timeArrays, numInstruments) => {
 
 export const buildPolyrhythmicSection = (startTime, sectionData, numInstruments) => {
 	const data1 = {
-		numMeasures: sectionData.numMeasures,
-		numBeats: sectionData.numBeats,
-		meanTempoCondition: sectionData.meanTempoCondition,
-		bpm: sectionData.bpm,
-		bpmEnd: sectionData.bpmEnd,
+		...sectionData,
+		rhythms: [sectionData.rhythms[0]]
 	}
 	const data2 = {
-		...data1,
-		numBeats: sectionData.secondaryNumBeats,
-		bpm: sectionData.secondaryBpm,
-		bpmEnd: sectionData.secondaryBpmEnd
+		...sectionData,
+		rhythms: [sectionData.rhythms[1]]
 	}
 	const timeArrays = makePolyrhythmTimeArrays([data1, data2], startTime)
 

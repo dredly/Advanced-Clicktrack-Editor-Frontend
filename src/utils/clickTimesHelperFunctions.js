@@ -27,7 +27,7 @@ export const buildClickTrackSection = (startTime, sectionData, last=false) => {
 	const sectionTimeArray = timeArray
 		.slice(0, timeArray.length -1)
 		.map((time, idx) => (
-			accentArray.includes(idx % sectionData.numBeats)
+			accentArray.includes(idx % sectionData.rhythms[0].timeSig[0])
 				? { time, bpm: bpmArray[idx], downBeat: true }
 				: { time, bpm: bpmArray[idx], downBeat: false }
 		))

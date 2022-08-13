@@ -10,6 +10,7 @@ const Controls = () => {
 	const selectedSamples = useSelector(state => state.samples.samples)
 
 	const clickTimesPoly = getClickTimesPoly(sections, selectedSamples.length)
+	console.log('clickTimesPoly', clickTimesPoly)
 
 	const strongPlayer = new Tone.Player().toDestination()
 	const weakPlayer = new Tone.Player().toDestination()

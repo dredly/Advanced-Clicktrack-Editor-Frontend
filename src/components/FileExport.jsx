@@ -9,12 +9,10 @@ const FileExport = () => {
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 	const showHelp = useSelector(state => state.ui.showHelp)
 
-	const timeSigData = sections.map(s => ({ numMeasures: s.numMeasures, numBeats: s.numBeats }))
 	const clickTimesNonPoly = getClickTimesNonPoly(sections)
 
 	const midiData = {
-		timeSigData,
-		tempoData: clickTimesNonPoly.map(note => ({ bpm: note.bpm, downBeat: note.downBeat })),
+		noteBpms: clickTimesNonPoly.map(note => note.bpm),
 		sectionData: sections
 	}
 

@@ -22,7 +22,7 @@ const makeBpmArray = (sectionData) => {
 
 export const getFullTempoDataSymbolic = (sectionData) => {
 	const sectionBoundaryBpms = sectionData
-		.map(sd => [Number(sd.bpm), Number(sd.bpmEnd)])
+		.map(sd => [sd.rhythms[0].bpms[0], sd.rhythms[0].bpms[1]])
 		.reduce((a, b) => a.concat(b))
 
 	const mtcBpms = []
@@ -31,16 +31,19 @@ export const getFullTempoDataSymbolic = (sectionData) => {
 	}
 
 	const sectionBoundaryNumMeasures = [0].concat(
-		sectionData.map(sd => Number(sd.numMeasures))
+		sectionData.map(sd => sd.overallData.numMeasures)
 	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
 
+	// Potentially change here to use quarter notes
 	const sectionBoundaryNumNotes = [0].concat(
-		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
+		sectionData.map(sd => sd.overallData.numMeasures * sd.rhythms[0].timeSig[0])
 	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
 
 	const mtcNumNotes = sectionBoundaryNumNotes
 		.slice(1)
-		.map((numNotes, idx) => sectionBoundaryNumNotes[idx] + sectionData[idx].meanTempoCondition * (numNotes - sectionBoundaryNumNotes[idx]))
+		.map((numNotes, idx) => sectionBoundaryNumNotes[idx] + sectionData[idx].overallData.mtc * (numNotes - sectionBoundaryNumNotes[idx]))
+
+	console.log('mtcNumNotes', mtcNumNotes)
 
 	const dataPoints = []
 

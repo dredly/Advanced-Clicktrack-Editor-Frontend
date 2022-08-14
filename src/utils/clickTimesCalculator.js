@@ -9,7 +9,10 @@ export const getClickTimesNonPoly = (sections, withLast=false) => {
 		const { sectionTimeArray, endTime } = i === sections.length - 1 && withLast
 			? buildClickTrackSection(startTime, sections[i], true)
 			: buildClickTrackSection(startTime, sections[i])
-		clickTimesNonPoly.push(...sectionTimeArray)
+		const sectionTimeArrayWithDisplayBpms = sectionTimeArray.map(click => {
+			return { ...click, bpm: click.bpm * (4 / sections[i].rhythms[0].timeSig[1]) }
+		})
+		clickTimesNonPoly.push(...sectionTimeArrayWithDisplayBpms)
 		startTime = endTime
 	}
 

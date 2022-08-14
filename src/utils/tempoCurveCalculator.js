@@ -95,12 +95,11 @@ export const getFullTempoDataPhysical = (clickTimeData, sectionData) => {
 	})
 
 	const sectionBoundaryNumNotes = [0].concat(
-		sectionData.map(sd => Number(sd.numMeasures) * Number(sd.numBeats))
+		sectionData.map(sd => sd.overallData.numMeasures * sd.rhythms[0].timeSig[0])
 	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
 
 	const sectionBoundaryTimes = sectionBoundaryNumNotes.map(nn => dataPoints[nn].x)
 
-	console.log('sectionBoundaryTimes', sectionBoundaryTimes)
 	return {
 		dataPoints,
 		sections: sectionBoundaryTimes

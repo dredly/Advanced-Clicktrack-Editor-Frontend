@@ -1,18 +1,13 @@
-import { LineChart, Line, XAxis, YAxis, Label, ReferenceArea, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Label, ReferenceArea, ReferenceLine, ResponsiveContainer } from 'recharts'
 import { splitIntoSeries } from '../../utils/tempoCurveCalculator'
 
-const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries }) => {
+const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries, measureData }) => {
 	const backgroundColours = ['#1E81FF', '#1EFFBE', '#2FFF1E', ]
 	// Set the bounds of the y axis to have some space around the min and max values
 	const yAxisMin = [...dataPoints].sort((a, b) => a.y - b.y)[0].y - 10
 	const yAxisMax = [...dataPoints].sort((a, b) => b.y - a.y)[0].y + 10
 
 	const series = splitIntoSeries(dataPoints)
-	const measuresData = dataPoints
-		.filter(dp => dp.m)
-		.map(dp => {
-			return { ...dp, y: yAxisMax - 10 }
-		})
 
 	return (
 		<ResponsiveContainer width="85%" height={200}>
@@ -24,21 +19,8 @@ const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries }) => {
 					domain={['dataMin', 'dataMax']}
 				>
 					<Label
-						value="Progress through track (in notes)"
+						value="Progress through track (in quarter notes)"
 						position="insideBottom"
-						offset={-5}
-					/>
-				</XAxis>
-				<XAxis
-					xAxisId="top"
-					dataKey="m"
-					type="number"
-					orientation="top"
-					domain={[0, 'dataMax']}
-				>
-					<Label
-						value="Progress through track (in measures)"
-						position="insideTop"
 						offset={-5}
 					/>
 				</XAxis>
@@ -64,16 +46,14 @@ const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries }) => {
 						key={s.name}
 					/>
 				))}
-				<Line
-					xAxisId="top"
-					dataKey="y"
-					data={measuresData}
-					isAnimationActive={false}
-					className={'hidden'}
-				/>
 				{sectionBoundaries.slice(0, -1).map((sb, idx) => (
 					<ReferenceArea xAxisId="bottom" x1={sb} x2={sectionBoundaries[idx + 1]} fill={backgroundColours[idx % 3]} key={idx}/>
 				))}
+				{measureData.map(m => (
+					<ReferenceLine xAxisId="bottom" x={m} stroke="rgba(12, 12, 61, 0.4)" key={m} />
+				))
+
+				}
 			</LineChart>
 		</ResponsiveContainer>
 	)

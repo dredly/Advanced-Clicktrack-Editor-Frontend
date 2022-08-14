@@ -22,7 +22,7 @@ const makeBpmArray = (sectionData) => {
 
 export const getFullTempoDataSymbolic = (sectionData) => {
 	const sectionBoundaryBpms = sectionData
-		.map(sd => [sd.rhythms[0].bpms[0], sd.rhythms[0].bpms[1]])
+		.map(sd => [sd.rhythms[0].bpms[0] * (4 / sd.rhythms[0].timeSig[1]), sd.rhythms[0].bpms[1] * (4 / sd.rhythms[0].timeSig[1])])
 		.reduce((a, b) => a.concat(b))
 
 	const mtcBpms = []
@@ -30,20 +30,14 @@ export const getFullTempoDataSymbolic = (sectionData) => {
 		mtcBpms.push(sectionBoundaryBpms[i] + 0.5 * (sectionBoundaryBpms[i + 1] - sectionBoundaryBpms[i]))
 	}
 
-	const sectionBoundaryNumMeasures = [0].concat(
-		sectionData.map(sd => sd.overallData.numMeasures)
-	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
-
 	// Potentially change here to use quarter notes
 	const sectionBoundaryNumNotes = [0].concat(
-		sectionData.map(sd => sd.overallData.numMeasures * sd.rhythms[0].timeSig[0])
+		sectionData.map(sd => sd.overallData.numMeasures * sd.rhythms[0].timeSig[0] * (4 / sd.rhythms[0].timeSig[1]))
 	).map((_, idx, arr) => idx === 0 ? 0 : arr.slice(0, idx + 1).reduce((a, b) => a + b))
 
 	const mtcNumNotes = sectionBoundaryNumNotes
 		.slice(1)
 		.map((numNotes, idx) => sectionBoundaryNumNotes[idx] + sectionData[idx].overallData.mtc * (numNotes - sectionBoundaryNumNotes[idx]))
-
-	console.log('mtcNumNotes', mtcNumNotes)
 
 	const dataPoints = []
 
@@ -52,7 +46,6 @@ export const getFullTempoDataSymbolic = (sectionData) => {
 			{
 				x: sectionBoundaryNumNotes[i],
 				y: sectionBoundaryBpms[2  * i],
-				m: sectionBoundaryNumMeasures[i]
 			},
 			{
 				x: mtcNumNotes[i],
@@ -61,14 +54,26 @@ export const getFullTempoDataSymbolic = (sectionData) => {
 			{
 				x: sectionBoundaryNumNotes[i + 1],
 				y: sectionBoundaryBpms[2 * i + 1],
-				m: sectionBoundaryNumMeasures[i + 1]
 			},
 		)
 	}
 
+	const measureNumNotes = []
+	sectionBoundaryNumNotes.slice(1).forEach((nn, idx) => {
+		console.log(`nn = ${nn}`)
+		const sectionTimeSig = sectionData[idx].rhythms[0].timeSig[0] * (4 / sectionData[idx].rhythms[0].timeSig[1])
+		const sectionNumMeasures = sectionData[idx].overallData.numMeasures
+		const sectionMeasureNumNotes = Array(sectionNumMeasures)
+			.fill(nn)
+			.map((ele, idx) => ele - idx * sectionTimeSig)
+			.reverse()
+		measureNumNotes.push(sectionMeasureNumNotes)
+	})
+
 	return {
 		dataPoints,
-		sections: sectionBoundaryNumNotes
+		sections: sectionBoundaryNumNotes,
+		measures: measureNumNotes.reduce((a, b) => a.concat(b)),
 	}
 }
 

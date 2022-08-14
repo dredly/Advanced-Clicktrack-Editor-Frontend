@@ -3,8 +3,8 @@ import { ResponsiveContainer, LineChart, XAxis, YAxis, Label, Line, ReferenceAre
 const FullTempoGraphPhysical = ({ dataPoints, sectionBoundaries }) => {
 	const backgroundColours = ['#1E81FF', '#1EFFBE', '#2FFF1E', ]
 	// Set the bounds of the y axis to have some space around the min and max values
-	const yAxisMin = [...dataPoints].sort((a, b) => a.y - b.y)[0].y - 10
-	const yAxisMax = [...dataPoints].sort((a, b) => b.y - a.y)[0].y + 10
+	const yAxisMin = Math.floor([...dataPoints].sort((a, b) => a.y - b.y)[0].y - 10)
+	const yAxisMax = Math.ceil([...dataPoints].sort((a, b) => b.y - a.y)[0].y + 10)
 
 	// This prevents an ugly floating point number from being displayed on the x axis label
 	const xAxisMax = Math.ceil([...dataPoints].sort((a, b) => b.x - a.x)[0].x)

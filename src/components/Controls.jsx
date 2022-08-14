@@ -5,6 +5,7 @@ import { getClickTimesPoly } from '../utils/clickTimesCalculator'
 
 import { ButtonGroup } from '@mui/material'
 import { Button } from '@mui/material'
+import { Box } from '@mui/system'
 import StopIcon from '@mui/icons-material/Stop'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
@@ -62,10 +63,12 @@ const Controls = () => {
 	}
 
 	return (
-		<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ position: 'sticky' }}>
-			<Button onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
-			<Button onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
-		</ButtonGroup>
+		<Box sx={{ marginBlock: '0.5rem' }}>
+			<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ position: 'sticky' }}>
+				<Button onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
+				<Button onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
+			</ButtonGroup>
+		</Box>
 	)
 }
 

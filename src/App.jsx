@@ -3,17 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
 import clicktrackService from './services/clicktracks'
 import SectionList from './components/sections/SectionList'
-import SectionForm from './components/forms/SectionForm/SectionForm'
-import SampleChoices from './components/samples/SampleChoices'
-import HelpIcon from './components/HelpIcon'
 import Controls from './components/Controls'
 // import TestingZone from './components/TestingZone'
-import { addToStartHelp } from './utils/helpText'
-import FileExport from './components/FileExport'
+
 import Visualiser from './components/sections/Visualiser'
 import Navbar from './components/Navbar'
+import Extras from './components/Extras'
 
-import { Container } from '@mui/material'
+import { Container, Grid } from '@mui/material'
 
 
 const App = () => {
@@ -22,9 +19,6 @@ const App = () => {
 	}, [])
 
 	const dispatch = useDispatch()
-	const formInfo = useSelector(state => state.sections.form)
-	const playing = useSelector(state => state.ui.playing)
-	const showHelp = useSelector(state => state.ui.showHelp)
 	const numSections = useSelector(state => state.sections.sectionList.length)
 
 	const showFormHere = (location, type) => {
@@ -41,27 +35,14 @@ const App = () => {
 			<Container>
 				{/* <TestingZone /> */}
 				<Controls/>
-				<div className='med-top-margin flex-row-container-responsive' inert={playing ? 'true' : undefined}>
-					<div>
-						<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-						{(showHelp
-							? <HelpIcon content={addToStartHelp}/>
-							: null
-						)}
-						{formInfo.location === 0
-							? <>
-								<SectionForm hideSelf={() => hideForm('create')}/>
-								<button onClick={() => hideForm('create')}>cancel</button>
-							</>
-							: null
-						}
+				<Grid container spacing={2} justifyContent="space-between">
+					<Grid item s={9} sx={{ flexGrow: 1 }}>
 						<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-					</div>
-					<div>
-						<SampleChoices />
-						<FileExport />
-					</div>
-				</div>
+					</Grid>
+					<Grid item s={3}>
+						<Extras />
+					</Grid>
+				</Grid>
 				{( numSections
 					? <Visualiser />
 					: null

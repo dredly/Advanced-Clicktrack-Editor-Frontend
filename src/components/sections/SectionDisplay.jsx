@@ -1,6 +1,10 @@
 import { useSelector } from 'react-redux'
 import SectionForm from '../forms/SectionForm/SectionForm'
 
+import { ButtonGroup, Button } from '@mui/material'
+import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
+
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
@@ -32,11 +36,27 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 						: `tempo = ${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
 					}
 				</div>
-				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
-				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
-				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>
-					Add after this section
-				</button>
+				<ButtonGroup>
+					<Button
+						onClick={() => handlers.showFormHere(idx + 1, 'edit')}
+						variant="contained"
+						color="secondary"
+						startIcon={<EditIcon />}
+					>
+						Edit
+					</Button>
+					<Button
+						onClick={idx => handlers.handleDelete(idx)}
+						variant="contained"
+						color="error"
+						startIcon={<DeleteIcon />}
+					>
+						Delete
+					</Button>
+					<Button onClick={() => handlers.showFormHere(idx + 1, 'create')} variant="contained">
+						Add after this section
+					</Button>
+				</ButtonGroup>
 			</div>
 			{formInfo.location === idx + 1
 				? formInfo.type === 'create'

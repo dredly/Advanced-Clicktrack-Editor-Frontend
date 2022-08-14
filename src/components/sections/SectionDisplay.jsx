@@ -1,78 +1,122 @@
 import { useSelector } from 'react-redux'
 import SectionForm from '../forms/SectionForm/SectionForm'
 
-import { ButtonGroup, Button } from '@mui/material'
+import { ButtonGroup, Button, Card, CardActions, CardContent, CardHeader, Box } from '@mui/material'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableRow from '@mui/material/TableRow'
+import Paper from '@mui/material/Paper'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
 
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
-	const isPolyrhythm = section.rhythms.length > 1
-	const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
+	// const isPolyrhythm = section.rhythms.length > 1
+	// const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
 
 	return (
 		<div>
-			<div className='click-track-section'>
+			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+				<Card variant='elevation' elevation={3} sx={{ width: 'fit-content' }}>
+					<CardHeader title={`Section ${idx + 1}`} />
+					<CardContent>
+						{/* <div>
+							{section.overallData.numMeasures} measures
+							{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time
+							Accents on beats {section.rhythms[0].accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}
+							{isPolyrhythm
+								? <p>secondary rhythm in {section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time</p>
+								: null
+							}
+							{isTempoChange
+								? <>
+									<p>
+								Tempo change from
+										{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm to
+										{section.rhythms[0].bpms[1] * (4 / section.rhythms[0].timeSig[1])}bpm
+									</p>
+									<p>
+								Mean tempo condition = {section.overallData.mtc}
+									</p>
+								</>
+								: `tempo = ${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
+							}
+						</div> */}
+						<TableContainer component={Paper}>
+							<Table aria-label="simple table">
+								<TableBody>
+									<TableRow>
+										<TableCell component="th" variant='head' scope="row">
+											Length
+										</TableCell>
+										<TableCell align="right">{section.overallData.numMeasures} measures</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell component="th" variant='head' scope="row">
+											Time Signature
+										</TableCell>
+										<TableCell align="right">
+											{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time
+										</TableCell>
+									</TableRow>
+									<TableRow>
+										<TableCell component="th" variant='head' scope="row">
+											Tempo
+										</TableCell>
+										<TableCell align="right">
+											{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm
+										</TableCell>
+									</TableRow>
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</CardContent>
+					<CardActions>
+						<ButtonGroup>
+							<Button
+								onClick={() => handlers.showFormHere(idx + 1, 'edit')}
+								variant="outlined"
+								color="secondary"
+								startIcon={<EditIcon />}
+							>
+						Edit
+							</Button>
+							<Button
+								onClick={idx => handlers.handleDelete(idx)}
+								variant="outlined"
+								color="error"
+								startIcon={<DeleteIcon />}
+							>
+						Delete
+							</Button>
+						</ButtonGroup>
+					</CardActions>
+				</Card>
 				<div>
-					<h3>{section.overallData.numMeasures} measures</h3>
-					<h4>{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time</h4>
-					<p>Accents on beats {section.rhythms[0].accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
-					{isPolyrhythm
-						? <p>secondary rhythm in {section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time</p>
+					{formInfo.location === idx + 1
+						? formInfo.type === 'create'
+							?	<>
+								<SectionForm hideSelf={() => handlers.hideForm('create')} />
+								<button onClick={() => handlers.hideForm('create')}>cancel</button>
+							</>
+							: <>
+								<SectionForm
+									hideSelf={() => handlers.hideForm('edit')}
+									existingData={section}
+								/>
+								<button onClick={() => handlers.hideForm('edit')}>cancel</button>
+							</>
 						: null
 					}
-					{isTempoChange
-						? <>
-							<p>
-								Tempo change from
-								{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm to
-								{section.rhythms[0].bpms[1] * (4 / section.rhythms[0].timeSig[1])}bpm
-							</p>
-							<p>
-								Mean tempo condition = {section.overallData.mtc}
-							</p>
-						</>
-						: `tempo = ${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
-					}
 				</div>
-				<ButtonGroup>
-					<Button
-						onClick={() => handlers.showFormHere(idx + 1, 'edit')}
-						variant="contained"
-						color="secondary"
-						startIcon={<EditIcon />}
-					>
-						Edit
-					</Button>
-					<Button
-						onClick={idx => handlers.handleDelete(idx)}
-						variant="contained"
-						color="error"
-						startIcon={<DeleteIcon />}
-					>
-						Delete
-					</Button>
-					<Button onClick={() => handlers.showFormHere(idx + 1, 'create')} variant="contained">
-						Add after this section
-					</Button>
-				</ButtonGroup>
-			</div>
-			{formInfo.location === idx + 1
-				? formInfo.type === 'create'
-					?	<>
-						<SectionForm hideSelf={() => handlers.hideForm('create')} />
-						<button onClick={() => handlers.hideForm('create')}>cancel</button>
-					</>
-					: <>
-						<SectionForm
-							hideSelf={() => handlers.hideForm('edit')}
-							existingData={section}
-						/>
-						<button onClick={() => handlers.hideForm('edit')}>cancel</button>
-					</>
-				: null
-			}
+			</Box>
+			<Button onClick={() => handlers.showFormHere(idx + 1, 'create')} variant="outlined" startIcon={<PlaylistAddIcon />}>
+				Add here
+			</Button>
 		</div>
 	)
 }

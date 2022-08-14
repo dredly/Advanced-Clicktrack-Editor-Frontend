@@ -1,9 +1,13 @@
 import Tippy from '@tippyjs/react'
+import { IconButton } from '@mui/material'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 
 const HelpIcon = ({ content }) => {
 	return (
 		<Tippy content={content}>
-			<button type="button" className="help-icon">?</button>
+			<IconButton aria-label="help" color="primary">
+				<HelpOutlineIcon />
+			</IconButton>
 		</Tippy>
 	)
 }

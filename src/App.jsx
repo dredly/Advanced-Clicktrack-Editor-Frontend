@@ -12,6 +12,9 @@ import Controls from './components/Controls'
 import { addToStartHelp } from './utils/helpText'
 import FileExport from './components/FileExport'
 import Visualiser from './components/sections/Visualiser'
+import Navbar from './components/Navbar'
+
+import { Container } from '@mui/material'
 
 
 const App = () => {
@@ -34,40 +37,43 @@ const App = () => {
 	}
 
 	return (
-		<>
-			{/* <TestingZone /> */}
-			<div className="med-top-margin">
-				<button onClick={() => dispatch(toggleHelp())}>
-					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
-				</button>
-			</div>
-			<Controls/>
-			<div className='med-top-margin flex-row-container-responsive' inert={playing ? 'true' : undefined}>
-				<div>
-					<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-					{(showHelp
-						? <HelpIcon content={addToStartHelp}/>
-						: null
-					)}
-					{formInfo.location === 0
-						? <>
-							<SectionForm hideSelf={() => hideForm('create')}/>
-							<button onClick={() => hideForm('create')}>cancel</button>
-						</>
-						: null
-					}
-					<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
+		<div>
+			<Navbar />
+			<Container>
+				{/* <TestingZone /> */}
+				<div className="med-top-margin">
+					<button onClick={() => dispatch(toggleHelp())}>
+						{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
+					</button>
 				</div>
-				<div>
-					<SampleChoices />
-					<FileExport />
+				<Controls/>
+				<div className='med-top-margin flex-row-container-responsive' inert={playing ? 'true' : undefined}>
+					<div>
+						<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
+						{(showHelp
+							? <HelpIcon content={addToStartHelp}/>
+							: null
+						)}
+						{formInfo.location === 0
+							? <>
+								<SectionForm hideSelf={() => hideForm('create')}/>
+								<button onClick={() => hideForm('create')}>cancel</button>
+							</>
+							: null
+						}
+						<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
+					</div>
+					<div>
+						<SampleChoices />
+						<FileExport />
+					</div>
 				</div>
-			</div>
-			{( numSections
-				? <Visualiser />
-				: null
-			)}
-		</>
+				{( numSections
+					? <Visualiser />
+					: null
+				)}
+			</Container>
+		</div>
 	)
 }
 

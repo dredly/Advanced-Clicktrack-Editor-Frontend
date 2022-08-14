@@ -8,7 +8,7 @@ export const buildClickTrackSection = (startTime, sectionData, last=false) => {
 			? startTime + intervalArray.slice(0, idx).reduce((a, b) => a + b)
 			: startTime
 	})
-	const accentArray = sectionData.accentedBeats
+	const accentArray = sectionData.rhythms[0].accentedBeats
 
 	const endTime = timeArray[timeArray.length - 1] //Last entry of the timeArray
 
@@ -27,7 +27,7 @@ export const buildClickTrackSection = (startTime, sectionData, last=false) => {
 	const sectionTimeArray = timeArray
 		.slice(0, timeArray.length -1)
 		.map((time, idx) => (
-			accentArray.includes(idx % sectionData.numBeats)
+			accentArray.includes(idx % sectionData.rhythms[0].timeSig[0])
 				? { time, bpm: bpmArray[idx], downBeat: true }
 				: { time, bpm: bpmArray[idx], downBeat: false }
 		))
@@ -122,17 +122,12 @@ export const combineTimeArrays = (timeArrays, numInstruments) => {
 
 export const buildPolyrhythmicSection = (startTime, sectionData, numInstruments) => {
 	const data1 = {
-		numMeasures: sectionData.numMeasures,
-		numBeats: sectionData.numBeats,
-		meanTempoCondition: sectionData.meanTempoCondition,
-		bpm: sectionData.bpm,
-		bpmEnd: sectionData.bpmEnd,
+		...sectionData,
+		rhythms: [sectionData.rhythms[0]]
 	}
 	const data2 = {
-		...data1,
-		numBeats: sectionData.secondaryNumBeats,
-		bpm: sectionData.secondaryBpm,
-		bpmEnd: sectionData.secondaryBpmEnd
+		...sectionData,
+		rhythms: [sectionData.rhythms[1]]
 	}
 	const timeArrays = makePolyrhythmTimeArrays([data1, data2], startTime)
 

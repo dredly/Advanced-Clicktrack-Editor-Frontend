@@ -1,72 +1,101 @@
-import { addSection, updateSection } from '../../../reducers/sectionReducer'
-import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import getSecondBpm from '../../../utils/polyrhythmCalculator'
+import { useSelector, useDispatch } from 'react-redux/es/exports'
 import MeasuresInput from './MeasuresInput'
 import SingleBpmSelection from './SingleBpmSelection'
 import MultipleBpmSelection from './MultipleBpmSelection'
 import AccentSelection from './AccentSelection'
-import NumBeatsInput from './NumBeatsInput'
 import PolyrhythmSelection from './PolyrhythmSelection'
 import HelpIcon from '../../HelpIcon'
-import { accentSelectionHelp, polyrhythmHelp } from '../../../utils/helpText'
+import { polyrhythmHelp, accentSelectionHelp } from '../../../utils/helpText'
 import { defaults } from '../../../config/sectionDefaults'
+import TimeSignatureInput from './TimeSignatureInput'
+import getSecondBpm from '../../../utils/polyrhythmCalculator'
+import { addSection, updateSection } from '../../../reducers/sectionReducer'
 
 const SectionForm = ({ hideSelf, existingData }) => {
-	const [isTempoChange, setIsTempoChange] = useState(existingData && existingData.bpmEnd !== existingData.bpm ? true : false)
-	const [accentOnOne, setAccentOnOne] = useState(
-		// If there is existing data and any beats accented beats which aren't the first of a measure,
-		// then set accentOnOne to false
-		existingData && (existingData.accentedBeats.length !== 1 || existingData.accentedBeats[0] !== 0)
-			? false
-			: true
-	)
-	const [isPolyrhythm, setIsPolyrhythm] = useState(existingData && existingData.secondaryBpm ? true : false)
 	const dispatch = useDispatch()
+
 	const formType = useSelector(state => state.sections.form.type)
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const data = existingData || defaults
 
-	const [currentNumBeats, setCurrentNumBeats] = useState(data.numBeats)
-	const [secondaryNumBeats, setSecondaryNumBeats] = useState(data.secondaryNumBeats)
+	const [isTempoChange, setIsTempoChange] = useState(
+		data.rhythms[0].bpms[0] !== data.rhythms[0].bpms[1]
+			? true
+			: false
+	)
+
+	const [isPolyrhythm, setIsPolyrhythm] = useState(data.rhythms.length > 1 ? true : false)
+
+	const [accentOnOne, setAccentOnOne] = useState(data.rhythms[0].accentedBeats.toString() === '0' ? true : false)
+
+	const [currentNumBeats, setCurrentNumBeats] = useState(data.rhythms[0].timeSig[0])
+
+	const allBpms = data.rhythms.map(r => r.bpms)
+	const allDenominators = data.rhythms.map(r => r.timeSig).map(ts => ts[1])
+	const displayBpms = allBpms.map((bpma, idx) => bpma.map(bpm => bpm * (4 / allDenominators[idx])))
+
+	console.log('displayBpms', displayBpms)
 
 	const handleSubmit = (evt) => {
 		evt.preventDefault()
-		const numMeasures = evt.target.numMeasures.value
-		const numBeats = currentNumBeats
-		const bpm = evt.target.bpm.value
-		const bpmEnd = evt.target.bpmEnd ? evt.target.bpmEnd.value : bpm
-		const secondaryBpm = secondaryNumBeats && isPolyrhythm
-			? getSecondBpm(bpm, numBeats, secondaryNumBeats)
-			: null
-		const secondaryBpmEnd = secondaryNumBeats && isPolyrhythm
-			? getSecondBpm(bpmEnd, numBeats, secondaryNumBeats)
-			: null
-		const meanTempoCondition = evt.target.meanTempoCondition
-			? evt.target.meanTempoCondition.value
-			: defaults.meanTempoCondition
+		console.log('Fake submit')
+
 		const formFieldNames = Object.values(evt.target).map(val => val.name)
 		// First remove all undefined field names to prevent an error when calling the includes method,
 		// which expects a string
 		const checkBoxFieldNames = formFieldNames.filter(name => name && name.includes('beatCheckBox'))
 		const checkBoxData = checkBoxFieldNames.map(name => evt.target[name].checked)
 		const strongBeats = checkBoxData.map((ele, idx) => ele ? idx : -1).filter(val => val >= 0)
-		const newSection = {
-			numMeasures, numBeats, bpm, bpmEnd, meanTempoCondition,
-			secondaryNumBeats: isPolyrhythm ? secondaryNumBeats: '',
-			secondaryBpm: isPolyrhythm ? secondaryBpm: null,
-			secondaryBpmEnd: isPolyrhythm ? secondaryBpmEnd: null,
-			// by default the first beat of each measure (downbeat)
-			// is accented
-			accentedBeats: strongBeats.length ? strongBeats : [0],
+
+		const newSection ={
+			overallData: {
+				numMeasures: Number(evt.target.numMeasures.value),
+				mtc: evt.target.meanTempoCondition
+					? Number(evt.target.meanTempoCondition.value)
+					: defaults.overallData.mtc
+			},
+			rhythms: [
+				{
+					bpms: [
+						Number(evt.target.bpm.value),
+						evt.target.bpmEnd
+							? Number(evt.target.bpmEnd.value)
+							: Number(evt.target.bpm.value)
+					],
+					timeSig: [currentNumBeats, Number(evt.target.denominator.value)],
+					accentedBeats: strongBeats.length ? strongBeats : [0]
+				}
+			]
 		}
-		const editedSection = { ...newSection, id: data.id }
+
+		if (isPolyrhythm) {
+			const secondaryBpms = newSection.rhythms[0].bpms
+				.map(bpm => getSecondBpm(bpm, newSection.rhythms[0].timeSig[0], Number(evt.target.secondaryNumerator.value)))
+			newSection.rhythms = newSection.rhythms.concat({
+				bpms: secondaryBpms,
+				timeSig: [
+					Number(evt.target.secondaryNumerator.value),
+					Number(evt.target.secondaryDenominator.value)
+				],
+				accentedBeats: [0] //Hardcode for now
+			})
+		}
+
+		// Modify the bpms so that all notes can be considered as quarter notes
+		for (let i = 0; i < newSection.rhythms.length; i++) {
+			const denominator = newSection.rhythms[i].timeSig[1]
+			newSection.rhythms[i].bpms = newSection.rhythms[i].bpms
+				.map(bpm => bpm * (denominator / 4))
+		}
+
+		console.log('newSection', newSection)
 
 		if (formType === 'create') {
 			dispatch(addSection(newSection))
 		} else if (formType === 'edit') {
-			dispatch(updateSection(editedSection))
+			dispatch(updateSection({ ...newSection, id: data.id }))
 		}
 		hideSelf()
 	}
@@ -74,7 +103,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	return (
 		<form onSubmit={handleSubmit}>
 			<h3>{formType === 'create' ? 'Adding section' : 'Editing section'}</h3>
-			<MeasuresInput defaultNumMeasures={data.numMeasures}/>
+			<MeasuresInput defaultNumMeasures={data.overallData.numMeasures}/>
 			<div>
 				<div className="small-bottom-margin">
 					<label>Tempo change
@@ -88,14 +117,21 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				</div>
 				{( isTempoChange
 					? <MultipleBpmSelection
-						defaultBpm={{ start: Number(data.bpm), end: Number(data.bpmEnd) }}
-						defaultMeanTempoCondition={data.meanTempoCondition}
+						defaultBpm={{
+							start: Number(displayBpms[0][0]),
+							end: Number(displayBpms[0][1])
+						}}
+						defaultMeanTempoCondition={data.overallData.mtc}
 					/>
-					: <SingleBpmSelection defaultBpm={data.bpm} />
+					: <SingleBpmSelection defaultBpm={displayBpms[0][0]} />
 				)}
 			</div>
 			<div>
-				<NumBeatsInput currentNumBeats={currentNumBeats} setCurrentNumBeats={setCurrentNumBeats}/>
+				<TimeSignatureInput
+					currentNumBeats={currentNumBeats}
+					setCurrentNumBeats={setCurrentNumBeats}
+					denominator={data.rhythms[0].timeSig[1]}
+				/>
 			</div>
 			<div className="small-bottom-margin">
 				<label>Polyrhythm?
@@ -112,9 +148,11 @@ const SectionForm = ({ hideSelf, existingData }) => {
 				)}
 			</div>
 			{( isPolyrhythm
+				// If not editing an already existing polyrhythm, then default the time signature to the same as
+				// that of the primary rhythm
 				? <PolyrhythmSelection
-					currentNumBeats={secondaryNumBeats}
-					setCurrentNumBeats={setSecondaryNumBeats}
+					numerator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[0] : data.rhythms[0].timeSig[0]}
+					denominator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[1] : data.rhythms[0].timeSig[1]}
 				/>
 				: null
 			)}
@@ -131,7 +169,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					? <HelpIcon content={accentSelectionHelp}/>
 					: null
 				)}
-				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.accentedBeats}/>}
+				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.rhythms[0].accentedBeats}/>}
 			</div>
 			<button>
 				{(existingData ? 'Save Changes' : 'Add this Section')}

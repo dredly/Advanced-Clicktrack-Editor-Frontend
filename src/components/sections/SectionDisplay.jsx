@@ -4,35 +4,34 @@ import SectionForm from '../forms/SectionForm/SectionForm'
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
+	const isPolyrhythm = section.rhythms.length > 1
+	const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
+
 	return (
 		<div>
 			<div className='click-track-section'>
-				{( section.bpm === section.bpmEnd
-					? <p>{section.bpm}bpm for {section.numMeasures} measures</p>
-					: Number(section.bpm) < Number(section.bpmEnd)
-						? <p>
-							Acceleration from {section.bpm
-							} to {section.bpmEnd} over {
-								section.numMeasures
-							} measures with mean tempo condition of {section.meanTempoCondition}
-						</p>
-						: <p>
-							Deceleration from {section.bpm
-							} to {section.bpmEnd} over {
-								section.numMeasures
-							} measures with mean tempo condition of {section.meanTempoCondition}
-						</p>
-				)}
-				{( section.secondaryBpm
-					? <p>{section.secondaryNumBeats} against {section.numBeats} polyrhythm</p>
-					: <p>Beats per measure: {section.numBeats}</p>
-				)}
-				{( section.accentedBeats.length > 1 || section.accentedBeats[0] !== 0
-					// Add one to convert from array index (counting from 0)
-					// to display index (counting from 1)
-					? <p>Accents on beats {section.accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
-					: null
-				)}
+				<div>
+					<h3>{section.overallData.numMeasures} measures</h3>
+					<h4>{section.rhythms[0].timeSig[0]}:{section.rhythms[0].timeSig[1]} time</h4>
+					<p>Accents on beats {section.rhythms[0].accentedBeats.map(beatIdx => beatIdx + 1).join(', ')}</p>
+					{isPolyrhythm
+						? <p>secondary rhythm in {section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time</p>
+						: null
+					}
+					{isTempoChange
+						? <>
+							<p>
+								Tempo change from
+								{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm to
+								{section.rhythms[0].bpms[1] * (4 / section.rhythms[0].timeSig[1])}bpm
+							</p>
+							<p>
+								Mean tempo condition = {section.overallData.mtc}
+							</p>
+						</>
+						: `tempo = ${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
+					}
+				</div>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'edit')}>Edit</button>
 				<button onClick={idx => handlers.handleDelete(idx)}>Delete</button>
 				<button onClick={() => handlers.showFormHere(idx + 1, 'create')}>

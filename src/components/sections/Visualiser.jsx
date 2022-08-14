@@ -11,6 +11,7 @@ const Visualiser = () => {
 	const sections = useSelector(state => state.sections.sectionList)
 
 	const fullTempoDataSymbolic = getFullTempoDataSymbolic(sections)
+	console.log('fullTempoDataSymbolic', fullTempoDataSymbolic)
 
 	const clickTimesNonPoly = getClickTimesNonPoly(sections, true)
 	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly, sections)

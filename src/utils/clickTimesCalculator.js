@@ -9,7 +9,10 @@ export const getClickTimesNonPoly = (sections, withLast=false) => {
 		const { sectionTimeArray, endTime } = i === sections.length - 1 && withLast
 			? buildClickTrackSection(startTime, sections[i], true)
 			: buildClickTrackSection(startTime, sections[i])
-		clickTimesNonPoly.push(...sectionTimeArray)
+		const sectionTimeArrayWithDisplayBpms = sectionTimeArray.map(click => {
+			return { ...click, bpm: click.bpm * (4 / sections[i].rhythms[0].timeSig[1]) }
+		})
+		clickTimesNonPoly.push(...sectionTimeArrayWithDisplayBpms)
 		startTime = endTime
 	}
 
@@ -21,7 +24,7 @@ export const getClickTimesPoly = (sections, numInstruments) => {
 	let startTime = 0
 
 	for (let i = 0; i < sections.length; i++) {
-		const { sectionTimeArray, endTime } = sections[i].secondaryNumBeats
+		const { sectionTimeArray, endTime } = sections[i].rhythms.length > 1
 			? buildPolyrhythmicSection(startTime, sections[i], numInstruments)
 			: buildClickTrackSection(startTime, sections[i])
 		clickTimesPoly.push(...sectionTimeArray)

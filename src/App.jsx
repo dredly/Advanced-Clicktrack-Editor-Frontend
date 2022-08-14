@@ -11,6 +11,7 @@ import Controls from './components/Controls'
 // import TestingZone from './components/TestingZone'
 import { addToStartHelp } from './utils/helpText'
 import FileExport from './components/FileExport'
+import Visualiser from './components/sections/Visualiser'
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
 	const formInfo = useSelector(state => state.sections.form)
 	const playing = useSelector(state => state.ui.playing)
 	const showHelp = useSelector(state => state.ui.showHelp)
+	const numSections = useSelector(state => state.sections.sectionList.length)
 
 	const showFormHere = (location, type) => {
 		dispatch(displayForm({ location, type }))
@@ -39,26 +41,32 @@ const App = () => {
 					{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
 				</button>
 			</div>
-			<div className='med-top-margin' inert={playing ? 'true' : undefined}>
-				<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
-				{(showHelp
-					? <HelpIcon content={addToStartHelp}/>
-					: null
-				)}
-				{formInfo.location === 0
-					? <>
-						<SectionForm hideSelf={() => hideForm('create')}/>
-						<button onClick={() => hideForm('create')}>cancel</button>
-					</>
-					: null
-				}
-				<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-				<Controls/>
-				<div className='flex-row-container-responsive med-top-margin'>
+			<Controls/>
+			<div className='med-top-margin flex-row-container-responsive' inert={playing ? 'true' : undefined}>
+				<div>
+					<button onClick={() => showFormHere(0, 'create')}>Add to start</button>
+					{(showHelp
+						? <HelpIcon content={addToStartHelp}/>
+						: null
+					)}
+					{formInfo.location === 0
+						? <>
+							<SectionForm hideSelf={() => hideForm('create')}/>
+							<button onClick={() => hideForm('create')}>cancel</button>
+						</>
+						: null
+					}
+					<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
+				</div>
+				<div>
 					<SampleChoices />
 					<FileExport />
 				</div>
 			</div>
+			{( numSections
+				? <Visualiser />
+				: null
+			)}
 		</>
 	)
 }

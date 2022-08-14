@@ -5,7 +5,6 @@ import clicktrackService from './services/clicktracks'
 import SectionList from './components/sections/SectionList'
 import SectionForm from './components/forms/SectionForm/SectionForm'
 import SampleChoices from './components/samples/SampleChoices'
-import { toggleHelp } from './reducers/uiReducer'
 import HelpIcon from './components/HelpIcon'
 import Controls from './components/Controls'
 // import TestingZone from './components/TestingZone'
@@ -41,11 +40,6 @@ const App = () => {
 			<Navbar />
 			<Container>
 				{/* <TestingZone /> */}
-				<div className="med-top-margin">
-					<button onClick={() => dispatch(toggleHelp())}>
-						{showHelp ? 'Hide help tooltips' : 'Show help tooltips'}
-					</button>
-				</div>
 				<Controls/>
 				<div className='med-top-margin flex-row-container-responsive' inert={playing ? 'true' : undefined}>
 					<div>

@@ -12,7 +12,7 @@ const Navbar = () => {
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	return (
-		<AppBar>
+		<AppBar position="relative">
 			<Toolbar>
 				<Typography
 					variant="h6"

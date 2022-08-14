@@ -2,8 +2,11 @@ import * as Tone from 'tone'
 
 import { useSelector } from 'react-redux'
 import { getClickTimesPoly } from '../utils/clickTimesCalculator'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons'
+
+import { ButtonGroup } from '@mui/material'
+import { Button } from '@mui/material'
+import StopIcon from '@mui/icons-material/Stop'
+import PlayArrowIcon from '@mui/icons-material/PlayArrow'
 
 const Controls = () => {
 	const sections = useSelector(state => state.sections.sectionList)
@@ -59,10 +62,10 @@ const Controls = () => {
 	}
 
 	return (
-		<div className='med-top-margin'>
-			<button onClick={playClickTrack}><FontAwesomeIcon icon={faPlay} />  Play</button>
-			<button onClick={stopPlayBack}><FontAwesomeIcon icon={faStop} />Stop</button>
-		</div>
+		<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ position: 'sticky' }}>
+			<Button onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
+			<Button onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
+		</ButtonGroup>
 	)
 }
 

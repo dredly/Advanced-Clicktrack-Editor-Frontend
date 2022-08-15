@@ -29,7 +29,6 @@ const SectionList = ({ showFormHere, hideForm }) => {
 			{formInfo.location === 0
 				? <>
 					<SectionForm hideSelf={() => hideForm('create')}/>
-					<button onClick={() => hideForm('create')}>cancel</button>
 				</>
 				: null
 			}

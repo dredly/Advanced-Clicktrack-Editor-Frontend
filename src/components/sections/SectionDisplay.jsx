@@ -135,17 +135,13 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 				<div>
 					{formInfo.location === idx + 1
 						? formInfo.type === 'create'
-							?	<>
-								<SectionForm hideSelf={() => handlers.hideForm('create')} />
-								<button onClick={() => handlers.hideForm('create')}>cancel</button>
-							</>
-							: <>
-								<SectionForm
-									hideSelf={() => handlers.hideForm('edit')}
-									existingData={section}
-								/>
-								<button onClick={() => handlers.hideForm('edit')}>cancel</button>
-							</>
+							?
+							<SectionForm hideSelf={() => handlers.hideForm('create')} />
+							:
+							<SectionForm
+								hideSelf={() => handlers.hideForm('edit')}
+								existingData={section}
+							/>
 						: null
 					}
 				</div>

@@ -12,6 +12,10 @@ import TimeSignatureInput from './TimeSignatureInput'
 import getSecondBpm from '../../../utils/polyrhythmCalculator'
 import { addSection, updateSection } from '../../../reducers/sectionReducer'
 
+import { Card, CardActions, CardContent, CardHeader, Box, Button, FormControlLabel, Switch } from '@mui/material'
+import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
+import SaveIcon from '@mui/icons-material/Save'
+
 const SectionForm = ({ hideSelf, existingData }) => {
 	const dispatch = useDispatch()
 
@@ -101,80 +105,107 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<h3>{formType === 'create' ? 'Adding section' : 'Editing section'}</h3>
-			<MeasuresInput defaultNumMeasures={data.overallData.numMeasures}/>
-			<div>
-				<div className="small-bottom-margin">
-					<label>Tempo change
-						<input
-							key="toggletempochange"
-							type="checkbox"
-							checked={isTempoChange}
-							onChange={() => setIsTempoChange(!isTempoChange)}
+		<Card variant='elevation' elevation={3}>
+			<form onSubmit={handleSubmit}>
+				<CardHeader title={formType === 'create' ? 'Adding section' : 'Editing section'}/>
+				<CardContent>
+					<Box sx={{
+						display: 'flex',
+						flexWrap: 'wrap',
+						alignItems: 'end',
+						marginBottom: '0.8em'
+					}}>
+						<MeasuresInput defaultNumMeasures={data.overallData.numMeasures}/>
+						<TimeSignatureInput
+							currentNumBeats={currentNumBeats}
+							setCurrentNumBeats={setCurrentNumBeats}
+							denominator={data.rhythms[0].timeSig[1]}
 						/>
-					</label>
-				</div>
-				{( isTempoChange
-					? <MultipleBpmSelection
-						defaultBpm={{
-							start: Number(displayBpms[0][0]),
-							end: Number(displayBpms[0][1])
-						}}
-						defaultMeanTempoCondition={data.overallData.mtc}
-					/>
-					: <SingleBpmSelection defaultBpm={displayBpms[0][0]} />
-				)}
-			</div>
-			<div>
-				<TimeSignatureInput
-					currentNumBeats={currentNumBeats}
-					setCurrentNumBeats={setCurrentNumBeats}
-					denominator={data.rhythms[0].timeSig[1]}
-				/>
-			</div>
-			<div className="small-bottom-margin">
-				<label>Polyrhythm?
-					<input
-						key="togglepolyrhythm"
-						type="checkbox"
-						checked={isPolyrhythm}
-						onChange={() => setIsPolyrhythm(!isPolyrhythm)}
-					/>
-				</label>
-				{(showHelp
-					? <HelpIcon content={polyrhythmHelp}/>
-					: null
-				)}
-			</div>
-			{( isPolyrhythm
-				// If not editing an already existing polyrhythm, then default the time signature to the same as
-				// that of the primary rhythm
-				? <PolyrhythmSelection
-					numerator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[0] : data.rhythms[0].timeSig[0]}
-					denominator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[1] : data.rhythms[0].timeSig[1]}
-				/>
-				: null
-			)}
-			<div>
-				<label>Accent first beat?
-					<input
-						key="toggleaccentonone"
-						type="checkbox"
-						checked={accentOnOne}
-						onChange={() => setAccentOnOne(!accentOnOne)}
-					/>
-				</label>
-				{(showHelp
-					? <HelpIcon content={accentSelectionHelp}/>
-					: null
-				)}
-				{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.rhythms[0].accentedBeats}/>}
-			</div>
-			<button>
-				{(existingData ? 'Save Changes' : 'Add this Section')}
-			</button>
-		</form>
+					</Box>
+					<div>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={isTempoChange}
+									aria-label="tempo change switch"
+									onChange={() => setIsTempoChange(!isTempoChange)}
+									color="primary"
+								/>
+							}
+							label='Tempo Change'
+						/>
+						{( isTempoChange
+							? <MultipleBpmSelection
+								defaultBpm={{
+									start: Number(displayBpms[0][0]),
+									end: Number(displayBpms[0][1])
+								}}
+								defaultMeanTempoCondition={data.overallData.mtc}
+							/>
+							: <SingleBpmSelection defaultBpm={displayBpms[0][0]} />
+						)}
+					</div>
+					<div>
+						<FormControlLabel
+							control={
+								<Switch
+									checked={isPolyrhythm}
+									aria-label="polyrhythm switch"
+									onChange={() => setIsPolyrhythm(!isPolyrhythm)}
+									color="primary"
+								/>
+							}
+							label='Polyrhythm ?'
+						/>
+						{(showHelp
+							? <HelpIcon content={polyrhythmHelp}/>
+							: null
+						)}
+					</div>
+					{( isPolyrhythm
+					// If not editing an already existing polyrhythm, then default the time signature to the same as
+					// that of the primary rhythm
+						? <PolyrhythmSelection
+							numerator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[0] : data.rhythms[0].timeSig[0]}
+							denominator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[1] : data.rhythms[0].timeSig[1]}
+						/>
+						: null
+					)}
+					<div>
+						{/* <label>Accent first beat?
+							<input
+								key="toggleaccentonone"
+								type="checkbox"
+								checked={accentOnOne}
+								onChange={() => setAccentOnOne(!accentOnOne)}
+							/>
+						</label> */}
+						<FormControlLabel
+							control={
+								<Switch
+									checked={accentOnOne}
+									aria-label="accent switch"
+									onChange={() => setAccentOnOne(!accentOnOne)}
+									color="primary"
+								/>
+							}
+							label='Accent first beat?'
+						/>
+						{(showHelp
+							? <HelpIcon content={accentSelectionHelp}/>
+							: null
+						)}
+						{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.rhythms[0].accentedBeats}/>}
+					</div>
+				</CardContent>
+				<CardActions>
+					<Button type="submit" startIcon={existingData ? <SaveIcon /> : <PlaylistAddIcon />}>
+						{(existingData ? 'Save Changes' : 'Add this Section')}
+					</Button>
+					<Button type="reset" onClick={hideSelf} color="warning">Cancel</Button>
+				</CardActions>
+			</form>
+		</Card>
 	)
 }
 

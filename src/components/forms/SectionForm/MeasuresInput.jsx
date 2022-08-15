@@ -1,16 +1,21 @@
+import { TextField, Box } from '@mui/material'
+
 const MeasuresInput = ({ defaultNumMeasures }) => {
+	const inputProps = {
+		min: 1,
+		max: 1000
+	}
 	return (
-		<div>
-			<label>Select a number of measures
-				<input
-					key="measures"
-					type="number"
-					min={1} max={1000}
-					name="numMeasures"
-					defaultValue={defaultNumMeasures}
-				/>
-			</label>
-		</div>
+		<Box sx={{ flexGrow: 1, minWidth: '10em', marginRight: '0.3em' }}>
+			<TextField
+				fullWidth
+				type="number"
+				name="numMeasures"
+				defaultValue={defaultNumMeasures}
+				label="Number of measures"
+				inputProps={inputProps}
+			/>
+		</Box>
 	)
 }
 

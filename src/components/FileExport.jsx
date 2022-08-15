@@ -26,8 +26,7 @@ const FileExport = () => {
 	const audioFormats = ['wav', 'flac', 'ogg']
 
 	return (
-		<details>
-			<summary>Export to file</summary>
+		<>
 			{showHelp
 				? <HelpIcon content={fileFormatsHelp} />
 				: null
@@ -36,7 +35,7 @@ const FileExport = () => {
 			{audioFormats.map(af => (
 				<DownloadLink fileFormat={af} sendInfo={audioData} key={af} />
 			))}
-		</details>
+		</>
 	)
 }
 

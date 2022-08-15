@@ -11,17 +11,19 @@ import Paper from '@mui/material/Paper'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd'
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt'
 
 const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
-	// const isPolyrhythm = section.rhythms.length > 1
-	// const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
+	const isPolyrhythm = section.rhythms.length > 1
+	const isTempoChange = section.rhythms[0].bpms[0] !== section.rhythms[0].bpms[1]
+	const showAccents = !isPolyrhythm && section.rhythms[0].accentedBeats.toString() !== '0'
 
 	return (
 		<div>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
-				<Card variant='elevation' elevation={3} sx={{ width: 'fit-content' }}>
+				<Card variant='elevation' elevation={3} sx={{ width: 'fit-content', minWidth: '360px' }}>
 					<CardHeader title={`Section ${idx + 1}`} />
 					<CardContent>
 						{/* <div>
@@ -49,6 +51,17 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 						<TableContainer component={Paper}>
 							<Table aria-label="simple table">
 								<TableBody>
+									{showAccents
+										? <TableRow>
+											<TableCell component="th" variant='head' scope="row">
+											Accented beats
+											</TableCell>
+											<TableCell align="right">
+												{section.rhythms[0].accentedBeats.map(ab => ab + 1).join(', ')}
+											</TableCell>
+										</TableRow>
+										: null
+									}
 									<TableRow>
 										<TableCell component="th" variant='head' scope="row">
 											Length
@@ -68,9 +81,32 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 											Tempo
 										</TableCell>
 										<TableCell align="right">
-											{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm
+											{isTempoChange
+												? <>
+													<p>
+														<span>{section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm</span>
+														<ArrowRightAltIcon sx={{
+															transform: 'translate(0, 0.25em)'
+														}} />
+														<span>{section.rhythms[0].bpms[1] * (4 / section.rhythms[0].timeSig[1])}bpm</span>
+													</p>
+													<p>mtc = {section.overallData.mtc}</p>
+												</>
+												: `${section.rhythms[0].bpms[0] * (4 / section.rhythms[0].timeSig[1])}bpm`
+											}
 										</TableCell>
 									</TableRow>
+									{isPolyrhythm
+										? <TableRow>
+											<TableCell component="th" variant='head' scope="row">
+											Polyrhythm
+											</TableCell>
+											<TableCell align="right">
+												{section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time
+											</TableCell>
+										</TableRow>
+										: null
+									}
 								</TableBody>
 							</Table>
 						</TableContainer>

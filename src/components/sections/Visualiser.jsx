@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { toggleVisualisation } from '../../reducers/uiReducer'
+import { useSelector } from 'react-redux'
 import FullTempoGraphSymbolic from './FullTempoGraphSymbolic'
 import FullTempoGraphPhysical from './FullTempoGraphPhysical'
 import { getFullTempoDataSymbolic, getFullTempoDataPhysical } from '../../utils/tempoCurveCalculator'
@@ -8,7 +7,6 @@ import HelpIcon from '../HelpIcon'
 import { symbolicTimeHelp, physicalTimeHelp } from '../../utils/helpText'
 
 const Visualiser = () => {
-	const dispatch = useDispatch()
 	const showVisualisation = useSelector(state => state.ui.showVisualisation)
 	const sections = useSelector(state => state.sections.sectionList)
 	const showHelp = useSelector(state => state.ui.showHelp)
@@ -22,7 +20,6 @@ const Visualiser = () => {
 
 	return (
 		<div>
-			<button onClick={() => {dispatch(toggleVisualisation())}}>Visualise tempo</button>
 			{(showVisualisation
 				? <>
 					<h3>Tempo Visualisation</h3>

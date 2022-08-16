@@ -20,7 +20,7 @@ const Visualiser = () => {
 	console.log('fullTempoDataPhysical', fullTempoDataPhysical)
 
 	return (
-		<Box sx={{ width: '90%' }}>
+		<Box sx={{ width: '90%', marginTop: '1rem' }}>
 			{(showVisualisation
 				? <>
 					<Typography variant="h4">Tempo Visualisation</Typography>

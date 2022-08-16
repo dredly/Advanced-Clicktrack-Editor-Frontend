@@ -6,7 +6,7 @@ import { Typography } from '@mui/material'
 
 const ContentInAccordion = (props) => {
 	return (
-		<Accordion>
+		<Accordion defaultExpanded={props.expand}>
 			<AccordionSummary expandIcon={<ExpandMoreIcon />}>
 				<Typography>
 					{props.summaryText}

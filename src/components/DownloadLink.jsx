@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import clicktrackService from '../services/clicktracks'
 
+import { Button, LinearProgress, Link } from '@mui/material'
+
 const DownloadLink = ({ fileFormat, sendInfo }) => {
 	const [url, setUrl] = useState('')
 
@@ -12,13 +14,13 @@ const DownloadLink = ({ fileFormat, sendInfo }) => {
 
 	return (
 		<div>
-			<button onClick={handleDownload}>{fileFormat}</button>
+			<Button onClick={handleDownload}>{fileFormat}</Button>
 			{url
 				? url === '...loading'
-					? <p>...loading</p>
-					: <div>
-						<a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
-					</div>
+					? <LinearProgress />
+					: <span>
+						<Link href={url} target="_blank" rel="noopener noreferrer">Download {fileFormat}</Link>
+					</span>
 				: null
 			}
 		</div>

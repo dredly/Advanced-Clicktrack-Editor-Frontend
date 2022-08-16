@@ -30,11 +30,15 @@ const samplesSlice = createSlice({
 			const newSamples = allSamples.find(s => s.strong.value === newSampleValue)
 			state.samples[1] = newSamples
 		},
+		removeSecondSample(state) {
+			console.log('calling removeSecondSample reducer')
+			state.samples = [state.samples[0]]
+		},
 		toggleSampleForm(state) {
 			state.showSampleForm = !state.showSampleForm
 		}
 	}
 })
 
-export const { changeSamples, addSecondSample, toggleSampleForm } = samplesSlice.actions
+export const { changeSamples, addSecondSample, removeSecondSample, toggleSampleForm } = samplesSlice.actions
 export default samplesSlice.reducer

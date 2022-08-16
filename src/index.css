@@ -38,8 +38,7 @@ body {
 }
 
 .selected-sample {
-	border: 2px solid rgb(83, 32, 74);
-	border-radius: 2px;
+	background-color: rgb(22, 163, 156);
 }
 
 .secondary-selected-sample {

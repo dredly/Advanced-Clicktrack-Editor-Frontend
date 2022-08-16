@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import TempoCurveGraph from './TempoCurveGraph'
 import HelpIcon from '../../HelpIcon'
 import { mtcHelp } from '../../../utils/helpText'
+import { Box, TextField, Slider, Typography } from '@mui/material'
 
 const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 	const [currentMtc, setCurrentMtc] = useState(defaultMeanTempoCondition)
@@ -11,30 +12,31 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 
 	const showHelp = useSelector(state => state.ui.showHelp)
 
+	const inputProps = {
+		min: 20,
+		max: 400
+	}
+
 	return (
-		<>
-			<label>Select a bpm for start of section
-				<input
-					key="changestartbpm"
-					type="number"
-					min={20} max={400}
-					name="bpm"
-					defaultValue={Number(defaultBpm.start)}
-					onChange={({ target }) => setCurrentStartBpm(Number(target.value))}
-				/>
-			</label>
-			<label>Select a bpm for end of section
-				<input
-					key="changeendbpm"
-					type="number"
-					min={20} max={400}
-					name="bpmEnd"
-					defaultValue={Number(defaultBpm.end)}
-					onChange={({ target }) => setCurrentEndBpm(Number(target.value))}
-				/>
-			</label>
+		<Box sx={{ display: 'block', marginTop: '0.6em' }}>
+			<TextField
+				type="number"
+				name="bpm"
+				defaultValue={Number(defaultBpm.start)}
+				onChange={({ target }) => setCurrentStartBpm(Number(target.value))}
+				inputProps={inputProps}
+				label="bpm start"
+			/>
+			<TextField
+				type="number"
+				name="bpmEnd"
+				defaultValue={Number(defaultBpm.end)}
+				onChange={({ target }) => setCurrentEndBpm(Number(target.value))}
+				inputProps={inputProps}
+				label="bpm end"
+			/>
 			<div>
-				<label>Adjust the mean tempo condition
+				{/* <label>Adjust the mean tempo condition
 					<input
 						key="changemtc"
 						name="meanTempoCondition"
@@ -45,18 +47,33 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 						defaultValue={defaultMeanTempoCondition}
 						onChange={({ target }) => setCurrentMtc(target.value)}
 					/>
-				</label>
-				{(showHelp
-					? <HelpIcon content={mtcHelp}/>
-					: null
-				)}
-				<TempoCurveGraph dataPoints={[
-					{ x: 0, y: currentStartBpm },
-					{ x: currentMtc, y: currentStartBpm + 0.5 * (currentEndBpm - currentStartBpm) },
-					{ x: 1, y: currentEndBpm },
-				]}/>
+				</label> */}
+				<Typography id="input-slider" sx={{ marginTop: '0.4em' }}>
+					Mean Tempo Condition
+					{(showHelp
+						? <HelpIcon content={mtcHelp}/>
+						: null
+					)}
+				</Typography>
+				<Slider
+					name="meanTempoCondition"
+					min={0.05}
+					max={0.95}
+					step={0.05}
+					valueLabelDisplay="auto"
+					defaultValue={defaultMeanTempoCondition}
+					onChange={({ target }) => setCurrentMtc(target.value)}
+					aria-labelledby="input-slider"
+				/>
+				<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+					<TempoCurveGraph dataPoints={[
+						{ x: 0, y: currentStartBpm },
+						{ x: currentMtc, y: currentStartBpm + 0.5 * (currentEndBpm - currentStartBpm) },
+						{ x: 1, y: currentEndBpm },
+					]}/>
+				</Box>
 			</div>
-		</>
+		</Box>
 	)
 }
 

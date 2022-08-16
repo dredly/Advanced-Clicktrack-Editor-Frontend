@@ -1,13 +1,19 @@
-const SingleBpmSelection = ({ defaultBpm }) => (
-	<label>Select a bpm
-		<input
-			key="changebpm"
+import { TextField } from '@mui/material'
+
+const SingleBpmSelection = ({ defaultBpm }) => {
+	const inputProps = {
+		min: 20,
+		max: 400
+	}
+	return (
+		<TextField
 			type="number"
-			min={20} max={400}
 			name="bpm"
 			defaultValue={defaultBpm}
+			label="bpm"
+			inputProps={inputProps}
 		/>
-	</label>
-)
+	)
+}
 
 export default SingleBpmSelection

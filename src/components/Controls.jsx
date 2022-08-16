@@ -1,17 +1,22 @@
 import * as Tone from 'tone'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { getClickTimesPoly } from '../utils/clickTimesCalculator'
+import { toggleVisualisation } from '../reducers/uiReducer'
 
 import { ButtonGroup } from '@mui/material'
 import { Button } from '@mui/material'
 import { Box } from '@mui/system'
 import StopIcon from '@mui/icons-material/Stop'
 import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import TimelineIcon from '@mui/icons-material/Timeline'
 
 const Controls = () => {
+	const dispatch = useDispatch()
+
 	const sections = useSelector(state => state.sections.sectionList)
 	const selectedSamples = useSelector(state => state.samples.samples)
+	const showVisualisation = useSelector(state => state.ui.showVisualisation)
 
 	const clickTimesPoly = getClickTimesPoly(sections, selectedSamples.length)
 	console.log('clickTimesPoly', clickTimesPoly)
@@ -62,11 +67,33 @@ const Controls = () => {
 		})
 	}
 
+	const toggleTempoVisualisation = () => {
+		dispatch(toggleVisualisation())
+		if (!showVisualisation) {
+			setTimeout(() => {
+				window.scrollTo({
+					top: document.documentElement.scrollHeight,
+					behavior: 'auto'
+				})
+			}, 10)
+		}
+	}
+
 	return (
 		<Box sx={{ marginBlock: '0.5rem' }}>
-			<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ position: 'sticky' }}>
-				<Button onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
-				<Button onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
+			<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ marginInlineEnd: '0.8rem' }}>
+				<Button disabled={!sections.length} onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
+				<Button disabled={!sections.length} onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
+			</ButtonGroup>
+			<ButtonGroup variant="contained">
+				<Button
+					disabled={!sections.length}
+					color="secondary"
+					startIcon={<TimelineIcon/>}
+					onClick={toggleTempoVisualisation}
+				>
+					Visualise Tempo
+				</Button>
 			</ButtonGroup>
 		</Box>
 	)

@@ -11,8 +11,8 @@ export const mtcHelp = 'Mean tempo condition is an intuitive way to represent a 
 
 export const addToStartHelp = 'Click here to add a first section. If you already have some sections, this will add one to the beginning'
 
-export const accentSelectionHelp = 'Tick the boxes to select which notes are accented (played louder). For example ticking the \
-	second and third box will result in accents on beats 2 and 3'
+export const accentSelectionHelp = 'Click on the icons to select which notes are accented (played louder). For example selecting the \
+	second and third note icons will result in accents on beats 2 and 3'
 
 export const multipleSamplesHelp = 'You can optionally select a second sample. If a section is a polyrhythm, this sample will be used to play\
 	the notes of the secondary rhythm. Otherwise it will be used for weak beats while the first sample will be used for strong beats (downbeats)'

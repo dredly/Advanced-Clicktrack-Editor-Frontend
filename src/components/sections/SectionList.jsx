@@ -20,7 +20,7 @@ const SectionList = ({ showFormHere, hideForm }) => {
 	}
 
 	return (
-		<Card variant="outlined">
+		<Card>
 			<Button onClick={() => showFormHere(0, 'create')} variant="outlined" startIcon={<PlaylistAddIcon />}>Add to start</Button>
 			{(showHelp
 				? <HelpIcon content={addToStartHelp}/>
@@ -29,7 +29,6 @@ const SectionList = ({ showFormHere, hideForm }) => {
 			{formInfo.location === 0
 				? <>
 					<SectionForm hideSelf={() => hideForm('create')}/>
-					<button onClick={() => hideForm('create')}>cancel</button>
 				</>
 				: null
 			}

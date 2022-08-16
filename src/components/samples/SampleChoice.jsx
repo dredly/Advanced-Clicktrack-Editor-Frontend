@@ -1,23 +1,31 @@
 import * as Tone from 'tone'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeSamples, addSecondSample } from '../../reducers/sampleReducer'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faVolumeHigh } from '@fortawesome/free-solid-svg-icons'
+import { useSelector, useDispatch } from 'react-redux'
+import { changeSamples, addSecondSample, removeSecondSample } from '../../reducers/sampleReducer'
+
+import { MenuItem, IconButton } from '@mui/material'
+import HearingIcon from '@mui/icons-material/Hearing'
 
 const SampleChoice = ({ sample, isSecondary }) => {
 	const dispatch = useDispatch()
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 
-	let styleClass = 'sample'
+	console.log('selectedSampleValues', selectedSampleValues)
+
+
+	let bgColour = ''
+	let hoverColour = ''
 	if (isSecondary) {
 		if (selectedSampleValues[1] === sample.strong.value) {
-			styleClass = 'secondary-selected-sample sample'
+			bgColour = '#DE9AF6'
+			hoverColour = '#EDC7FB'
 		}
 	} else {
 		if (selectedSampleValues[0] === sample.strong.value) {
-			styleClass = 'selected-sample sample'
+			bgColour = '#65C9F1'
+			hoverColour = '#B0D5E5'
 		}
 	}
+
 	const previewPlayer = new Tone.Player(sample.strong.url).toDestination()
 
 	const listen = () => {
@@ -27,22 +35,37 @@ const SampleChoice = ({ sample, isSecondary }) => {
 
 	const chooseSample = () => {
 		if (isSecondary) {
-			dispatch(addSecondSample(sample.strong.value))
+			if (selectedSampleValues[1] === sample.strong.value) {
+				dispatch(removeSecondSample())
+			} else {
+				dispatch(addSecondSample(sample.strong.value))
+			}
 		} else {
 			dispatch(changeSamples(sample.strong.value))
 		}
 	}
 
 	return (
-		<div className={styleClass}>
-			<button onClick={chooseSample}>
+		// <div className={styleClass}>
+		// 	<button onClick={chooseSample}>
+		// 		{sample.strong.name}
+		// 	</button>
+		// 	<button onClick={listen}>
+		// 		Listen
+		// 		<span className='small-left-margin'><FontAwesomeIcon icon={faVolumeHigh} /></span>
+		// 	</button>
+		// </div>
+		<MenuItem onClick={chooseSample} sx ={{
+			backgroundColor: bgColour,
+			'&:hover': {
+				backgroundColor: hoverColour
+			}
+		}}>
+			<>
 				{sample.strong.name}
-			</button>
-			<button onClick={listen}>
-				Listen
-				<span className='small-left-margin'><FontAwesomeIcon icon={faVolumeHigh} /></span>
-			</button>
-		</div>
+				<IconButton onClick={listen}><HearingIcon /></IconButton>
+			</>
+		</MenuItem>
 	)
 }
 

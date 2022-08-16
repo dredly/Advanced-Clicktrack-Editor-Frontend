@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import clicktrackService from '../services/clicktracks'
 
 import { Button, LinearProgress, Link } from '@mui/material'
 
 const DownloadLink = ({ fileFormat, sendInfo }) => {
 	const [url, setUrl] = useState('')
+	const numSections = useSelector(state => state.sections.sectionList.length)
 
 	const handleDownload = async () => {
 		setUrl('...loading')
@@ -14,7 +16,7 @@ const DownloadLink = ({ fileFormat, sendInfo }) => {
 
 	return (
 		<div>
-			<Button onClick={handleDownload}>{fileFormat}</Button>
+			<Button disabled={!numSections} onClick={handleDownload}>{fileFormat}</Button>
 			{url
 				? url === '...loading'
 					? <LinearProgress />

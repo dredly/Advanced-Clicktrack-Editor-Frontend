@@ -1,6 +1,6 @@
 import { TextField, Typography, Box, MenuItem } from '@mui/material'
 
-const TimeSignatureInput = ({ currentNumBeats, setCurrentNumBeats, denominator }) => {
+const TimeSignatureInput = ({ currentNumBeats, setCurrentNumBeats, currentDenominator, setCurrentDenominator }) => {
 	const numerators = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 	const denominators = [2, 4, 8]
 
@@ -41,8 +41,8 @@ const TimeSignatureInput = ({ currentNumBeats, setCurrentNumBeats, denominator }
 				<TextField
 					fullWidth
 					select
-					name="denominator"
-					defaultValue={denominator}
+					value={currentDenominator}
+					onChange={({ target }) => setCurrentDenominator(Number(target.value))}
 				>
 					{denominators.map(d => (
 						<MenuItem value={d} key={d}>{d}</MenuItem>

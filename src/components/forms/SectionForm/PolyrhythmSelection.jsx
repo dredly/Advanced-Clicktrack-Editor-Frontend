@@ -37,7 +37,7 @@ const PolyrhythmSelection = ({ numerator, denominator }) => {
 					fullWidth
 					select
 					name="secondaryDenominator"
-					defaultValue={denominator}
+					value={denominator}
 				>
 					{denominators.map(d => (
 						<MenuItem value={d} key={d}>{d}</MenuItem>

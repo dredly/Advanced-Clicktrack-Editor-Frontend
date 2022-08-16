@@ -35,6 +35,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const [accentOnOne, setAccentOnOne] = useState(data.rhythms[0].accentedBeats.toString() === '0' ? true : false)
 
 	const [currentNumBeats, setCurrentNumBeats] = useState(data.rhythms[0].timeSig[0])
+	const [currentDenominator, setCurrentDenominator] = useState(data.rhythms[0].timeSig[1])
 
 	const allBpms = data.rhythms.map(r => r.bpms)
 	const allDenominators = data.rhythms.map(r => r.timeSig).map(ts => ts[1])
@@ -68,7 +69,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 							? Number(evt.target.bpmEnd.value)
 							: Number(evt.target.bpm.value)
 					],
-					timeSig: [currentNumBeats, Number(evt.target.denominator.value)],
+					timeSig: [currentNumBeats, currentDenominator],
 					accentedBeats: strongBeats.length ? strongBeats : [0]
 				}
 			]
@@ -119,7 +120,8 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						<TimeSignatureInput
 							currentNumBeats={currentNumBeats}
 							setCurrentNumBeats={setCurrentNumBeats}
-							denominator={data.rhythms[0].timeSig[1]}
+							currentDenominator={currentDenominator}
+							setCurrentDenominator={setCurrentDenominator}
 						/>
 					</Box>
 					<div>
@@ -167,7 +169,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					// that of the primary rhythm
 						? <PolyrhythmSelection
 							numerator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[0] : data.rhythms[0].timeSig[0]}
-							denominator={data.rhythms.length > 1 ? data.rhythms[1].timeSig[1] : data.rhythms[0].timeSig[1]}
+							denominator={currentDenominator}
 						/>
 						: null
 					)}

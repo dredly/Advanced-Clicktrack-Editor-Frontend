@@ -2,7 +2,7 @@ import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recha
 
 const TempoCurveGraph = ({ dataPoints }) => {
 	return(
-		<ResponsiveContainer width="90%" height={150}>
+		<ResponsiveContainer width="90%" height={170}>
 			<LineChart data={dataPoints} margin={{ top: 5, right: 5, bottom: 20, left: 5 }}>
 				<XAxis
 					dataKey="x"
@@ -12,6 +12,7 @@ const TempoCurveGraph = ({ dataPoints }) => {
 						value="Progress through section"
 						position="insideBottom"
 						offset={-5}
+						fontFamily='roboto'
 					/>
 				</XAxis>
 				<YAxis
@@ -20,7 +21,9 @@ const TempoCurveGraph = ({ dataPoints }) => {
 					label={{
 						value: 'Tempo (BPM)',
 						angle: -90,
-						position: 'insideBottomLeft'
+						position: 'insideBottomLeft',
+						fontFamily: 'roboto',
+						offset: 20
 					}}
 				/>
 				<Line type="monotoneY" dataKey="y" stroke="#8884d8" strokeWidth={2} isAnimationActive={false} />

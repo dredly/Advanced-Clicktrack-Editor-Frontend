@@ -10,7 +10,7 @@ const FullTempoGraphPhysical = ({ dataPoints, sectionBoundaries }) => {
 	const xAxisMax = Math.ceil([...dataPoints].sort((a, b) => b.x - a.x)[0].x)
 
 	return (
-		<ResponsiveContainer width="85%" height={200}>
+		<ResponsiveContainer width="100%" height={200}>
 			<LineChart margin={{ top: 5, right: 5, bottom: 20, left: 5 }} data={dataPoints}>
 				<XAxis
 					dataKey="x"
@@ -21,6 +21,7 @@ const FullTempoGraphPhysical = ({ dataPoints, sectionBoundaries }) => {
 						value="Time (s)"
 						position="insideBottom"
 						offset={-5}
+						fontFamily='roboto'
 					/>
 				</XAxis>
 				<YAxis
@@ -29,7 +30,9 @@ const FullTempoGraphPhysical = ({ dataPoints, sectionBoundaries }) => {
 					label={{
 						value: 'Tempo (BPM)',
 						angle: -90,
-						position: 'insideBottomLeft'
+						position: 'insideBottomLeft',
+						fontFamily: 'roboto',
+						offset: 20
 					}}
 				/>
 				<Line

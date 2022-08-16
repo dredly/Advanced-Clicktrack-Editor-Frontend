@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { displayForm } from './reducers/sectionReducer'
 import clicktrackService from './services/clicktracks'
 import SectionList from './components/sections/SectionList'
@@ -10,7 +10,7 @@ import Visualiser from './components/sections/Visualiser'
 import Navbar from './components/Navbar'
 import Extras from './components/Extras'
 
-import { Container, Grid } from '@mui/material'
+import { Container, Grid, Box } from '@mui/material'
 
 
 const App = () => {
@@ -18,8 +18,9 @@ const App = () => {
 		clicktrackService.startUp()
 	}, [])
 
+	const showVisualisation = useSelector(state => state.ui.showVisualisation)
+
 	const dispatch = useDispatch()
-	const numSections = useSelector(state => state.sections.sectionList.length)
 
 	const showFormHere = (location, type) => {
 		dispatch(displayForm({ location, type }))
@@ -43,11 +44,13 @@ const App = () => {
 						<Extras />
 					</Grid>
 				</Grid>
-				{( numSections
+			</Container>
+			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
+				{showVisualisation
 					? <Visualiser />
 					: null
-				)}
-			</Container>
+				}
+			</Box>
 		</div>
 	)
 }

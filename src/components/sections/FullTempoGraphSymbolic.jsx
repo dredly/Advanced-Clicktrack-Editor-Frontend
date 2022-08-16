@@ -10,7 +10,7 @@ const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries, measureData }) 
 	const series = splitIntoSeries(dataPoints)
 
 	return (
-		<ResponsiveContainer width="85%" height={200}>
+		<ResponsiveContainer width="100%" height={200}>
 			<LineChart margin={{ top: 5, right: 5, bottom: 20, left: 5 }}>
 				<XAxis
 					xAxisId="bottom"
@@ -22,6 +22,7 @@ const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries, measureData }) 
 						value="Progress through track (in quarter notes)"
 						position="insideBottom"
 						offset={-5}
+						fontFamily="roboto"
 					/>
 				</XAxis>
 				<YAxis
@@ -30,7 +31,9 @@ const FullTempoGraphSymbolic = ({ dataPoints, sectionBoundaries, measureData }) 
 					label={{
 						value: 'Tempo (BPM)',
 						angle: -90,
-						position: 'insideBottomLeft'
+						position: 'insideBottomLeft',
+						fontFamily: 'roboto',
+						offset: 20
 					}}
 				/>
 				{series.map(s => (

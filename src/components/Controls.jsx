@@ -19,7 +19,6 @@ const Controls = () => {
 	const showVisualisation = useSelector(state => state.ui.showVisualisation)
 
 	const clickTimesPoly = getClickTimesPoly(sections, selectedSamples.length)
-	console.log('clickTimesPoly', clickTimesPoly)
 
 	const strongPlayer = new Tone.Player().toDestination()
 	const weakPlayer = new Tone.Player().toDestination()

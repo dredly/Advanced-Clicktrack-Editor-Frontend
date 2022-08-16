@@ -15,7 +15,6 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 		<div>
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' }}>
 				<Card variant='elevation' elevation={3} sx={{ width: 'fit-content', minWidth: '360px' }}>
-					{/* <CardHeader title={`Section ${idx + 1}`} /> */}
 					<CardContent>
 						<ContentInAccordion expand={true} summaryText={
 							<Typography variant='h5'>

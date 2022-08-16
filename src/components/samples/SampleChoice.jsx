@@ -9,9 +9,6 @@ const SampleChoice = ({ sample, isSecondary }) => {
 	const dispatch = useDispatch()
 	const selectedSampleValues = useSelector(state => state.samples.samples.map(s => s.strong.value))
 
-	console.log('selectedSampleValues', selectedSampleValues)
-
-
 	let bgColour = ''
 	let hoverColour = ''
 	if (isSecondary) {
@@ -46,15 +43,6 @@ const SampleChoice = ({ sample, isSecondary }) => {
 	}
 
 	return (
-		// <div className={styleClass}>
-		// 	<button onClick={chooseSample}>
-		// 		{sample.strong.name}
-		// 	</button>
-		// 	<button onClick={listen}>
-		// 		Listen
-		// 		<span className='small-left-margin'><FontAwesomeIcon icon={faVolumeHigh} /></span>
-		// 	</button>
-		// </div>
 		<MenuItem onClick={chooseSample} sx ={{
 			backgroundColor: bgColour,
 			'&:hover': {

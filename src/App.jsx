@@ -4,7 +4,6 @@ import { displayForm } from './reducers/sectionReducer'
 import clicktrackService from './services/clicktracks'
 import SectionList from './components/sections/SectionList'
 import Controls from './components/Controls'
-// import TestingZone from './components/TestingZone'
 
 import Visualiser from './components/sections/Visualiser'
 import Navbar from './components/Navbar'
@@ -34,7 +33,6 @@ const App = () => {
 		<div>
 			<Navbar />
 			<Container>
-				{/* <TestingZone /> */}
 				<Controls/>
 				<Grid container spacing={2} justifyContent="space-between">
 					<Grid item s={9} sx={{ flexGrow: 1 }}>

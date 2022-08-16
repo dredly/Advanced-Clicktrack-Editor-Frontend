@@ -60,7 +60,6 @@ export const getFullTempoDataSymbolic = (sectionData) => {
 
 	const measureNumNotes = []
 	sectionBoundaryNumNotes.slice(1).forEach((nn, idx) => {
-		console.log(`nn = ${nn}`)
 		const sectionTimeSig = sectionData[idx].rhythms[0].timeSig[0] * (4 / sectionData[idx].rhythms[0].timeSig[1])
 		const sectionNumMeasures = sectionData[idx].overallData.numMeasures
 		const sectionMeasureNumNotes = Array(sectionNumMeasures)

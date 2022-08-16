@@ -41,11 +41,8 @@ const SectionForm = ({ hideSelf, existingData }) => {
 	const allDenominators = data.rhythms.map(r => r.timeSig).map(ts => ts[1])
 	const displayBpms = allBpms.map((bpma, idx) => bpma.map(bpm => bpm * (4 / allDenominators[idx])))
 
-	console.log('displayBpms', displayBpms)
-
 	const handleSubmit = (evt) => {
 		evt.preventDefault()
-		console.log('Fake submit')
 
 		const formFieldNames = Object.values(evt.target).map(val => val.name)
 		// First remove all undefined field names to prevent an error when calling the includes method,
@@ -84,7 +81,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					Number(evt.target.secondaryNumerator.value),
 					Number(evt.target.secondaryDenominator.value)
 				],
-				accentedBeats: [0] //Hardcode for now
+				accentedBeats: [0]
 			})
 		}
 
@@ -94,8 +91,6 @@ const SectionForm = ({ hideSelf, existingData }) => {
 			newSection.rhythms[i].bpms = newSection.rhythms[i].bpms
 				.map(bpm => bpm * (denominator / 4))
 		}
-
-		console.log('newSection', newSection)
 
 		if (formType === 'create') {
 			dispatch(addSection(newSection))

@@ -36,18 +36,6 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 				label="bpm end"
 			/>
 			<div>
-				{/* <label>Adjust the mean tempo condition
-					<input
-						key="changemtc"
-						name="meanTempoCondition"
-						type="range"
-						min="0.05"
-						max="0.95"
-						step="0.05"
-						defaultValue={defaultMeanTempoCondition}
-						onChange={({ target }) => setCurrentMtc(target.value)}
-					/>
-				</label> */}
 				<Typography id="input-slider" sx={{ marginTop: '0.4em' }}>
 					Mean Tempo Condition
 					{(showHelp

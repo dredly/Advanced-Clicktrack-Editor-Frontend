@@ -172,30 +172,27 @@ const SectionForm = ({ hideSelf, existingData }) => {
 						: null
 					)}
 					<div>
-						{/* <label>Accent first beat?
-							<input
-								key="toggleaccentonone"
-								type="checkbox"
-								checked={accentOnOne}
-								onChange={() => setAccentOnOne(!accentOnOne)}
-							/>
-						</label> */}
-						<FormControlLabel
-							control={
-								<Switch
-									checked={accentOnOne}
-									aria-label="accent switch"
-									onChange={() => setAccentOnOne(!accentOnOne)}
-									color="primary"
+						{(isPolyrhythm
+							? null
+							: <>
+								<FormControlLabel
+									control={
+										<Switch
+											checked={accentOnOne}
+											aria-label="accent switch"
+											onChange={() => setAccentOnOne(!accentOnOne)}
+											color="primary"
+										/>
+									}
+									label='Accent first beat?'
 								/>
-							}
-							label='Accent first beat?'
-						/>
-						{(showHelp
-							? <HelpIcon content={accentSelectionHelp}/>
-							: null
+								{(showHelp
+									? <HelpIcon content={accentSelectionHelp}/>
+									: null
+								)}
+								{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.rhythms[0].accentedBeats}/>}
+							</>
 						)}
-						{accentOnOne ? null : <AccentSelection numBeats={currentNumBeats} accentedBeats={data.rhythms[0].accentedBeats}/>}
 					</div>
 				</CardContent>
 				<CardActions>

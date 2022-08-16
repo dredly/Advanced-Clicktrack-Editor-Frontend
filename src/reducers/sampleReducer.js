@@ -31,7 +31,6 @@ const samplesSlice = createSlice({
 			state.samples[1] = newSamples
 		},
 		removeSecondSample(state) {
-			console.log('calling removeSecondSample reducer')
 			state.samples = [state.samples[0]]
 		},
 		toggleSampleForm(state) {

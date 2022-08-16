@@ -73,7 +73,7 @@ const SectionTable = ({ section }) => {
 					{isPolyrhythm
 						? <TableRow>
 							<TableCell component="th" variant='head' scope="row">
-											Polyrhythm
+								Polyrhythm
 							</TableCell>
 							<TableCell align="right">
 								{section.rhythms[1].timeSig[0]}:{section.rhythms[1].timeSig[1]} time

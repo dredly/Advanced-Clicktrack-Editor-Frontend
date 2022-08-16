@@ -13,11 +13,9 @@ const Visualiser = () => {
 	const showHelp = useSelector(state => state.ui.showHelp)
 
 	const fullTempoDataSymbolic = getFullTempoDataSymbolic(sections)
-	console.log('fullTempoDataSymbolic', fullTempoDataSymbolic)
 
 	const clickTimesNonPoly = getClickTimesNonPoly(sections, true)
 	const fullTempoDataPhysical = getFullTempoDataPhysical(clickTimesNonPoly, sections)
-	console.log('fullTempoDataPhysical', fullTempoDataPhysical)
 
 	return (
 		<Box sx={{ width: '90%', marginTop: '1rem' }}>

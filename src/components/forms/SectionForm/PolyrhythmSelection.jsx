@@ -5,19 +5,6 @@ const PolyrhythmSelection = ({ numerator, denominator }) => {
 	const denominators = [2, 4, 8]
 
 	return (
-		// <label>Choose a time signature for the second rhythm
-		// 	<select name="secondaryNumerator" defaultValue={numerator} >
-		// 		{numerators.map(n => (
-		// 			<option value={n} key={n}>{n}</option>
-		// 		))}
-		// 	</select>
-		// 	:
-		// 	<select name="secondaryDenominator" defaultValue={denominator}>
-		// 		{denominators.map(d => (
-		// 			<option value={d} key={d}>{d}</option>
-		// 		))}
-		// 	</select>
-		// </label>
 		<>
 			<Typography>
 				Choose second time signature

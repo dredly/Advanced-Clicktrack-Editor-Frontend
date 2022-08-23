@@ -14,6 +14,7 @@ const MeasuresInput = ({ defaultNumMeasures }) => {
 				defaultValue={defaultNumMeasures}
 				label="Number of measures"
 				inputProps={inputProps}
+				className="num-measures-input"
 			/>
 		</Box>
 	)

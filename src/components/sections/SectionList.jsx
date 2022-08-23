@@ -21,7 +21,9 @@ const SectionList = ({ showFormHere, hideForm }) => {
 
 	return (
 		<Card>
-			<Button onClick={() => showFormHere(0, 'create')} variant="outlined" startIcon={<PlaylistAddIcon />}>Add to start</Button>
+			<Button id="add-to-start" onClick={() => showFormHere(0, 'create')} variant="outlined" startIcon={<PlaylistAddIcon />}>
+				Add to start
+			</Button>
 			{(showHelp
 				? <HelpIcon content={addToStartHelp}/>
 				: null

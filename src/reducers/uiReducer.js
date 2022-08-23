@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 	showHelp: true,
 	showVisualisation: false,
-	playing: false
 }
 
 const uiSlice = createSlice({

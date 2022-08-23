@@ -6,7 +6,11 @@ const baseUrl =  window.location.href.includes('clicktrack-redux')
 // Sends a trivial request to the backend to prevent heroku from
 // cold starting once a user requests a wav file
 const startUp = () => {
-	axios.get(baseUrl)
+	try {
+		axios.get(baseUrl)
+	} catch (err) {
+		console.log('Server not running')
+	}
 }
 
 const getFile = async (data, fileExt) => {

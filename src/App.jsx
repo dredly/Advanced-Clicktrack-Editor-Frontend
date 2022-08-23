@@ -1,55 +1,31 @@
 import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { displayForm } from './reducers/sectionReducer'
+import {
+	BrowserRouter as Router,
+	Routes, Route
+} from 'react-router-dom'
 import clicktrackService from './services/clicktracks'
-import SectionList from './components/sections/SectionList'
-import Controls from './components/Controls'
-
-import Visualiser from './components/sections/Visualiser'
+import userService from './services/users'
 import Navbar from './components/Navbar'
-import Extras from './components/Extras'
-
-import { Container, Grid, Box } from '@mui/material'
+import MainPage from './pages/MainPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 
 const App = () => {
 	useEffect(() => {
 		clicktrackService.startUp()
+		userService.ping()
 	}, [])
 
-	const showVisualisation = useSelector(state => state.ui.showVisualisation)
-
-	const dispatch = useDispatch()
-
-	const showFormHere = (location, type) => {
-		dispatch(displayForm({ location, type }))
-	}
-
-	const hideForm = type => {
-		dispatch(displayForm({ location: NaN, type }))
-	}
-
 	return (
-		<div>
+		<Router>
 			<Navbar />
-			<Container>
-				<Controls/>
-				<Grid container spacing={2} justifyContent="space-between">
-					<Grid item s={9} sx={{ flexGrow: 1 }}>
-						<SectionList showFormHere={showFormHere} hideForm={hideForm}/>
-					</Grid>
-					<Grid item s={3}>
-						<Extras />
-					</Grid>
-				</Grid>
-			</Container>
-			<Box sx={{ display: 'flex', justifyContent: 'center' }}>
-				{showVisualisation
-					? <Visualiser />
-					: null
-				}
-			</Box>
-		</div>
+			<Routes>
+				<Route path="/" element={<MainPage />}/>
+				<Route path="/register" element={<RegisterPage />}/>
+				<Route path="/login" element={<LoginPage />}/>
+			</Routes>
+		</Router>
 	)
 }
 

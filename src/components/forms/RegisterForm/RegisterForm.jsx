@@ -1,7 +1,31 @@
-import { Formik, Form, Field, ErrorMessage	} from 'formik'
-import { Button } from '@mui/material'
+import { Formik, Form, Field } from 'formik'
+import axios from 'axios'
+import { TextField, PasswordField } from '../FormikFields'
+import userService from '../../../services/users'
+import { useState } from 'react'
+
+import { Button, Alert } from '@mui/material'
 
 const RegisterForm = () => {
+	const [error, setError] = useState('')
+
+	const handleSubmit = async (valuesWithConfirmPassword) => {
+		try {
+			// eslint-disable-next-line no-unused-vars
+			const { confirmPassword, ...values } = valuesWithConfirmPassword
+			const registeredUser = await userService.register(values)
+			console.log('registeredUser', registeredUser)
+		} catch (err) {
+			if (axios.isAxiosError(err)) {
+				console.error(err.response.data || 'Unrecognized axios error')
+				setError(String(err.response.data.error) || 'Unrecognized axios error')
+			} else {
+				console.error('Unknown error', err)
+				setError('Unknown error')
+			}
+		}
+	}
+
 	return (
 		<Formik
 			initialValues={{
@@ -10,6 +34,7 @@ const RegisterForm = () => {
 				password: '',
 				confirmPassword: ''
 			}}
+			onSubmit={handleSubmit}
 			validate={values => {
 				const errors = {}
 				const requiredError = 'Field is required'
@@ -40,14 +65,11 @@ const RegisterForm = () => {
 				({ isValid, dirty }) => {
 					return (
 						<Form>
-							<Field label="Name" type="text" name="name" />
-							<ErrorMessage name="name" component="div" />
-							<Field label="Username" type="text" name="username" />
-							<ErrorMessage name="username" component="div" />
-							<Field label="Password" type="password" name="password" />
-							<ErrorMessage name="password" component="div" />
-							<Field label="Confrim Password" type="password" name="confirmPassword" />
-							<ErrorMessage name="confirmPassword" component="div" />
+							{error && <Alert severity="error">{`Error: ${error}`}</Alert>}
+							<Field label="Name" name="name" component={TextField} />
+							<Field label="Username" name="username" component={TextField} />
+							<Field label="Password" name="password" component={PasswordField} />
+							<Field label="Confirm Password" name="confirmPassword" component={PasswordField} />
 							<Button
 								type="submit"
 								variant="contained"

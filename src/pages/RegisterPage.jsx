@@ -5,7 +5,7 @@ import { Container, Typography } from '@mui/material'
 const RegisterPage = () => {
 	return (
 		<Container>
-			<Typography variant="h2">
+			<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
 				Register
 				<RegisterForm />
 			</Typography>

@@ -9,7 +9,7 @@ const ping = async () => {
 }
 
 const register = async data => {
-	const response = await axios.post(baseUrl, data)
+	const response = await axios.post(`${baseUrl}/users`, data)
 	return response.data
 }
 

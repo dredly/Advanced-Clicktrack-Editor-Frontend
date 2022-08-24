@@ -1,0 +1,6 @@
+- [x] Get backend errors to display on Formik forms
+- [ ] Login Form
+- [ ] Logout Functionality
+- [ ] Index View of users clicktracks
+- [ ] Clicktrack CRUD on FrontEnd
+- [ ] Fix styling of forms

@@ -13,7 +13,13 @@ const register = async data => {
 	return response.data
 }
 
+const login = async data => {
+	const response = await axios.post(`${baseUrl}/users/login`, data)
+	return response.data
+}
+
 export default {
 	ping,
-	register
+	register,
+	login
 }

@@ -6,15 +6,14 @@ import { useState } from 'react'
 
 import { Button, Alert } from '@mui/material'
 
-const RegisterForm = () => {
+const LoginForm = () => {
 	const [error, setError] = useState('')
 
-	const handleSubmit = async (valuesWithConfirmPassword) => {
+	const handleSubmit = async (values) => {
 		try {
-			// eslint-disable-next-line no-unused-vars
-			const { confirmPassword, ...values } = valuesWithConfirmPassword
-			const registeredUser = await userService.register(values)
-			console.log('registeredUser', registeredUser)
+			const result = await userService.login(values)
+			window.localStorage.setItem('loggedInClicktrackUserToken', result.token)
+			console.log('user', result.user)
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				console.error(err.response.data || 'Unrecognized axios error')
@@ -29,34 +28,18 @@ const RegisterForm = () => {
 	return (
 		<Formik
 			initialValues={{
-				name: '',
 				username: '',
 				password: '',
-				confirmPassword: ''
 			}}
 			onSubmit={handleSubmit}
 			validate={values => {
 				const errors = {}
 				const requiredError = 'Field is required'
-				if (!values.name) {
-					errors.name = requiredError
-				}
 				if (!values.username) {
 					errors.username = requiredError
 				}
 				if (!values.password) {
 					errors.password = requiredError
-				} else {
-					if (values.password.length < 8) {
-						errors.password = 'Password must be at least 8 characters'
-					}
-				}
-				if (!values.confirmPassword) {
-					errors.confirmPassword = requiredError
-				} else {
-					if (values.confirmPassword !== values.password) {
-						errors.confirmPassword = 'Passwords must match'
-					}
 				}
 				return errors
 			}}
@@ -66,16 +49,14 @@ const RegisterForm = () => {
 					return (
 						<Form>
 							{error && <Alert severity="error">{`Error: ${error}`}</Alert>}
-							<Field label="Name" name="name" component={TextField} />
 							<Field label="Username" name="username" component={TextField} />
 							<Field label="Password" name="password" component={PasswordField} />
-							<Field label="Confirm Password" name="confirmPassword" component={PasswordField} />
 							<Button
 								type="submit"
 								variant="contained"
 								disabled={!dirty || !isValid}
 							>
-								Register
+								Login
 							</Button>
 
 						</Form>
@@ -86,4 +67,4 @@ const RegisterForm = () => {
 	)
 }
 
-export default RegisterForm
+export default LoginForm

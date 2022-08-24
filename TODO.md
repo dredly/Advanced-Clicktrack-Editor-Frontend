@@ -1,5 +1,6 @@
 - [x] Get backend errors to display on Formik forms
-- [ ] Login Form
+- [x] Login Form
+- [x] Store token in localstorage
 - [ ] Logout Functionality
 - [ ] Index View of users clicktracks
 - [ ] Clicktrack CRUD on FrontEnd

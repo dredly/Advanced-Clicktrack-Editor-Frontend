@@ -2,6 +2,8 @@ import { Formik, Form, Field } from 'formik'
 import axios from 'axios'
 import { TextField, PasswordField } from '../FormikFields'
 import userService from '../../../services/users'
+import { setUser } from '../../../reducers/userReducer'
+import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -9,6 +11,7 @@ import { Button, Alert } from '@mui/material'
 
 const RegisterForm = () => {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 	const [error, setError] = useState('')
 
 	const handleSubmit = async (valuesWithConfirmPassword) => {
@@ -16,7 +19,12 @@ const RegisterForm = () => {
 			// eslint-disable-next-line no-unused-vars
 			const { confirmPassword, ...values } = valuesWithConfirmPassword
 			const registeredUser = await userService.register(values)
-			console.log('registeredUser', registeredUser)
+			const result = await userService.login({
+				username: values.username,
+				password: values.password
+			})
+			window.localStorage.setItem('loggedInClicktrackUserToken', result.token)
+			dispatch(setUser(registeredUser))
 			navigate('/')
 		} catch (err) {
 			if (axios.isAxiosError(err)) {

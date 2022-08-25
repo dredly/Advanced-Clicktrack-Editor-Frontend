@@ -4,6 +4,8 @@
 - [x] Logout Functionality
 - [x] Improve styling of Navbar menu
 - [x] Conditional rendering on Navbar
+- [x] Auto login user when registered
 - [ ] Index View of users clicktracks
 - [ ] Clicktrack CRUD on FrontEnd
-- [ ] Fix styling of forms
+- [ ] Fix navbar styling
+- [ ] Add flash messages

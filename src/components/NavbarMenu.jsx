@@ -1,10 +1,16 @@
-import { Menu, MenuItem, Button } from '@mui/material'
+import { useDispatch } from 'react-redux'
+import { removeUser } from '../reducers/userReducer'
 import { Link } from 'react-router-dom'
+
+import { Menu, MenuItem, Button } from '@mui/material'
 
 const NavbarMenu = ({ anchorEl, handleClose }) => {
 
+	const dispatch = useDispatch()
+
 	const handleLogout = () => {
 		window.localStorage.removeItem('loggedInClicktrackUserToken')
+		dispatch(removeUser())
 	}
 
 	return (

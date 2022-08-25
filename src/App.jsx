@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 import MainPage from './pages/MainPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import MyClicktracks from './pages/MyClicktracks'
 
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
 				<Route path="/" element={<MainPage />}/>
 				<Route path="/register" element={<RegisterPage />}/>
 				<Route path="/login" element={<LoginPage />}/>
+				<Route path="/myclicktracks" element={<MyClicktracks />}/>
 			</Routes>
 		</Router>
 	)

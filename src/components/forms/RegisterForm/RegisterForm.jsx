@@ -3,10 +3,12 @@ import axios from 'axios'
 import { TextField, PasswordField } from '../FormikFields'
 import userService from '../../../services/users'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { Button, Alert } from '@mui/material'
 
 const RegisterForm = () => {
+	const navigate = useNavigate()
 	const [error, setError] = useState('')
 
 	const handleSubmit = async (valuesWithConfirmPassword) => {
@@ -15,6 +17,7 @@ const RegisterForm = () => {
 			const { confirmPassword, ...values } = valuesWithConfirmPassword
 			const registeredUser = await userService.register(values)
 			console.log('registeredUser', registeredUser)
+			navigate('/')
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				console.error(err.response.data || 'Unrecognized axios error')

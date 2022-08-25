@@ -1,16 +1,22 @@
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { removeUser } from '../reducers/userReducer'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { Menu, MenuItem, Button } from '@mui/material'
 
 const NavbarMenu = ({ anchorEl, handleClose }) => {
-
+	const navigate = useNavigate()
 	const dispatch = useDispatch()
+
+	const user = useSelector(state => state.user.user)
 
 	const handleLogout = () => {
 		window.localStorage.removeItem('loggedInClicktrackUserToken')
-		dispatch(removeUser())
+		// Add slight delay here, otherwise menu values quickly change before menu is closed
+		setTimeout(() => {
+			dispatch(removeUser())
+		}, 100)
+		navigate('/login')
 	}
 
 	return (
@@ -26,19 +32,28 @@ const NavbarMenu = ({ anchorEl, handleClose }) => {
                     Home
 				</Button>
 			</MenuItem>
-			<MenuItem onClick={handleClose}>
-				<Button component={Link} to="/login">
+			{user
+				? <div>
+					<MenuItem>
+						<Button component={Link} to="/myclicktracks">
+                            My Clicktracks
+						</Button>
+					</MenuItem>
+					<MenuItem onClick={handleClose}><Button onClick={handleLogout}>Logout</Button></MenuItem>
+				</div>
+				: <div>
+					<MenuItem onClick={handleClose}>
+						<Button component={Link} to="/login">
                     Login
-				</Button>
-			</MenuItem>
-			<MenuItem onClick={handleClose}>
-				<Button component={Link} to="/register">
+						</Button>
+					</MenuItem>
+					<MenuItem onClick={handleClose}>
+						<Button component={Link} to="/register">
                     Register
-				</Button>
-			</MenuItem>
-			<MenuItem onClick={handleClose}>
-				<Button onClick={handleLogout}>Logout</Button>
-			</MenuItem>
+						</Button>
+					</MenuItem>
+				</div>
+			}
 		</Menu>
 	)
 }

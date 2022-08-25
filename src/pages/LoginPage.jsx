@@ -6,8 +6,8 @@ const LoginPage = () => {
 		<Container>
 			<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
 				Login
-				<LoginForm />
 			</Typography>
+			<LoginForm />
 		</Container>
 	)
 }

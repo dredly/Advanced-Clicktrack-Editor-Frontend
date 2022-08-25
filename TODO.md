@@ -2,7 +2,7 @@
 - [x] Login Form
 - [x] Store token in localstorage
 - [x] Logout Functionality
-- [ ] Improve styling of Navbar menu
+- [x] Improve styling of Navbar menu
 - [ ] Conditional rendering on Navbar
 - [ ] Index View of users clicktracks
 - [ ] Clicktrack CRUD on FrontEnd

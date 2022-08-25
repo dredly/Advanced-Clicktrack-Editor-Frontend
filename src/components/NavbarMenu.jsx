@@ -16,13 +16,19 @@ const NavbarMenu = ({ anchorEl, handleClose }) => {
 			onClose={handleClose}
 		>
 			<MenuItem onClick={handleClose} sx={{ display: { sm: 'none' } }}>
-				<Link to="/">Home</Link>
+				<Button component={Link} to="/">
+                    Home
+				</Button>
 			</MenuItem>
 			<MenuItem onClick={handleClose}>
-				<Link to="/login">Login</Link>
+				<Button component={Link} to="/login">
+                    Login
+				</Button>
 			</MenuItem>
 			<MenuItem onClick={handleClose}>
-				<Link to="/register">Register</Link>
+				<Button component={Link} to="/register">
+                    Register
+				</Button>
 			</MenuItem>
 			<MenuItem onClick={handleClose}>
 				<Button onClick={handleLogout}>Logout</Button>

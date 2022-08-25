@@ -5,7 +5,8 @@
 - [x] Improve styling of Navbar menu
 - [x] Conditional rendering on Navbar
 - [x] Auto login user when registered
-- [ ] Index View of users clicktracks
+- [x] Index View of users clicktracks
 - [ ] Clicktrack CRUD on FrontEnd
 - [ ] Fix navbar styling
 - [ ] Add flash messages
+- [ ] More detail on index view of clicktracks, such as timestamps (after some changes to backend)

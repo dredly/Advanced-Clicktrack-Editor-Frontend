@@ -6,8 +6,9 @@ import { toggleHelp } from '../reducers/uiReducer'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Switch from '@mui/material/Switch'
-import { FormControlLabel, Typography, IconButton, Menu, MenuItem } from '@mui/material'
+import { FormControlLabel, Typography, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import NavbarMenu from './NavbarMenu'
 
 const Navbar = () => {
 	const dispatch = useDispatch()
@@ -37,23 +38,7 @@ const Navbar = () => {
 				>
 					<MenuIcon />
 				</IconButton>
-				<Menu
-					id="menu-appbar"
-					anchorEl={anchorEl}
-					keepMounted
-					open={Boolean(anchorEl)}
-					onClose={handleClose}
-				>
-					<MenuItem onClick={handleClose} sx={{ display: { sm: 'none' } }}>
-						<Link to="/">Home</Link>
-					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<Link to="/login">Login</Link>
-					</MenuItem>
-					<MenuItem onClick={handleClose}>
-						<Link to="/register">Register</Link>
-					</MenuItem>
-				</Menu>
+				<NavbarMenu anchorEl={anchorEl} handleClose={handleClose}/>
 				<Typography
 					variant="h6"
 					noWrap

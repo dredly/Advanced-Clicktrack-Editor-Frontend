@@ -1,6 +1,8 @@
 # Advanced Click Track Editor Frontend
 
-## Libraries Used
+For my MSc Computing Dissertation
+
+## Main Libraries Used
 - React
 - Redux
 - ToneJS

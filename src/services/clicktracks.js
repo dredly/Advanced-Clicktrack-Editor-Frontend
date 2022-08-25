@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl =  window.location.href.includes('clicktrack-redux')
 	? 'https://clicktrack-audio-backend.herokuapp.com/'
-	: 'http://127.0.0.1:5000'
+	: 'http://127.0.0.1:5001'
 
 // Sends a trivial request to the backend to prevent heroku from
 // cold starting once a user requests a wav file

@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
+import savedClicktrackService from '../services/savedClicktracks'
 
 
 const initialState = {
@@ -27,6 +28,9 @@ const sectionSlice = createSlice({
 			const idx = action.payload
 			state.sectionList.splice(idx, 1)
 		},
+		setSections(state, action) {
+			state.sectionList = action.payload
+		},
 		displayForm(state, action) {
 			const { location, type } = action.payload
 			state.form.location = location
@@ -35,5 +39,13 @@ const sectionSlice = createSlice({
 	}
 })
 
-export const { addSection, deleteSection, updateSection, displayForm } = sectionSlice.actions
+export const { addSection, deleteSection, updateSection, setSections, displayForm } = sectionSlice.actions
+
+export const initialiseCurrentClicktrack = (id) => {
+	return async (dispatch) => {
+		const fetchedClicktrack = await savedClicktrackService.getOne(id)
+		dispatch(setSections(fetchedClicktrack.sections))
+	}
+}
+
 export default sectionSlice.reducer

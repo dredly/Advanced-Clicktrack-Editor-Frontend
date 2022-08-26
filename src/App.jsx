@@ -26,6 +26,7 @@ const App = () => {
 				<Route path="/register" element={<RegisterPage />}/>
 				<Route path="/login" element={<LoginPage />}/>
 				<Route path="/myclicktracks" element={<MyClicktracks />}/>
+				<Route path="/myclicktracks/:id" element={<MainPage />}/>
 			</Routes>
 		</Router>
 	)

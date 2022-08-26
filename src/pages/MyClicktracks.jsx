@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { initialiseCurrentClicktrack } from '../reducers/sectionReducer'
 import { initialiseSavedClicktracks } from '../reducers/userReducer'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 import { Container, Typography, List, ListItem, ListItemText, Button } from '@mui/material'
 
@@ -19,6 +20,11 @@ const MyClicktracks = () => {
 		}
 	}, [dispatch])
 
+	const fetchClicktrack = id => {
+		console.log(`Fetching clicktrack with id = ${id}`)
+		dispatch(initialiseCurrentClicktrack(id))
+	}
+
 	return (
 		<Container>
 			<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
@@ -28,7 +34,13 @@ const MyClicktracks = () => {
 				{
 					savedClicktracks.map(sct => (
 						<ListItem key={sct.id} secondaryAction={
-							<Button edge="end" aria-label="edit-button">
+							<Button
+								edge="end"
+								aria-label="edit-button"
+								component={Link}
+								to={`/myclicktracks/${sct.id}`}
+								onClick={() => fetchClicktrack(sct.id)}
+							>
 								Edit
 							</Button>
 						}>

@@ -14,6 +14,11 @@ const getAll = async () => {
 	return response.data
 }
 
+const getOne = async id => {
+	const response = await axios.get(`${baseUrl}/clicktracks/${id}`, config)
+	return response.data
+}
+
 const save = async data => {
 	const response = await axios.post(`${baseUrl}/clicktracks`, data, config)
 	return response.data
@@ -21,5 +26,6 @@ const save = async data => {
 
 export default {
 	getAll,
+	getOne,
 	save
 }

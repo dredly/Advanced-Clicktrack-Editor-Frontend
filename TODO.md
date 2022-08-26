@@ -7,6 +7,7 @@
 - [x] Auto login user when registered
 - [x] Index View of users clicktracks
 - [ ] Clicktrack CRUD on FrontEnd
+- [ ] Get user object from local storage, not just token
 - [ ] Fix navbar styling
 - [ ] Add flash messages
 - [ ] More detail on index view of clicktracks, such as timestamps (after some changes to backend)

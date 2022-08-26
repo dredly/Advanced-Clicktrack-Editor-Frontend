@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { initialiseSavedClicktracks } from '../reducers/userReducer'
 import { useNavigate } from 'react-router-dom'
 
-import { Container, Typography, List, ListItem, ListItemText } from '@mui/material'
+import { Container, Typography, List, ListItem, ListItemText, Button } from '@mui/material'
 
 const MyClicktracks = () => {
 	const dispatch = useDispatch()
@@ -27,7 +27,11 @@ const MyClicktracks = () => {
 			<List>
 				{
 					savedClicktracks.map(sct => (
-						<ListItem key={sct.id}>
+						<ListItem key={sct.id} secondaryAction={
+							<Button edge="end" aria-label="edit-button">
+								Edit
+							</Button>
+						}>
 							<ListItemText primary={sct.title}/>
 						</ListItem>
 					))

@@ -20,12 +20,18 @@ const getOne = async id => {
 }
 
 const save = async data => {
-	const response = await axios.post(`${baseUrl}/clicktracks`, data, config)
+	const response = await axios.post(`${baseUrl}/clicktracks/`, data, config)
+	return response.data
+}
+
+const update = async (id, data) => {
+	const response = await axios.put(`${baseUrl}/clicktracks/${id}`, data, config)
 	return response.data
 }
 
 export default {
 	getAll,
 	getOne,
-	save
+	save,
+	update
 }

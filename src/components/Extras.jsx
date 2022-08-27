@@ -5,12 +5,29 @@ import HelpIcon from './HelpIcon'
 import SaveForm from './forms/SaveForm'
 import { fileFormatsHelp } from '../utils/helpText'
 import { useSelector } from 'react-redux'
+import savedClicktrackService from '../services/savedClicktracks'
 
-import { Typography } from '@mui/material'
+import { Typography, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 const Extras = () => {
+	const navigate = useNavigate()
+
 	const showHelp = useSelector(state => state.ui.showHelp)
 	const user = useSelector(state => state.user.user)
+	const userSavedClicktracks = useSelector(state => state.user.savedClicktracks)
+	const currentlyEditing = useSelector(state => state.user.currentlyEditing)
+	const sections = useSelector(state => state.sections.sectionList)
+
+	const handleSaveChanges = async () => {
+		const clickTrackData = {
+			// Keeps title the same
+			title: userSavedClicktracks.find(usct => usct.id === currentlyEditing).title,
+			sections
+		}
+		await savedClicktrackService.update(currentlyEditing, clickTrackData)
+		navigate('/myclicktracks')
+	}
 
 	return (
 		<div>
@@ -33,13 +50,15 @@ const Extras = () => {
 				<FileExport />
 			</ContentInAccordion>
 			{user
-				? <ContentInAccordion summaryText={
-					<Typography>
-						Save to account
-					</Typography>
-				}>
-					<SaveForm />
-				</ContentInAccordion>
+				? currentlyEditing
+					? <Button onClick={handleSaveChanges}>Save changes</Button>
+					: <ContentInAccordion summaryText={
+						<Typography>
+							Save to account
+						</Typography>
+					}>
+						<SaveForm />
+					</ContentInAccordion>
 				: null
 			}
 		</div>

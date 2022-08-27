@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialiseCurrentClicktrack } from '../reducers/sectionReducer'
-import { initialiseSavedClicktracks } from '../reducers/userReducer'
+import { initialiseSavedClicktracks, setCurrentlyEditing } from '../reducers/userReducer'
 import { useNavigate, Link } from 'react-router-dom'
 
 import { Container, Typography, List, ListItem, ListItemText, Button } from '@mui/material'
@@ -23,6 +23,7 @@ const MyClicktracks = () => {
 	const fetchClicktrack = id => {
 		console.log(`Fetching clicktrack with id = ${id}`)
 		dispatch(initialiseCurrentClicktrack(id))
+		dispatch(setCurrentlyEditing(id))
 	}
 
 	return (

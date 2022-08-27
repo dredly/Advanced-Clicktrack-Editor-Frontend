@@ -3,7 +3,8 @@ import savedClicktrackService from '../services/savedClicktracks'
 
 const initialState = {
 	user: null,
-	savedClicktracks: []
+	savedClicktracks: [],
+	currentlyEditing: null,
 }
 
 const userSlice = createSlice({
@@ -18,11 +19,14 @@ const userSlice = createSlice({
 		},
 		setSavedClicktracks(state, action) {
 			state.savedClicktracks = action.payload
+		},
+		setCurrentlyEditing(state, action) {
+			state.currentlyEditing = action.payload
 		}
 	}
 })
 
-export const { setUser, removeUser, setSavedClicktracks } = userSlice.actions
+export const { setUser, removeUser, setSavedClicktracks, setCurrentlyEditing } = userSlice.actions
 
 export const initialiseSavedClicktracks = () => {
 	return async (dispatch) => {

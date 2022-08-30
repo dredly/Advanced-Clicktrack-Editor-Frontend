@@ -4,6 +4,7 @@ import { initialiseCurrentClicktrack } from '../reducers/sectionReducer'
 import { initialiseSavedClicktracks, setCurrentlyEditing } from '../reducers/userReducer'
 import { Link } from 'react-router-dom'
 import DeleteConfirmation from '../components/DeleteConfirmation'
+import LoginRedirectPage from './LoginRedirectPage'
 
 import { Container, Typography, List, ListItem, ListItemText, Button, ButtonGroup } from '@mui/material'
 
@@ -34,11 +35,7 @@ const MyClicktracks = ({ user }) => {
 
 	if (!user) {
 		return (
-			<Container>
-				<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
-					You need to be logged in for this. <Link to="/login">Login Now</Link>
-				</Typography>
-			</Container>
+			<LoginRedirectPage />
 		)
 	}
 

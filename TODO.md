@@ -8,7 +8,7 @@
 - [x] Index View of users clicktracks
 - [x] Clicktrack CRUD on FrontEnd
 - [x] Get user object from local storage, not just token
-- [ ] Fix login redirect styling
+- [x] Fix login redirect styling
 - [ ] Fix bug where user clicktracks do not show up until reloading the page
 - [ ] Fix navbar styling
 - [ ] Add flash messages

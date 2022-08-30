@@ -12,6 +12,7 @@ const NavbarMenu = ({ anchorEl, handleClose, handleHome }) => {
 
 	const handleLogout = () => {
 		window.localStorage.removeItem('loggedInClicktrackUserToken')
+		window.localStorage.removeItem('loggedInClicktrackUser')
 		// Add slight delay here, otherwise menu values quickly change before menu is closed
 		setTimeout(() => {
 			dispatch(removeUser())

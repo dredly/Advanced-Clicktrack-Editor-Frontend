@@ -2,25 +2,19 @@ import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { initialiseCurrentClicktrack } from '../reducers/sectionReducer'
 import { initialiseSavedClicktracks, setCurrentlyEditing } from '../reducers/userReducer'
-import { useNavigate, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import DeleteConfirmation from '../components/DeleteConfirmation'
 
 import { Container, Typography, List, ListItem, ListItemText, Button, ButtonGroup } from '@mui/material'
 
-const MyClicktracks = () => {
+const MyClicktracks = ({ user }) => {
 	const dispatch = useDispatch()
-	const navigate = useNavigate()
-	const user = useSelector(state => state.user.user)
 	const savedClicktracks = useSelector(state => state.user.savedClicktracks)
 	const [open, setOpen] = useState(false)
 	const [id, setId] = useState(null)
 
 	useEffect(() => {
-		if (!user) {
-			navigate('/login')
-		} else {
-			dispatch(initialiseSavedClicktracks())
-		}
+		dispatch(initialiseSavedClicktracks())
 	}, [dispatch])
 
 	const fetchClicktrack = id => {
@@ -36,6 +30,16 @@ const MyClicktracks = () => {
 
 	const handleClose = () => {
 		setOpen(false)
+	}
+
+	if (!user) {
+		return (
+			<Container>
+				<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
+					You need to be logged in for this. <Link to="/login">Login Now</Link>
+				</Typography>
+			</Container>
+		)
 	}
 
 	return (

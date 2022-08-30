@@ -19,7 +19,8 @@ const LoginForm = () => {
 		try {
 			const result = await userService.login(values)
 			window.localStorage.setItem('loggedInClicktrackUserToken', result.token)
-			dispatch(setUser(result.user))
+			window.localStorage.setItem('loggedInClicktrackUser', JSON.stringify(result.user))
+			dispatch(setUser(result.user)) //Might be redundant now
 			navigate('/')
 		} catch (err) {
 			if (axios.isAxiosError(err)) {

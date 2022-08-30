@@ -6,7 +6,7 @@
 - [x] Conditional rendering on Navbar
 - [x] Auto login user when registered
 - [x] Index View of users clicktracks
-- [ ] Clicktrack CRUD on FrontEnd
+- [x] Clicktrack CRUD on FrontEnd
 - [ ] Get user object from local storage, not just token
 - [ ] Fix navbar styling
 - [ ] Add flash messages

@@ -29,9 +29,14 @@ const update = async (id, data) => {
 	return response.data
 }
 
+const destroy = async (id) => {
+	await axios.delete(`${baseUrl}/clicktracks/${id}`, config)
+}
+
 export default {
 	getAll,
 	getOne,
 	save,
-	update
+	update,
+	destroy
 }

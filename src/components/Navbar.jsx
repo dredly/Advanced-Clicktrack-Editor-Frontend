@@ -9,10 +9,15 @@ import Switch from '@mui/material/Switch'
 import { FormControlLabel, Typography, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import NavbarMenu from './NavbarMenu'
+import { setCurrentlyEditing } from '../reducers/userReducer'
+import { setSections } from '../reducers/sectionReducer'
 
 const Navbar = () => {
 	const dispatch = useDispatch()
 	const showHelp = useSelector(state => state.ui.showHelp)
+	const user = useSelector(state => state.user.user)
+	const currentlyEditing = useSelector(state => state.user.currentlyEditing)
+
 	const [anchorEl, setAnchorEl] = useState(null)
 
 	const handleMenu = (event) => {
@@ -21,6 +26,13 @@ const Navbar = () => {
 
 	const handleClose = () => {
 		setAnchorEl(null)
+	}
+
+	const handleHome = () => {
+		if (user && currentlyEditing) {
+			dispatch(setCurrentlyEditing(null))
+			dispatch(setSections([]))
+		}
 	}
 
 	return (
@@ -38,10 +50,11 @@ const Navbar = () => {
 				>
 					<MenuIcon />
 				</IconButton>
-				<NavbarMenu anchorEl={anchorEl} handleClose={handleClose}/>
+				<NavbarMenu anchorEl={anchorEl} handleClose={handleClose} handleHome={handleHome}/>
 				<Typography
 					variant="h6"
 					noWrap
+					onClick={handleHome}
 					component={Link}
 					to="/"
 					sx={{ flexGrow: 1, color: 'white', textDecoration: 'none', display: { xs: 'none', sm: 'block' } }}

@@ -22,16 +22,28 @@ const userSlice = createSlice({
 		},
 		setCurrentlyEditing(state, action) {
 			state.currentlyEditing = action.payload
+		},
+		deleteSavedClicktrack(state, action) {
+			const id = action.payload
+			state.savedClicktracks = state.savedClicktracks
+				.filter(sct => sct.id !== id)
 		}
 	}
 })
 
-export const { setUser, removeUser, setSavedClicktracks, setCurrentlyEditing } = userSlice.actions
+export const { setUser, removeUser, setSavedClicktracks, setCurrentlyEditing, deleteSavedClicktrack } = userSlice.actions
 
 export const initialiseSavedClicktracks = () => {
 	return async (dispatch) => {
 		const fetchedClicktracks = await savedClicktrackService.getAll()
 		dispatch(setSavedClicktracks(fetchedClicktracks))
+	}
+}
+
+export const deleteClicktrack = (id) => {
+	return async (dispatch) => {
+		await savedClicktrackService.destroy(id)
+		dispatch(deleteSavedClicktrack(id))
 	}
 }
 

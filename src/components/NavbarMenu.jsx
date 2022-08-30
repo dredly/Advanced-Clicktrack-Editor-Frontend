@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { Menu, MenuItem, Button } from '@mui/material'
 
-const NavbarMenu = ({ anchorEl, handleClose }) => {
+const NavbarMenu = ({ anchorEl, handleClose, handleHome }) => {
 	const navigate = useNavigate()
 	const dispatch = useDispatch()
 
@@ -28,7 +28,7 @@ const NavbarMenu = ({ anchorEl, handleClose }) => {
 			onClose={handleClose}
 		>
 			<MenuItem onClick={handleClose} sx={{ display: { sm: 'none' } }}>
-				<Button component={Link} to="/">
+				<Button onClick={handleHome} component={Link} to="/">
                     Home
 				</Button>
 			</MenuItem>

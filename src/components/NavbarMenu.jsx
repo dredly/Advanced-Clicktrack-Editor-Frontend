@@ -1,24 +1,11 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { removeUser } from '../reducers/userReducer'
-import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import { Menu, MenuItem, Button } from '@mui/material'
 
-const NavbarMenu = ({ anchorEl, handleClose, handleHome }) => {
-	const navigate = useNavigate()
-	const dispatch = useDispatch()
+const NavbarMenu = ({ anchorEl, handleClose, handleHome, handleLogout }) => {
 
 	const user = useSelector(state => state.user.user)
-
-	const handleLogout = () => {
-		window.localStorage.removeItem('loggedInClicktrackUserToken')
-		window.localStorage.removeItem('loggedInClicktrackUser')
-		// Add slight delay here, otherwise menu values quickly change before menu is closed
-		setTimeout(() => {
-			dispatch(removeUser())
-		}, 100)
-		navigate('/login')
-	}
 
 	return (
 		<Menu

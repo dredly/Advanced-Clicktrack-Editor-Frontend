@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { toggleHelp } from '../reducers/uiReducer'
 import NavbarMenu from './NavbarMenu'
-import { setCurrentlyEditing } from '../reducers/userReducer'
+import { setCurrentlyEditing, removeUser } from '../reducers/userReducer'
 import { setSections } from '../reducers/sectionReducer'
 
 import AppBar from '@mui/material/AppBar'
@@ -14,6 +14,8 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 const Navbar = () => {
 	const dispatch = useDispatch()
+	const navigate = useNavigate()
+
 	const showHelp = useSelector(state => state.ui.showHelp)
 	const user = useSelector(state => state.user.user)
 	const currentlyEditing = useSelector(state => state.user.currentlyEditing)
@@ -35,6 +37,16 @@ const Navbar = () => {
 		}
 	}
 
+	const handleLogout = () => {
+		window.localStorage.removeItem('loggedInClicktrackUserToken')
+		window.localStorage.removeItem('loggedInClicktrackUser')
+		// Add slight delay here, otherwise menu values quickly change before menu is closed
+		setTimeout(() => {
+			dispatch(removeUser())
+		}, 100)
+		navigate('/login')
+	}
+
 	return (
 		<AppBar position="relative">
 			<Toolbar sx={{ justifyContent: 'space-between' }}>
@@ -51,7 +63,7 @@ const Navbar = () => {
 					>
 						<MenuIcon />
 					</IconButton>
-					<NavbarMenu anchorEl={anchorEl} handleClose={handleClose} handleHome={handleHome}/>
+					<NavbarMenu anchorEl={anchorEl} handleClose={handleClose} handleHome={handleHome} handleLogout={handleLogout}/>
 					<Typography
 						variant="h6"
 						noWrap
@@ -67,6 +79,8 @@ const Navbar = () => {
 						<>
 							<Typography
 								variant = 'subtitle1'
+								component={Link}
+								to="/myclicktracks"
 								sx={{
 									flexGrow: 1,
 									color: 'white',
@@ -79,11 +93,13 @@ const Navbar = () => {
 							</Typography>
 							<Typography
 								variant = 'subtitle1'
+								onClick={handleLogout}
 								sx={{
 									flexGrow: 1,
 									color: 'white',
 									textDecoration: 'none',
 									ml: 5,
+									cursor: 'pointer',
 									display: { xs: 'none', md: 'block' }
 								}}
 							>
@@ -95,6 +111,8 @@ const Navbar = () => {
 						<>
 							<Typography
 								variant = 'subtitle1'
+								component={Link}
+								to = "/login"
 								sx={{
 									flexGrow: 1,
 									color: 'white',
@@ -107,6 +125,8 @@ const Navbar = () => {
 							</Typography>
 							<Typography
 								variant = 'subtitle1'
+								component={Link}
+								to = "/register"
 								sx={{
 									flexGrow: 1,
 									color: 'white',

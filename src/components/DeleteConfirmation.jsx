@@ -1,5 +1,6 @@
 import { deleteClicktrack } from '../reducers/userReducer'
 import { useDispatch } from 'react-redux'
+import { setFlash } from '../reducers/uiReducer'
 
 import DialogTitle from '@mui/material/DialogTitle'
 import Dialog from '@mui/material/Dialog'
@@ -13,6 +14,10 @@ const DeleteConfirmation = ({ open, onClose, id }) => {
 		console.log('Deleting')
 		dispatch(deleteClicktrack(id))
 		onClose()
+		dispatch(setFlash({ message: 'Permanently deleted click track', severity: 'warning' }))
+		setTimeout(() => {
+			dispatch(setFlash(null))
+		}, 3000)
 	}
 
 	return (

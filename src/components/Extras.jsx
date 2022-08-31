@@ -4,14 +4,16 @@ import ContentInAccordion from './ContentInAccordion'
 import HelpIcon from './HelpIcon'
 import SaveForm from './forms/SaveForm'
 import { fileFormatsHelp } from '../utils/helpText'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import savedClicktrackService from '../services/savedClicktracks'
+import { setFlash } from '../reducers/uiReducer'
 
 import { Typography, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 const Extras = () => {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
 	const showHelp = useSelector(state => state.ui.showHelp)
 	const user = useSelector(state => state.user.user)
@@ -27,6 +29,10 @@ const Extras = () => {
 		}
 		await savedClicktrackService.update(currentlyEditing, clickTrackData)
 		navigate('/myclicktracks')
+		dispatch(setFlash({ message: `Saved changes to ${clickTrackData.title}`, severity: 'success' }))
+		setTimeout(() => {
+			dispatch(setFlash(null))
+		}, 3000)
 	}
 
 	return (

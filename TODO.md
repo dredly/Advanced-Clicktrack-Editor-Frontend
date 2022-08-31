@@ -11,5 +11,5 @@
 - [x] Fix login redirect styling
 - [x] Fix bug where user clicktracks do not show up until reloading the page
 - [x] Fix navbar styling
-- [ ] Add flash messages
+- [x] Add flash messages
 - [ ] More detail on index view of clicktracks, such as timestamps (after some changes to backend)

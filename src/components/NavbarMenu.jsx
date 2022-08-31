@@ -22,7 +22,7 @@ const NavbarMenu = ({ anchorEl, handleClose, handleHome, handleLogout }) => {
 			</MenuItem>
 			{user
 				? <div>
-					<MenuItem>
+					<MenuItem onClick={handleClose}>
 						<Button component={Link} to="/myclicktracks">
                             My Clicktracks
 						</Button>

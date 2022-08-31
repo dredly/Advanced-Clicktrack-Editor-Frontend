@@ -1,11 +1,13 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import savedClicktrackService from '../../services/savedClicktracks'
+import { setFlash } from '../../reducers/uiReducer'
 
 import { TextField, Button } from '@mui/material'
 
 const SaveForm = () => {
 	const navigate = useNavigate()
+	const dispatch = useDispatch()
 
 	const sections = useSelector(state => state.sections.sectionList)
 
@@ -17,6 +19,10 @@ const SaveForm = () => {
 		}
 		await savedClicktrackService.save(clickTrackData)
 		navigate('/myclicktracks')
+		dispatch(setFlash({ message: `Saved new click track: ${clickTrackData.title}`, severity: 'success' }))
+		setTimeout(() => {
+			dispatch(setFlash(null))
+		}, 3000)
 	}
 
 	return (

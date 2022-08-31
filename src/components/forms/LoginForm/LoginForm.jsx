@@ -3,6 +3,7 @@ import axios from 'axios'
 import { TextField, PasswordField } from '../FormikFields'
 import userService from '../../../services/users'
 import { setUser } from '../../../reducers/userReducer'
+import { setFlash } from '../../../reducers/uiReducer'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -22,6 +23,10 @@ const LoginForm = () => {
 			window.localStorage.setItem('loggedInClicktrackUser', JSON.stringify(result.user))
 			dispatch(setUser(result.user)) //Might be redundant now
 			navigate('/')
+			dispatch(setFlash({ message: `Welcome, ${result.user.name}`, severity: 'success' }))
+			setTimeout(() => {
+				dispatch(setFlash(null))
+			}, 3000)
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				console.error(err.response.data || 'Unrecognized axios error')

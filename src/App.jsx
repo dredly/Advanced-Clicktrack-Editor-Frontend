@@ -12,11 +12,13 @@ import MainPage from './pages/MainPage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import MyClicktracks from './pages/MyClicktracks'
+import Flash from './components/Flash'
 
 
 const App = () => {
 	const dispatch = useDispatch()
 	const user = useSelector(state => state.user.user)
+	const flash = useSelector(state => state.ui.flash)
 
 	useEffect(() => {
 		clicktrackService.startUp()
@@ -30,6 +32,10 @@ const App = () => {
 	return (
 		<Router>
 			<Navbar />
+			{flash
+				? <Flash message={flash.message} severity={flash.severity}/>
+				: null
+			}
 			<Routes>
 				<Route path="/" element={<MainPage />}/>
 				<Route path="/register" element={<RegisterPage />}/>

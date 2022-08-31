@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
-import { toggleHelp } from '../reducers/uiReducer'
+import { toggleHelp, setFlash } from '../reducers/uiReducer'
 import NavbarMenu from './NavbarMenu'
 import { setCurrentlyEditing, removeUser } from '../reducers/userReducer'
 import { setSections } from '../reducers/sectionReducer'
@@ -45,6 +45,10 @@ const Navbar = () => {
 			dispatch(removeUser())
 		}, 100)
 		navigate('/login')
+		dispatch(setFlash({ message: 'Logged out', severity: 'info' }))
+		setTimeout(() => {
+			dispatch(setFlash(null))
+		}, 3000)
 	}
 
 	return (

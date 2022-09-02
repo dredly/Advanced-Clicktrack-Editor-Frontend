@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { initialiseCurrentClicktrack } from '../reducers/sectionReducer'
+import { initialiseCurrentClicktrack, setSections } from '../reducers/sectionReducer'
 import { initialiseSavedClicktracks, setCurrentlyEditing } from '../reducers/userReducer'
 import { Link } from 'react-router-dom'
 import DeleteConfirmation from '../components/DeleteConfirmation'
@@ -33,6 +33,12 @@ const MyClicktracks = ({ user }) => {
 		setOpen(false)
 	}
 
+	const handleNew = () => {
+		console.log('Starting new clicktrack')
+		dispatch(setCurrentlyEditing(null))
+		dispatch(setSections([]))
+	}
+
 	if (!user) {
 		return (
 			<LoginRedirectPage />
@@ -44,6 +50,16 @@ const MyClicktracks = ({ user }) => {
 			<Typography variant="h2" sx={{ marginBlock: '0.3em' }}>
                 My Click Tracks
 			</Typography>
+			<Button
+				aria-label="create-button"
+				variant="contained"
+				size='large'
+				component={Link}
+				to={'/'}
+				onClick={handleNew}
+			>
+				New
+			</Button>
 			<List>
 				{
 					savedClicktracks.map(sct => (

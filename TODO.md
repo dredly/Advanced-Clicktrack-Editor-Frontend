@@ -12,4 +12,5 @@
 - [x] Fix bug where user clicktracks do not show up until reloading the page
 - [x] Fix navbar styling
 - [x] Add flash messages
+- [ ] Add create new button on index view
 - [ ] More detail on index view of clicktracks, such as timestamps (after some changes to backend)

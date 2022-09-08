@@ -15,6 +15,7 @@ const MeasuresInput = ({ defaultNumMeasures }) => {
 				label="Number of measures"
 				inputProps={inputProps}
 				className="num-measures-input"
+				required
 			/>
 		</Box>
 	)

@@ -7,7 +7,7 @@ const baseUrl =  window.location.href.includes('clicktrack-redux')
 // cold starting once a user requests a wav file
 const startUp = () => {
 	try {
-		axios.get(baseUrl)
+		axios.post(baseUrl)
 	} catch (err) {
 		console.log('Server not running')
 	}

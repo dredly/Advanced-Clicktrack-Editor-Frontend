@@ -45,7 +45,7 @@ const Extras = () => {
 				<SampleChoices />
 			</ContentInAccordion>
 			<ContentInAccordion summaryText={
-				<Typography>
+				<Typography className="expand-file-export">
 					<span>Export to a file</span>
 					{showHelp
 						? <HelpIcon content={fileFormatsHelp} />

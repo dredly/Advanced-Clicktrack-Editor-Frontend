@@ -53,6 +53,16 @@ describe('Clicktrack app', function() {
 		cy.get('#play-button').should('be.disabled')
 	})
 
+	it('It does not take longer than 4 seconds to create a longer clicktrack', function() {
+		cy.visit('http://localhost:3000')
+		cy.get('#add-to-start').click()
+		cy.get('.num-measures-input').clear().type('200')
+		cy.get('.section-form-submit').click()
+		cy.get('.expand-file-export').click()
+		cy.get('download-wav').click()
+		cy.contains('Download wav')
+	})
+
 	describe('With a section created', function() {
 		beforeEach(function () {
 			cy.visit('http://localhost:3000')
@@ -82,6 +92,14 @@ describe('Clicktrack app', function() {
 			cy.get('.option4').click()
 			cy.get('.secondary-denominator-selection').contains('8')
 			cy.get('.secondary-denominator-selection').contains('4').should('not.exist')
+		})
+
+		it('The user can export to all of the available file types', function() {
+			cy.get('.expand-file-export').click()
+			for (let fileFormat of ['midi', 'wav', 'flac', 'ogg']) {
+				cy.get(`.download-${fileFormat}`).click()
+				cy.contains(`Download ${fileFormat}`)
+			}
 		})
 	})
 })

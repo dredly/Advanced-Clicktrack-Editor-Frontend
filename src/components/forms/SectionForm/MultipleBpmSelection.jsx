@@ -26,6 +26,7 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 				onChange={({ target }) => setCurrentStartBpm(Number(target.value))}
 				inputProps={inputProps}
 				label="bpm start"
+				required
 			/>
 			<TextField
 				type="number"
@@ -34,6 +35,7 @@ const MultipleBpmSelection = ({ defaultBpm, defaultMeanTempoCondition }) => {
 				onChange={({ target }) => setCurrentEndBpm(Number(target.value))}
 				inputProps={inputProps}
 				label="bpm end"
+				required
 			/>
 			<div>
 				<Typography id="input-slider" sx={{ marginTop: '0.4em' }}>

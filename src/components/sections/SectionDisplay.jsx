@@ -36,7 +36,7 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 						Edit
 							</Button>
 							<Button
-								onClick={idx => handlers.handleDelete(idx)}
+								onClick={() => handlers.handleDelete(idx)}
 								variant="outlined"
 								color="error"
 								startIcon={<DeleteIcon />}

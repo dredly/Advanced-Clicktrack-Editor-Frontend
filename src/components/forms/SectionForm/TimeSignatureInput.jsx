@@ -27,9 +27,10 @@ const TimeSignatureInput = ({ currentNumBeats, setCurrentNumBeats, currentDenomi
 					select
 					value={currentDenominator}
 					onChange={({ target }) => setCurrentDenominator(Number(target.value))}
+					className='denominator-selection'
 				>
 					{denominators.map(d => (
-						<MenuItem value={d} key={d}>{d}</MenuItem>
+						<MenuItem value={d} key={d} className={`option${d}`}>{d}</MenuItem>
 					))}
 				</TextField>
 			</Box>

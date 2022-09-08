@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
 	showHelp: true,
 	showVisualisation: false,
-	playing: false
+	flash: null
 }
 
 const uiSlice = createSlice({
@@ -15,9 +15,12 @@ const uiSlice = createSlice({
 		},
 		toggleVisualisation(state) {
 			state.showVisualisation = !state.showVisualisation
+		},
+		setFlash(state, action) {
+			state.flash = action.payload
 		}
 	}
 })
 
-export const { toggleHelp, toggleVisualisation } = uiSlice.actions
+export const { toggleHelp, toggleVisualisation, setFlash } = uiSlice.actions
 export default uiSlice.reducer

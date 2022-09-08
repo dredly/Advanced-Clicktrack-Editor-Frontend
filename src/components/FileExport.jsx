@@ -20,7 +20,7 @@ const FileExport = () => {
 		instruments: selectedSampleValues
 	}
 
-	const audioFormats = ['wav', 'flac', 'ogg']
+	const audioFormats = ['wav', 'flac']
 
 	return (
 		<>

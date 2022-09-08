@@ -153,6 +153,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 								/>
 							}
 							label='Polyrhythm ?'
+							className="polyrhythm-switch"
 						/>
 						{(showHelp
 							? <HelpIcon content={polyrhythmHelp}/>
@@ -182,6 +183,7 @@ const SectionForm = ({ hideSelf, existingData }) => {
 										/>
 									}
 									label='Accent first beat?'
+									className='accent-checkbox'
 								/>
 								{(showHelp
 									? <HelpIcon content={accentSelectionHelp}/>
@@ -193,10 +195,12 @@ const SectionForm = ({ hideSelf, existingData }) => {
 					</div>
 				</CardContent>
 				<CardActions>
-					<Button type="submit" startIcon={existingData ? <SaveIcon /> : <PlaylistAddIcon />}>
+					<Button type="submit" startIcon={existingData ? <SaveIcon /> : <PlaylistAddIcon />} className="section-form-submit">
 						{(existingData ? 'Save Changes' : 'Add this Section')}
 					</Button>
-					<Button type="reset" onClick={hideSelf} color="warning">Cancel</Button>
+					<Button type="reset" onClick={hideSelf} color="warning" className="section-form-cancel">
+						Cancel
+					</Button>
 				</CardActions>
 			</form>
 		</Card>

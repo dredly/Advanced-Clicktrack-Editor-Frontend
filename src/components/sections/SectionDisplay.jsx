@@ -12,7 +12,7 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 	const formInfo = useSelector(state => state.sections.form)
 
 	return (
-		<div>
+		<div className="section-display">
 			<Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start' }}>
 				<Card variant='elevation' elevation={3} sx={{ width: 'fit-content', minWidth: '360px' }}>
 					<CardContent>
@@ -31,14 +31,16 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 								variant="outlined"
 								color="secondary"
 								startIcon={<EditIcon />}
+								className="edit-section-button"
 							>
 						Edit
 							</Button>
 							<Button
-								onClick={idx => handlers.handleDelete(idx)}
+								onClick={() => handlers.handleDelete(idx)}
 								variant="outlined"
 								color="error"
 								startIcon={<DeleteIcon />}
+								className="delete-section-button"
 							>
 						Delete
 							</Button>
@@ -59,7 +61,12 @@ const SectionDisplay = ({ section, idx, handlers }) => {
 					}
 				</div>
 			</Box>
-			<Button onClick={() => handlers.showFormHere(idx + 1, 'create')} variant="outlined" startIcon={<PlaylistAddIcon />}>
+			<Button
+				onClick={() => handlers.showFormHere(idx + 1, 'create')}
+				variant="outlined"
+				startIcon={<PlaylistAddIcon />}
+				className="add-here-button"
+			>
 				Add here
 			</Button>
 		</div>

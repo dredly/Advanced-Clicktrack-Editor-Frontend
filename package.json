@@ -17,27 +17,34 @@
     "@testing-library/user-event": "^13.5.0",
     "@tippyjs/react": "^4.2.6",
     "axios": "^0.27.2",
+    "formik": "^2.2.9",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "recharts": "^2.1.13",
     "redux": "^4.2.0",
+    "redux-thunk": "^2.4.1",
     "tone": "^14.7.77",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
+    "fullstack": "./dev.sh",
+    "e2e": "./e2e.sh",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "eslint": "eslint --fix --ext .js,.jsx ."
+    "eslint": "eslint --fix --ext .js,.jsx .",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "plugin:cypress/recommended"
     ]
   },
   "browserslist": {
@@ -53,6 +60,8 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^8.16.0"
+    "cypress": "^10.6.0",
+    "eslint": "^8.16.0",
+    "eslint-plugin-cypress": "^2.12.1"
   }
 }

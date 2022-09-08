@@ -16,7 +16,7 @@ const DownloadLink = ({ fileFormat, sendInfo }) => {
 
 	return (
 		<div>
-			<Button disabled={!numSections} onClick={handleDownload}>{fileFormat}</Button>
+			<Button disabled={!numSections} onClick={handleDownload} className={`download-${fileFormat}`}>{fileFormat}</Button>
 			{url
 				? url === '...loading'
 					? <LinearProgress />

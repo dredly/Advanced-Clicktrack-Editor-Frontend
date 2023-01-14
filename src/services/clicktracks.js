@@ -1,6 +1,6 @@
 import axios from 'axios'
 const baseUrl =  window.location.href.includes('clicktrack-redux')
-	? 'https://clicktrack-audio-backend.herokuapp.com/'
+	? 'https://urchin-app-ip4yc.ondigitalocean.app/'
 	: 'http://127.0.0.1:5001'
 
 // Sends a trivial request to the backend to prevent heroku from

@@ -25,9 +25,10 @@ const PolyrhythmSelection = ({ numerator, denominator }) => {
 					select
 					name="secondaryDenominator"
 					value={denominator}
+					className="secondary-denominator-selection"
 				>
 					{denominators.map(d => (
-						<MenuItem value={d} key={d}>{d}</MenuItem>
+						<MenuItem value={d} key={d} className={`option${d}`}>{d}</MenuItem>
 					))}
 				</TextField>
 			</Box>

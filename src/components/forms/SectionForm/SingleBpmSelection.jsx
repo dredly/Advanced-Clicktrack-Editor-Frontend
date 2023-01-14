@@ -12,6 +12,7 @@ const SingleBpmSelection = ({ defaultBpm }) => {
 			defaultValue={defaultBpm}
 			label="bpm"
 			inputProps={inputProps}
+			required
 		/>
 	)
 }

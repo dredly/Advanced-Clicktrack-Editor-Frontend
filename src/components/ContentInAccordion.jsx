@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 const ContentInAccordion = (props) => {
 	return (
 		<Accordion defaultExpanded={props.expand}>
-			<AccordionSummary expandIcon={<ExpandMoreIcon />}>
+			<AccordionSummary expandIcon={<ExpandMoreIcon className="accordion-icon"/>}>
 				{props.summaryText}
 			</AccordionSummary>
 			<AccordionDetails>

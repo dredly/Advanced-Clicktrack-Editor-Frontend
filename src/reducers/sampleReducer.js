@@ -13,7 +13,6 @@ const initialState = {
 			url: 'https://res.cloudinary.com/doemj9gq6/video/upload/e_volume:-60/v1659709148/Samples/woodblock_high_srygbo.ogg',
 		},
 	}] ,
-	showSampleForm: false,
 }
 
 const samplesSlice = createSlice({

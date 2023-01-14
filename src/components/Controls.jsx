@@ -81,8 +81,18 @@ const Controls = () => {
 	return (
 		<Box sx={{ marginBlock: '0.5rem' }}>
 			<ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{ marginInlineEnd: '0.8rem' }}>
-				<Button disabled={!sections.length} onClick={playClickTrack} color="success" startIcon={<PlayArrowIcon/>}>Play</Button>
-				<Button disabled={!sections.length} onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>Stop</Button>
+				<Button
+					disabled={!sections.length}
+					onClick={playClickTrack}
+					color="success"
+					startIcon={<PlayArrowIcon/>}
+					id='play-button'
+				>
+					Play
+				</Button>
+				<Button disabled={!sections.length} onClick={stopPlayBack} color="error" startIcon={<StopIcon/>}>
+					Stop
+				</Button>
 			</ButtonGroup>
 			<ButtonGroup variant="contained">
 				<Button

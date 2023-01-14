@@ -1,0 +1,16 @@
+- [x] Get backend errors to display on Formik forms
+- [x] Login Form
+- [x] Store token in localstorage
+- [x] Logout Functionality
+- [x] Improve styling of Navbar menu
+- [x] Conditional rendering on Navbar
+- [x] Auto login user when registered
+- [x] Index View of users clicktracks
+- [x] Clicktrack CRUD on FrontEnd
+- [x] Get user object from local storage, not just token
+- [x] Fix login redirect styling
+- [x] Fix bug where user clicktracks do not show up until reloading the page
+- [x] Fix navbar styling
+- [x] Add flash messages
+- [x] Add create new button on index view
+- [ ] More detail on index view of clicktracks, such as timestamps (after some changes to backend)

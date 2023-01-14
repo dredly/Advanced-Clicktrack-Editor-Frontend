@@ -18,7 +18,8 @@ export const multipleSamplesHelp = 'You can optionally select a second sample. I
 	the notes of the secondary rhythm. Otherwise it will be used for weak beats while the first sample will be used for strong beats (downbeats)'
 
 export const fileFormatsHelp = 'A midi file does not actually include any sound, but is instead a set of instructions for a synthesiser or piece\
-	of software to play a song. This will be the fastest to download. All the other formats will give you immediately playable audio.'
+	of software to play a song. This will be the fastest to download. All the other formats will give you immediately playable audio. Warning - wav \
+	file export is very slow, so go with flac if you can.'
 
 export const symbolicTimeHelp = 'Symbolic time is time defined in notes rather than seconds. Since tempo can change, the length of one note is not\
 	necessarily constant. Each shaded area on the graph represents a section of the clicktrack, and the vertical lines represent measures.'

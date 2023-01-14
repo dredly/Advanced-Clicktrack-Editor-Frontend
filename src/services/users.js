@@ -1,6 +1,6 @@
 import axios from 'axios'
 const baseUrl =  window.location.href.includes('clicktrack-redux')
-	? 'https://clicktrack-user-backend.herokuapp.com/api'
+	? 'https://web-production-8881.up.railway.app/api'
 	: 'http://127.0.0.1:3002/api'
 
 const ping = async () => {
